@@ -6,14 +6,6 @@
 ### Producto
 Cervezas Artesanales
 
-### Identidad
-Tomando como nombre cerveza artesanal, se nos ocurrió buscar el mismo nombre en otros idiomas:
-
-* Latin: artis cervisia
-* Ingles: craft beer
-* Hawaiano: pia pia
-* Croata: craft pivo
-
 ### Audiencia
 Personas mayores de 18 años.
 
@@ -34,3 +26,35 @@ Apodo: juancito, edad : 19 años, me encanta aprender y crear cosas.
 
 ### Santiago Nihany
 Tengo 17 años.  Me gusta jugar al futbol y la música.
+
+---
+
+## Sitios o referencias de inspiración 
+A continuación se listan una serie de sitios discriminados por categoria de selección.
+
+### Paginas de inspiración sobre el diseño del sitio
+* http://kitestudio.co/pinkmart-presentation/
+* http://craft-beer.bold-themes.com/main-demo/
+* http://weisber.like-themes.com/multipage/
+* https://pintsandcrafts.qodeinteractive.com/landing/
+
+
+### Sitios de inspiración sobre información del producto
+* https://cerveceraindependiente.com/cultura-cervecera/que-es-el-craft/
+* https://www.cervezasyakka.com/
+
+### Por los productos o servicios que ofrecen
+* https://cerveceraindependiente.com/nuestras-cervezas/
+* https://cerveceraindependiente.com/nuestras-cervezas/founders-brewing/
+* https://cerveceraindependiente.com/nuestras-cervezas/nomada/
+
+### Por los clientes a los que apuntan
+* http://otromundo.com/
+
+### Por la estética que presentan
+* https://www.heineken.com/global/en/home/ 
+* http://www.cervezaschneider.com.ar/
+
+### Por las funcionalidades implementadas
+* http://otromundo.com/
+* http://kitestudio.co/pinkmart-demo29

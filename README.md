@@ -58,3 +58,8 @@ A continuación se listan una serie de sitios discriminados por categoria de sel
 ### Por las funcionalidades implementadas
 * http://otromundo.com/
 * http://kitestudio.co/pinkmart-demo29
+
+--- 
+
+## Prototipo
+* https://xd.adobe.com/embed/61f5cf1b-64be-4470-ac14-5c3ae960f78e-34a6/?fullscreen

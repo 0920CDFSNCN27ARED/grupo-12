@@ -22,7 +22,7 @@ Mi experiencia se basó en variados roles permitiendo un mix de habilidades en �
 En el presente mi objetivo principal se centra en el desarrollo de productos y servicios vinculados a plataformas de Big Data e Internet de las cosas. 
 
 ### juan Rodriguez Greiser
-Apodo: juancito, edad : 19 años, me encanta aprender y crear cosas. 
+soy Juan Rodriguez Greiser, tengo 19 años. me gusta la tecnologia y me estoy especializando en el desarollo web.
 
 ### Santiago Nihany
 Tengo 17 años.  Me gusta jugar al futbol y la música.

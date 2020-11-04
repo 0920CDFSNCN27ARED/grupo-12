@@ -9,6 +9,27 @@
 	width: 100%;
 }
 
-.card-header{
-	background-color: crimson!important;
+
+.card.form{
+	display: block;
+	background-color: #504949;
+	width: 500px;
+	margin:auto;
+	margin-top: 200px;
+	border-radius: 20px;
+	height: auto;
+}
+
+.white{
+	color:white;
+}
+
+.twitter{
+	background-color: #00ACEE;
+	color: white;
+}
+
+.facebook{
+	background-color:#3b5998;
+	color: white;
 }

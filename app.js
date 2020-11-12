@@ -31,3 +31,8 @@ app.all('/productCart', (req, res) => {
 app.all('/example', (req, res) => {
     res.sendFile(path.resolve(__dirname, 'view/example.html'));
 });
+
+
+app.all('/prueba', (req, res) => {
+    res.sendFile(path.resolve(__dirname, 'view/prueba.html'));
+});

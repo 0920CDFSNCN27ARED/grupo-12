@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="es">
+
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<meta name="Grupo-12" content="Karken Craft Brewery" />
+
+	<!-- Stylesheets
+	============================================= -->
+	<link
+		href="https://fonts.googleapis.com/css?family=Popppins:400,500,600,700|Open+Sans:400,600,700|Dancing+Script&display=swap"
+		rel="stylesheet" type="text/css" />
+	<link rel="stylesheet" href="/css/bootstrap.css" type="text/css" />
+	<link rel="stylesheet" href="/css/style.css" type="text/css" />
+	<link rel="stylesheet" href="/css/dark.css" type="text/css" />
+	<link rel="stylesheet" href="/css/swiper.css" type="text/css" />
+
+	<!-- CSS Components -->
+	<link rel="stylesheet" href="/css/components/bs-select.css" type="text/css" />
+	<link rel="stylesheet" href="/css/components/bs-switches.css" type="text/css" />
+	<link rel="stylesheet" href="/css/components/animate.css" type="text/css" />
+	<link rel="stylesheet" href="/css/components/magnific-popup.css" type="text/css" />
+
+	<!-- CSS Fonts Styles -->
+	<link rel="stylesheet" href="/css/fonts/font-icons.css" type="text/css" />
+		<link rel="stylesheet" href="/css/fonts/fonts.css" type="text/css" />
+
+	<!-- Template Specific Stylesheet -->
+	<link rel="stylesheet" href="/css/theme.css" type="text/css" />
+	<link rel="stylesheet" href="/css/custom.css" type="text/css" />
+
+	<!--Document Title
+	============================================= -->
+	<title>Kraken | Craft Brewery</title>
+
+</head>
+
+<body class="stretched">
+
+	<div class="body-overlay"></div>
+
+	<div id="side-panel" class="dark"
+		style="background: #101010 url('/images/bg/section-2.jpg') repeat center center;">
+
+		<!--Cart Panel
+		============================================= -->
+		<div class="">
+			<div class="d-flex justify-content-between">
+				<div class="ml-2 mt-2 d-inline-flex align-items-center">
+					<span class="font-weight-bold mr-2">CARRITO</span>
+					<span class="cart-counter">2</span>
+				</div>
+				<div id="side-panel-trigger-close" class="side-panel-trigger"><a href="#"><i class="icon-line2-close mr-2 mt-2"></i></a></div>
+			</div class="mb-5">
+			<hr>
+			<h3 class="font-secondary ml-2">Productos Seleccionados</h3>
+			<div class="d-flex flex-column bd-highlight mb-3">
+				<div class="cart-panel-product d-flex align-items-center">
+					<div class="w-25">
+						<img class="cart-img-animation" src="/images/product/bottle_02.png" width="25"/>
+					</div>
+					<div class="w-75 d-flex flex-column justify-content-center">
+						<span class="cart-panel-product-title"><a href="/single-product">Mild Lager Beer</a></span>
+						<span class="cart-panel-product-desc">ABV 6,5% | IBU 60 | OG 1.104</span>
+						<span class="cart-panel-product-price">2 x $500,00</span>
+					</div>
+				</div>
+				<div class="cart-panel-product d-flex align-items-center">
+					<div class="w-25">
+						<img class="cart-img-animation" src="/images/product/bottle_03.png" width="25"/>
+					</div>
+					<div class="w-75 d-flex flex-column justify-content-center">
+						<span class="cart-panel-product-title"><a href="/single-product">Mild Lager Beer</a></span>
+						<span class="cart-panel-product-desc">ABV 6,5% | IBU 60 | OG 1.104</span>
+						<span class="cart-panel-product-price">2 x $500,00</span>
+					</div>
+				</div>
+			</div>
+			<div class="d-flex flex-column justify-content-center cart-panel-footer w-100">
+				
+				<span class="cart-panel-total">Subtotal: $2.000,00</span>
+				<div class="d-flex">
+					<a href="/productCart" class="button text-center header-button button-rounded button-reveal w-100 tright">
+										<i class="icon-line-shopping-cart"></i><span>Carrito</span></a>
+					<a href="/checkout" class="button text-center header-button button-rounded button-reveal w-100 tright ">
+										<i class="icon-line-arrow-right"></i><span>Comprar</span></a>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Document Wrapper
+	============================================= -->
+	<div id="wrapper" class="clearfix">
+
+		<!-- Header
+		============================================= -->
+		<header id="header" class="transparent-header dark" data-sticky-class="dark-color"
+			data-sticky-shrink-offset="0" data-mobile-sticky="true">
+
+			<!-- Top Header
+			============================================= -->
+			<div class="top-header">
+			<div class="d-flex justify-content-around">
+				<div class="p-2 mt-2 text-center">
+					<a href="#" class="top-header-buttom"><i class="icon-headphones-alt"></i> 011 444-3232</a>
+				</div>
+				<div class="p-2 mt-2 text-center">
+				</div>
+				<div class="p-2 mt-2 text-center">
+					<a href="#" class="social-icon si-small si-colored">
+						<i class="icon-facebook"></i>
+						<i class="icon-facebook"></i>
+					</a>
+					<a href="#" class="social-icon si-small si-colored ">
+						<i class="icon-twitter"></i>
+						<i class="icon-twitter"></i>
+					</a>
+					<a href="#" class="social-icon si-small si-colored ">
+						<i class="icon-instagram"></i>
+						<i class="icon-instagram"></i>
+					</a>
+				</div>
+			</div>
+			</div><!-- #top-header end -->
+
+			<div id="header-wrap">
+				<div class="container">
+					<div class="header-row">
+
+						<!-- Logo
+						============================================= -->
+						<div id="logo">
+							<a href="/" class="standard-logo" data-dark-logo="/images/logo/logo-dark.png"
+								data-sticky-logo="/images/logo/logo-sticky.png"><img src="/images/logo/logo.png"
+									alt="Kraken Logo"></a>
+							<a href="/" class="retina-logo" data-dark-logo="/images/logo/logo-dark@2x.png"
+								data-sticky-logo="/images/logo/logo-sticky@2x.png"><img src="/images/logo/logo@2x.png"
+									alt="Karken Logo"></a>
+						</div><!-- #logo end -->
+
+						<div class="header-misc">
+
+							<!-- #cart panel -->
+							<div id="side-panel-trigger" class="side-panel-trigger"><a href="#"><i
+										class="button button-small button-rounded button-reveal d-inline-flex tright font-weight-semibold icon-line-shopping-cart"></i></a></div>
+
+						</div>
+
+						<div id="primary-menu-trigger">
+							<svg class="svg-trigger" viewBox="0 0 100 100">
+								<path
+									d="m 30,33 h 40 c 3.722839,0 7.5,3.126468 7.5,8.578427 0,5.451959 -2.727029,8.421573 -7.5,8.421573 h -20">
+								</path>
+								<path d="m 30,50 h 40"></path>
+								<path
+									d="m 70,67 h -40 c 0,0 -7.5,-0.802118 -7.5,-8.365747 0,-7.563629 7.5,-8.634253 7.5,-8.634253 h 20">
+								</path>
+							</svg>
+						</div>
+
+						<!-- Primary Navigation
+						============================================= -->
+						<nav class="primary-menu">
+
+							<ul class="one-page-menu menu-container" data-easing="easeInOutExpo" data-speed="1250"
+								data-offset="60">
+								<li class="current menu-item"><a class="menu-link menu-link-space" href="#" data-href="#slider">
+										<div>Inicio</div>
+									</a></li>
+								<li class="menu-item"><a class="menu-link menu-link-space" href="#" data-href="#story">
+										<div>Nosotros</div>
+									</a></li>
+								<li class="menu-item"><a class="menu-link menu-link-space" href="#" data-href="#menu">
+										<div>Cervezas</div>
+									</a></li>
+								<li class="menu-item"><a class="menu-link menu-link-space" href="#" data-href="#contact"
+										data-offset="20">
+										<div>Contacto</div>
+									</a></li>
+								<li class="menu-item"><a class="menu-link menu-link-space" href="/store"
+										data-offset="20">
+										<div>Tienda</div>
+									</a></li>
+								<li class="menu-item"><a href="/login" class="button button-small header-button button-rounded button-reveal d-inline-flex tright">
+									<i class="icon-line-arrow-right"></i><span>Ingresar</span></a></li>
+							</ul>
+							<ul class="menu-container mobile-primary-menu">
+								<li class="current menu-item"><a class="menu-link" href="#" data-href="#slider">
+										<div>Inicio</div>
+									</a></li>
+								<li class="menu-item"><a class="menu-link" href="#" data-href="#story">
+										<div>Nosotros</div>
+									</a></li>
+								<li class="menu-item"><a class="menu-link" href="#" data-href="#menu">
+										<div>Cervezas</div>
+									</a></li>
+								<li class="menu-item"><a class="menu-link" href="#" data-href="#contact"
+										data-offset="20">
+										<div>Contacto</div>
+									</a></li>
+								<li class="menu-item"><a class="menu-link menu-link-space" href="/store"
+										data-offset="20">
+										<div>Tienda</div>
+								<li class="menu-item"><a class="menu-link" href="/login" 
+										data-offset="20">
+										<div>Ingresar</div>
+									</a></li>
+							</ul>
+						</nav><!-- #primary-menu end -->
+
+					</div>
+				</div>
+			</div>
+			<div class="header-wrap-clone"></div>
+		</header><!-- #header end -->
+
+		
+		<!-- Slider
+		============================================= -->
+		<section id="slider" class="slider-element swiper_wrapper min-vh-60 min-vh-md-100 include-header" data-loop="true">
+			<div class="slider-inner">
+
+				<div class="swiper-container swiper-parent">
+					<div class="swiper-wrapper">
+						<!-- Slider 01 -->
+						<div class="swiper-slide dark">
+							<div class="container">
+								<div class="slider-caption slider-caption-center">
+									<div class="emphasis-title" data-animate="fadeInUp">
+										<div class="before-heading font-secondary color">Craft Brewery</div>
+										<h2 class="font-border">ARTISKRAKEN</h2>
+									</div>
+									
+									<h4 data-animate="fadeInUp" data-delay="100">Competently
+									revolutionize real-time deliverables via quality vortals. Compellingly create
+									worldwide functionalities without robust interfaces.</h4>
+
+									<div class="d-flex justify-content-center align-items-center mx-auto categories-lists mt-4">
+										<a data-scrollto="#menu" data-easing="easeInOutExpo" data-speed="1250"
+											class="button button-large button-rounded px-4 button-border button-light button-white font-weight-semibold"
+											data-animate="fadeInUp" data-delay="200">Nuestras Cervezas</a>
+										<a href="/contact"
+											class="button button-large button-rounded px-4 button-reveal d-inline-flex tright font-weight-semibold"
+											data-animate="fadeInUp" data-delay="300"><i class="icon-line-arrow-right"></i><span>Reservar</span></a>
+									</div>
+								</div>
+							</div>
+							<div class="video-wrap" style="position: absolute; top: 0; left: 0; height: 100%; z-index:1;">
+								<div class="video-overlay" style="background: rgba(0,0,0,0.5);"></div>
+							</div>
+							<div class="swiper-slide-bg" style="background-image: url('/images/sliders/slider-01.jpg');"></div>
+						</div>
+						<!-- Slider 02 -->
+						<div class="swiper-slide dark">
+							<div class="container">
+								<div class="slider-caption slider-caption-center">
+									<div class="emphasis-title" data-animate="fadeInUp">
+										<div class="before-heading font-secondary color">Craft Brewery</div>
+										<h2 class="font-border">ARTISKRAKEN</h2>
+									</div>
+									
+									<h4 data-animate="fadeInUp" data-delay="100">Competently
+									revolutionize real-time deliverables via quality vortals. Compellingly create
+									worldwide functionalities without robust interfaces.</h4>
+
+									<div class="d-flex justify-content-center align-items-center mx-auto categories-lists mt-4">
+										<a data-scrollto="#menu" data-easing="easeInOutExpo" data-speed="1250"
+											class="button button-large button-rounded px-4 button-border button-light button-white font-weight-semibold"
+											data-animate="fadeInUp" data-delay="200">Nuestras Cervezas</a>
+										<a href="/contact"
+											class="button button-large button-rounded px-4 button-reveal d-inline-flex tright font-weight-semibold"
+											data-animate="fadeInUp" data-delay="300"><i class="icon-whatsapp"></i><span>Llamanos</span></a>
+									</div>
+								</div>
+							</div>
+							<div class="video-wrap" style="position: absolute; top: 0; left: 0; height: 100%; z-index:1;">
+								<div class="video-overlay" style="background: rgba(0,0,0,0.25);"></div>
+							</div>
+							<div class="swiper-slide-bg" style="background-image: url('/images/sliders/slider-03.jpg');"></div>
+						</div>
+						<!-- Slider 03 -->
+						<div class="swiper-slide dark">
+							<div class="container">
+								<div class="slider-caption slider-caption-center">
+									<div class="emphasis-title" data-animate="fadeInUp">
+										<div class="before-heading font-secondary color">Craft Brewery</div>
+										<h2 class="font-border">ARTISKRAKEN</h2>
+									</div>
+									
+									<h4 data-animate="fadeInUp" data-delay="100">Competently
+									revolutionize real-time deliverables via quality vortals. Compellingly create
+									worldwide functionalities without robust interfaces.</h4>
+
+									<div class="d-flex justify-content-center align-items-center mx-auto categories-lists mt-4">
+										<a data-scrollto="#menu" data-easing="easeInOutExpo" data-speed="1250"
+											class="button button-large button-rounded px-4 button-border button-light button-white font-weight-semibold"
+											data-animate="fadeInUp" data-delay="200">Nuestras Cervezas</a>
+										<a href="/contact"
+											class="button button-large button-rounded px-4 button-reveal d-inline-flex tright font-weight-semibold"
+											data-animate="fadeInUp" data-delay="300"><i class="icon-line-arrow-right"></i><span>Reservar</span></a>
+									</div>
+								</div>
+							</div>
+							<div class="video-wrap">
+								<div class="yt-bg-player customjs" data-quality="hd1080" data-start="19" data-volume="80" data-stop="52" data-video="https://www.youtube.com/watch?v=CA7KevfsJTg"></div>
+								<div class="video-overlay" style="background: rgba(0,0,0,0.4);"></div>
+							</div>
+						</div>
+					</div>
+					<!-- Slider Arrows
+					============================================= -->
+					<div class="slider-arrow-left bg-transparent"><i class="icon-line-arrow-left"></i></div>
+					<div class="slider-arrow-right bg-transparent"><i class="icon-line-arrow-right"></i></div>
+				</div>
+
+				<!-- Slider Mouse Icon
+				============================================= -->
+				<a href="#" class="scroll-down d-none d-lg-block" data-scrollto="#content" data-offset="80">
+					<span class="scroll-mouse"><span class="scroll-wheel"></span></span>
+				</a>
+
+			</div>
+		</section>
+
+		<!-- Content
+		============================================= -->
+		<section id="content" class="dark-color">
+			
+			<div class="content-wrap p-0">
+
+				<div id="story" class="page-section">
+					<div class="section mb-0"
+						style="background: linear-gradient(to bottom, #101010, transparent, #101010), url('/images/bg/story-bg.jpg') no-repeat center top / cover;">
+						<div class="container">
+							<div class="center bottommargin mx-auto" style="max-width: 700px">
+								<div class="before-heading white-color">Un poco de</div>
+								<h1 class="font-secondary display-4 color font-weight-bold">Nuestra Cervecería</h1>
+								<p class="lead white-color">Utiliza la clásica tecnología de cerveza individual deteniendo en cuenta los deseos de nuestros consumidores. 
+									Practicamos la innovación y la experimentación.</p>
+							</div>
+							<div class="row">
+								<div class="center col-md-3">
+									<img src="/images/story/story-01.png" class="mb-3"/>
+									<div class="before-heading white-color">Maceración <br>de malta</div>
+									<p class="lead">Utiliza la clásica tecnología de cerveza individual deteniendo en cuenta los deseos de nuestros consumidores. 
+										Practicamos la innovación y la experimentación.</p>
+								</div>
+								<div class="center col-md-3">
+									<img src="/images/story/story-02.png" class="mb-3"/>
+									<div class="before-heading white-color">Filtración y<br> ebullición</div>
+									<p class="lead">Utiliza la clásica tecnología de cerveza individual deteniendo en cuenta los deseos de nuestros consumidores. 
+										Practicamos la innovación y la experimentación.</p>
+								</div>
+								<div class="center col-md-3">
+									<img src="/images/story/story-03.png" class="mb-3"/>
+									<div class="before-heading white-color">Fermentación y<br> enfriamiento</div>
+									<p class="lead">Utiliza la clásica tecnología de cerveza individual deteniendo en cuenta los deseos de nuestros consumidores. 
+										Practicamos la innovación y la experimentación.</p>
+								</div>
+								<div class="center col-md-3">
+									<img src="/images/story/story-04.png" class="mb-3"/>
+									<div class="before-heading white-color">Filtración y<br> embotellado</div>
+									<p class="lead">Utiliza la clásica tecnología de cerveza individual deteniendo en cuenta los deseos de nuestros consumidores. 
+										Practicamos la innovación y la experimentación.</p>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="section m-0 p-0">
+						<div class="row align-items-stretch clearfix">
+
+							<div class="item-categories overflow-hidden col-md-6 dark col-padding position-relative"
+								style="background: linear-gradient(to bottom, #101010, transparent, #101010), url('/images/story/lager.png') no-repeat center top / cover;">
+								<div class="cat-img image-cat-position"><img data-animate="fadeInRight" src="/images/product/bottle_03.png"
+										alt="Category Image"></div>
+								<div class="cat-text">
+									<h2 class="font-weight-bold ls1 text-uppercase mb-5">LAGER</h2>
+									<p class="mb-5">Pero simplificando mucho, los tipos de cerveza artesana 
+										(e incluso podríamos extender este artículo para todos los tipos de cerveza) 
+										los podemos catalogar en 2 principales y esto es según el tipo de fermentación que tengan.</p>
+									<a href="/store" data-easing="easeInOutExpo" data-speed="1250"
+										class="button button-rounded px-4 button-border button-light button-white font-weight-semibold ml-0">Ver Cervezas</a>
+								</div>
+							</div>
+
+							<div class="item-categories overflow-hidden col-md-6 dark col-padding position-relative"
+								style="background: linear-gradient(to bottom, #101010, transparent, #101010), url('/images/story/ale.png') no-repeat center top / cover;">
+								<div class="cat-img image-cat-position"><img data-animate="fadeInRight" src="/images/product/bottle_04.png"
+										alt="Category Image"></div>
+								<div class="cat-text">
+									<h2 class="font-weight-bold ls1 text-uppercase mb-5">ALE</h2>
+									<p class="mb-5">Pero simplificando mucho, los tipos de cerveza artesana 
+										(e incluso podríamos extender este artículo para todos los tipos de cerveza) 
+										los podemos catalogar en 2 principales y esto es según el tipo de fermentación que tengan.</p>
+									<a href="/store" data-easing="easeInOutExpo" data-speed="1250"
+										class="button button-rounded px-4 button-border button-light button-white font-weight-semibold ml-0">Ver Cervezas</a>
+								</div>
+							</div>
+
+						</div>
+					</div>
+				</div>
+
+				<div class="clear"></div>
+
+				<div id="menu" class="page-section">
+					<div class="section mb-0"
+						style="background: linear-gradient(to bottom, #101010, rgba(16,16,16,0.3),#101010), url('/images/bg/section-5.jpg') no-repeat center top / cover;">
+
+						<div class="container">
+							<div class="center bottommargin mx-auto" style="max-width: 700px">
+								<div class="before-heading white-color">Descubrí</div>
+								<h1 class="font-secondary display-4 color font-weight-bold">Nuestra Cerveza</h1>
+								<p class="lead white-color">Disfruta de nuestra exquisitas variedades, contamos con sabores originales y exclusivos.</p>
+							</div>
+							
+							<div class="tabs tabs-bb center clearfix ui-tabs tabs-justify ui-corner-all ui-widget ui-widget-content">
+
+								<ul class="center tab-nav clearfix ui-tabs-nav ui-corner-all ui-helper-reset ui-helper-clearfix ui-widget-header" role="tablist">
+									<li role="tab" tabindex="0" class="ui-tabs-tab ui-corner-top ui-state-default ui-tab ui-tabs-active ui-state-active" aria-controls="tabs-01" aria-labelledby="" aria-selected="true" aria-expanded="true">
+										<a href="#tabs-01" role="presentation" tabindex="-1" class="ui-tabs-anchor">LAGER</a></li>
+									<li role="tab" tabindex="-1" class="ui-tabs-tab ui-corner-top ui-state-default ui-tab" aria-controls="tabs-02" aria-labelledby="" aria-selected="false" aria-expanded="false">
+										<a href="#tabs-02" role="presentation" tabindex="-1" class="ui-tabs-anchor">ALE</a></li>
+									<li role="tab" tabindex="-1" class="ui-tabs-tab ui-corner-top ui-state-default ui-tab" aria-controls="tabs-03" aria-labelledby="" aria-selected="false" aria-expanded="false">
+										<a href="#tabs-03" role="presentation" tabindex="-1" class="ui-tabs-anchor">TOP VENTAS</a></li>
+								</ul>
+
+								<div class="tab-container">
+
+									<div class="tab-content clearfix ui-tabs-panel ui-corner-bottom ui-widget-content" id="tabs-01" aria-labelledby="" role="tabpanel" aria-hidden="false" style="">
+										
+										<div id="oc-wheel" class="owl-carousel shop-carousel carousel-widget mt-5" data-margin="30" data-nav="true" data-pagi="true" 
+											data-items-xs="2" data-items-sm="3" data-items-md="4" data-items-lg="4" data-autoplay="5000" data-loop="true">
+											
+											<div class="product center">
+												<div class="product-image product-bottle px-4 py-1">
+													<img src="/images/product/classic_01.png" class="img-bottle" alt="Image">
+												</div>
+												<div class="product-desc">
+													<div class=""><h3><a href="#" class="white-link">Mild Lager Beer</a></h3></div>
+													<div class="product-price"><del>$146.99</del> <ins>$98.49</ins></div>
+													<p>ABV 6,5% | IBU 60 | OG 1.104</p>
+													<a href="#" class="button button-small button-rounded button-reveal d-inline-flex tright">
+												<i class="icon-cart-plus"></i><span>Agregar</span></a>
+												</div>
+											</div>
+
+											<div class="product center">
+												<div class="product-image product-bottle px-4 py-1">
+													<img src="/images/product/classic_02.png" class="img-bottle" alt="Image">
+												</div>
+												<div class="product-desc">
+													<div class=""><h3><a href="#" class="white-link">Mild Lager Beer</a></h3></div>
+													<div class="product-price"><del>$146.99</del> <ins>$98.49</ins></div>
+													<p>ABV 6,5% | IBU 60 | OG 1.104</p>
+													<a href="#" class="button button-small button-rounded button-reveal d-inline-flex tright">
+												<i class="icon-cart-plus"></i><span>Agregar</span></a>
+												</div>
+											</div>
+
+											<div class="product center">
+												<div class="product-image product-bottle px-4 py-1">
+													<img src="/images/product/classic_03.png" class="img-bottle" alt="Image">
+												</div>
+												<div class="product-desc">
+													<div class=""><h3><a href="#" class="white-link">Mild Lager Beer</a></h3></div>
+													<div class="product-price"><del>$146.99</del> <ins>$98.49</ins></div>
+													<p>ABV 6,5% | IBU 60 | OG 1.104</p>
+													<a href="#" class="button button-small button-rounded button-reveal d-inline-flex tright">
+												<i class="icon-cart-plus"></i><span>Agregar</span></a>
+												</div>
+											</div>
+
+											<div class="product center">
+												<div class="product-image product-bottle px-4 py-1">
+													<img src="/images/product/classic_01.png" class="img-bottle" alt="Image">
+												</div>
+												<div class="product-desc">
+													<div class=""><h3><a href="#" class="white-link">Mild Lager Beer</a></h3></div>
+													<div class="product-price"><del>$146.99</del> <ins>$98.49</ins></div>
+													<p>ABV 6,5% | IBU 60 | OG 1.104</p>
+													<a href="#" class="button button-small button-rounded button-reveal d-inline-flex tright">
+												<i class="icon-cart-plus"></i><span>Agregar</span></a>
+												</div>
+											</div>
+
+											<div class="product center">
+												<div class="product-image product-bottle px-4 py-1">
+													<img src="/images/product/classic_02.png" class="img-bottle" alt="Image">
+												</div>
+												<div class="product-desc">
+													<div class=""><h3><a href="#" class="white-link">Mild Lager Beer</a></h3></div>
+													<div class="product-price"><del>$146.99</del> <ins>$98.49</ins></div>
+													<p>ABV 6,5% | IBU 60 | OG 1.104</p>
+													<a href="#" class="button button-small button-rounded button-reveal d-inline-flex tright">
+												<i class="icon-cart-plus"></i><span>Agregar</span></a>
+												</div>
+											</div>
+
+											<div class="product center">
+												<div class="product-image product-bottle px-4 py-1">
+													<img src="/images/product/classic_03.png" class="img-bottle" alt="Image">
+												</div>
+												<div class="product-desc">
+													<div class=""><h3><a href="#" class="white-link">Mild Lager Beer</a></h3></div>
+													<div class="product-price"><del>$146.99</del> <ins>$98.49</ins></div>
+													<p>ABV 6,5% | IBU 60 | OG 1.104</p>
+													<a href="#" class="button button-small button-rounded button-reveal d-inline-flex tright">
+												<i class="icon-cart-plus"></i><span>Agregar</span></a>
+												</div>
+											</div>
+										</div>
+
+									</div>
+									<div class="tab-content clearfix ui-tabs-panel ui-corner-bottom ui-widget-content" id="tabs-02" aria-labelledby="" role="tabpanel" aria-hidden="true" style="display: none;">
+										
+										<div id="oc-wheel" class="owl-carousel shop-carousel carousel-widget mt-5" data-margin="30" data-nav="true" data-pagi="true" 
+											data-items-xs="2" data-items-sm="3" data-items-md="4" data-items-lg="4" data-autoplay="5000" data-loop="true">
+											
+											<div class="product center">
+												<div class="product-image product-bottle px-4 py-1">
+													<img src="/images/product/classic_03.png" class="img-bottle" alt="Image">
+												</div>
+												<div class="product-desc">
+													<div class=""><h3><a href="#" class="white-link">Mild Lager Beer</a></h3></div>
+													<div class="product-price"><del>$146.99</del> <ins>$98.49</ins></div>
+													<p>ABV 6,5% | IBU 60 | OG 1.104</p>
+													<a href="#" class="button button-small button-rounded button-reveal d-inline-flex tright">
+												<i class="icon-cart-plus"></i><span>Agregar</span></a>
+												</div>
+											</div>
+
+											<div class="product center">
+												<div class="product-image product-bottle px-4 py-1">
+													<img src="/images/product/classic_02.png" class="img-bottle" alt="Image">
+												</div>
+												<div class="product-desc">
+													<div class=""><h3><a href="#" class="white-link">Mild Lager Beer</a></h3></div>
+													<div class="product-price"><del>$146.99</del> <ins>$98.49</ins></div>
+													<p>ABV 6,5% | IBU 60 | OG 1.104</p>
+													<a href="#" class="button button-small button-rounded button-reveal d-inline-flex tright">
+												<i class="icon-cart-plus"></i><span>Agregar</span></a>
+												</div>
+											</div>
+
+											<div class="product center">
+												<div class="product-image product-bottle px-4 py-1">
+													<img src="/images/product/classic_01.png" class="img-bottle" alt="Image">
+												</div>
+												<div class="product-desc">
+													<div class=""><h3><a href="#" class="white-link">Mild Lager Beer</a></h3></div>
+													<div class="product-price"><del>$146.99</del> <ins>$98.49</ins></div>
+													<p>ABV 6,5% | IBU 60 | OG 1.104</p>
+													<a href="#" class="button button-small button-rounded button-reveal d-inline-flex tright">
+												<i class="icon-cart-plus"></i><span>Agregar</span></a>
+												</div>
+											</div>
+
+											<div class="product center">
+												<div class="product-image product-bottle px-4 py-1">
+													<img src="/images/product/classic_01.png" class="img-bottle" alt="Image">
+												</div>
+												<div class="product-desc">
+													<div class=""><h3><a href="#" class="white-link">Mild Lager Beer</a></h3></div>
+													<div class="product-price"><del>$146.99</del> <ins>$98.49</ins></div>
+													<p>ABV 6,5% | IBU 60 | OG 1.104</p>
+													<a href="#" class="button button-small button-rounded button-reveal d-inline-flex tright">
+												<i class="icon-cart-plus"></i><span>Agregar</span></a>
+												</div>
+											</div>
+
+											<div class="product center">
+												<div class="product-image product-bottle px-4 py-1">
+													<img src="/images/product/classic_02.png" class="img-bottle" alt="Image">
+												</div>
+												<div class="product-desc">
+													<div class=""><h3><a href="#" class="white-link">Mild Lager Beer</a></h3></div>
+													<div class="product-price"><del>$146.99</del> <ins>$98.49</ins></div>
+													<p>ABV 6,5% | IBU 60 | OG 1.104</p>
+													<a href="#" class="button button-small button-rounded button-reveal d-inline-flex tright">
+												<i class="icon-cart-plus"></i><span>Agregar</span></a>
+												</div>
+											</div>
+
+											<div class="product center">
+												<div class="product-image product-bottle px-4 py-1">
+													<img src="/images/product/classic_03.png" class="img-bottle" alt="Image">
+												</div>
+												<div class="product-desc">
+													<div class=""><h3><a href="#" class="white-link">Mild Lager Beer</a></h3></div>
+													<div class="product-price"><del>$146.99</del> <ins>$98.49</ins></div>
+													<p>ABV 6,5% | IBU 60 | OG 1.104</p>
+													<a href="#" class="button button-small button-rounded button-reveal d-inline-flex tright">
+												<i class="icon-cart-plus"></i><span>Agregar</span></a>
+												</div>
+											</div>
+										</div>
+
+									</div>
+									<div class="tab-content clearfix ui-tabs-panel ui-corner-bottom ui-widget-content" id="tabs-03" aria-labelledby="" role="tabpanel" aria-hidden="true" style="display: none;">
+										
+										<div id="oc-wheel" class="owl-carousel shop-carousel carousel-widget mt-5" data-margin="30" data-nav="true" data-pagi="true" 
+											data-items-xs="2" data-items-sm="3" data-items-md="4" data-items-lg="4" data-autoplay="5000" data-loop="true">
+											
+											<div class="product center">
+												<div class="product-image product-bottle px-4 py-1">
+													<img src="/images/product/classic_01.png" class="img-bottle" alt="Image">
+												</div>
+												<div class="product-desc">
+													<div class=""><h3><a href="#" class="white-link">Mild Lager Beer</a></h3></div>
+													<div class="product-price"><del>$146.99</del> <ins>$98.49</ins></div>
+													<p>ABV 6,5% | IBU 60 | OG 1.104</p>
+													<a href="#" class="button button-small button-rounded button-reveal d-inline-flex tright">
+												<i class="icon-cart-plus"></i><span>Agregar</span></a>
+												</div>
+											</div>
+
+											<div class="product center">
+												<div class="product-image product-bottle px-4 py-1">
+													<img src="/images/product/classic_02.png" class="img-bottle" alt="Image">
+												</div>
+												<div class="product-desc">
+													<div class=""><h3><a href="#" class="white-link">Mild Lager Beer</a></h3></div>
+													<div class="product-price"><del>$146.99</del> <ins>$98.49</ins></div>
+													<p>ABV 6,5% | IBU 60 | OG 1.104</p>
+													<a href="#" class="button button-small button-rounded button-reveal d-inline-flex tright">
+												<i class="icon-cart-plus"></i><span>Agregar</span></a>
+												</div>
+											</div>
+
+											<div class="product center">
+												<div class="product-image product-bottle px-4 py-1">
+													<img src="/images/product/classic_03.png" class="img-bottle" alt="Image">
+												</div>
+												<div class="product-desc">
+													<div class=""><h3><a href="#" class="white-link">Mild Lager Beer</a></h3></div>
+													<div class="product-price"><del>$146.99</del> <ins>$98.49</ins></div>
+													<p>ABV 6,5% | IBU 60 | OG 1.104</p>
+													<a href="#" class="button button-small button-rounded button-reveal d-inline-flex tright">
+												<i class="icon-cart-plus"></i><span>Agregar</span></a>
+												</div>
+											</div>
+
+											<div class="product center">
+												<div class="product-image product-bottle px-4 py-1">
+													<img src="/images/product/classic_01.png" class="img-bottle" alt="Image">
+												</div>
+												<div class="product-desc">
+													<div class=""><h3><a href="#" class="white-link">Mild Lager Beer</a></h3></div>
+													<div class="product-price"><del>$146.99</del> <ins>$98.49</ins></div>
+													<p>ABV 6,5% | IBU 60 | OG 1.104</p>
+													<a href="#" class="button button-small button-rounded button-reveal d-inline-flex tright">
+												<i class="icon-cart-plus"></i><span>Agregar</span></a>
+												</div>
+											</div>
+
+											<div class="product center">
+												<div class="product-image product-bottle px-4 py-1">
+													<img src="/images/product/classic_02.png" class="img-bottle" alt="Image">
+												</div>
+												<div class="product-desc">
+													<div class=""><h3><a href="#" class="white-link">Mild Lager Beer</a></h3></div>
+													<div class="product-price"><del>$146.99</del> <ins>$98.49</ins></div>
+													<p>ABV 6,5% | IBU 60 | OG 1.104</p>
+													<a href="#" class="button button-small button-rounded button-reveal d-inline-flex tright">
+												<i class="icon-cart-plus"></i><span>Agregar</span></a>
+												</div>
+											</div>
+
+											<div class="product center">
+												<div class="product-image product-bottle px-4 py-1">
+													<img src="/images/product/classic_03.png" class="img-bottle" alt="Image">
+												</div>
+												<div class="product-desc">
+													<div class=""><h3><a href="#" class="white-link">Mild Lager Beer</a></h3></div>
+													<div class="product-price"><del>$146.99</del> <ins>$98.49</ins></div>
+													<p>ABV 6,5% | IBU 60 | OG 1.104</p>
+													<a href="#" class="button button-small button-rounded button-reveal d-inline-flex tright">
+												<i class="icon-cart-plus"></i><span>Agregar</span></a>
+												</div>
+											</div>
+										</div>
+
+									</div>
+								</div>
+
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="section dark my-0"
+					style="padding: 60px 0 120px; background: linear-gradient(to bottom, transparent, #101010)">
+					<div class="container mx-auto" style="max-width: 1000px">
+						<div class="row align-items-center">
+							<div class="col-md-6 text-center text-md-left">
+								<h2 class="display-4 font-weight-bold text-uppercase ls1" data-animate="fadeInUp">Hace tu Delivery Ahora!</h2>
+								<h4 class="font-secondary text-white-50" data-animate="fadeInUp" data-delay="100"> Escribinos por WhatsApp para una rápida atención!</h4>
+								<div class="d-flex align-items-center">
+								<a href="tel:+112223333" class="button button-large button-rounded button-border button-light button-white tright font-weight-semibold">
+									<i class="icon-whatsapp"></i> WHATSAPP </a>
+								<a href="/store" class="button button-large button-rounded button-reveal button-border color tright font-weight-semibold">
+									<i class="icon-line-arrow-right"></i><span>VISITAR TIENDA</span></a>
+									</div>
+							</div>
+							<div class="col-md-6">
+								<div class="slide-img" data-animate="img-to-left">
+									<img src="/images/svg/delivery.svg" alt="">
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div id="contact" class="section page-section dark m-0 pb-0 pb-md-5 slide-img"
+					data-animate="img-to-left"
+					style="background: linear-gradient(to bottom, #101010, rgba(16,16,16,0.3),#101010), url('/images/bg/section-4.jpg') no-repeat center top / cover;">
+					<div class="container pt-3 pb-4">
+						<div class="row">
+							<div class="col-md-6">
+								<div class="center bottommargin mx-auto">
+									<h1 class="font-secondary display-4 color font-weight-bold">Dejanos un Mensaje</h1>
+									<p class="lead white-color">No dudes en escribirnos, estamos disponibles 24/7 para nuestros clientes. Una vez nos envies tu consulta te responderemos a la brevedad.</p>
+								</div>
+								<form method="POST" action="/">
+									<div class="form-row">
+										<div class="form-group col-md-6">
+										<label for="name">Nombre</label>
+										<input type="text" class="form-control" id="name" placeholder="Tu Nombre">
+										</div>
+										<div class="form-group col-md-6">
+										<label for="tel">Télefono</label>
+										<input type="tel" class="form-control" id="tel" placeholder="Tu Teléfono">
+										</div>
+									</div>
+									<div class="form-row">
+										<div class="form-group col-md-6">
+										<label for="email">Email</label>
+										<input type="email" class="form-control" id="email" placeholder="Correo Electrónico">
+										</div>
+										<div class="form-group col-md-6">
+										<label for="issue">Asunto</label>
+										<input type="text" class="form-control" id="issue" placeholder="Asunto">
+										</div>
+									</div>
+									<div class="form-group">
+										<label for="message">Mensaje</label>
+										<textarea class="form-control" id="message" rows="3"></textarea>
+									</div>
+									<div class="form-group">
+										<div class="form-check">
+										<input class="form-check-input" type="checkbox" id="gridCheck">
+										<label class="form-check-label" for="gridCheck">
+											Quiero recibir información
+										</label>
+										</div>
+									</div>
+									<button type="submit" class="button button-large button-rounded button-reveal tright font-weight-semibold">Listo</button>
+								</form>
+							</div>
+							<div class="col-md-6">
+								<iframe class="gmap mt-5 mt-md-0" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3286.186451696771!2d-58.445864884887115!3d-34.548834280473805!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x95bcb436efe09303%3A0xfb39818e7624ac76!2sDigital%20House!5e0!3m2!1ses-419!2sar!4v1604860832091!5m2!1ses-419!2sar" width="600" height="470" frameborder="0" style="border-radius:10px;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
+							</div>
+						</div>
+					
+					</div>
+					
+				</div>
+
+			</div>
+
+		</section><!-- #content end -->
+
+		<!-- Footer
+		============================================= -->
+		<footer id="footer" class="dark noborder parallax pt-3"
+			style="background-image: url('/images/bg/section-2.jpg');"
+			data-top-bottom="background-position:100% -300px" data-bottom-top="background-position: 100% 300px">
+			<div class="container">
+
+				<!-- Footer Widgets
+				============================================= -->
+				<div class="footer-widgets-wrap">
+
+					<div class="row col-mb-50 justify-content-between">
+
+						<div class="col-lg-5 text-center text-lg-left">
+							<img src="/images/logo/logo-footer.png" alt="Image" height="120">
+							
+						</div>
+
+						<div class="col-lg-7">
+							<div class="row col-mb-30">
+								<div class="col-6 col-lg-4">
+									<div class="widget widget_links widget-li-noicon">
+										<h4>Sevicios</h4>
+										<ul>
+											<li><a href="#">Políticas de Privacidad</a></li>
+											<li><a href="#">Términos y Condiciones </a></li>
+											<li><a href="#">Sobre Nosotros</a></li>
+										</ul>
+									</div>
+								</div>
+								<div class="col-6 col-lg-4">
+									<div class="widget widget_links widget-li-noicon">
+										<h4>Contacto</h4>
+										<ul>
+											<li><a href="/contact">Contacto</a></li>
+											<li><a href="#">Ventas</a></li>
+											<li><a href="#">Post-Venta</a></li>
+										</ul>
+									</div>
+								</div>
+								<div class="col-6 col-lg-4">
+									<div class="widget widget_links widget-li-noicon">
+										<h4>Tiendas</h4>
+										<ul>
+											<li><a href="#">CABA</a></li>
+											<li><a href="#">Córdoba</a></li>
+											<li><a href="#">Tucumán</a></li>
+										</ul>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</div><!-- .footer-widgets-wrap end -->
+			</div>
+
+			<!-- Copyrights
+			============================================= -->
+			<div id="copyrights">
+				<div class="container">
+
+					<div class="row col-mb-30">
+						<div class="col-md-6 text-center text-md-left">
+							© 2020 ArtisKraken | Power by Node JS
+						</div>
+
+						<div class="col-md-6 text-center text-md-right">
+							<div class="d-flex justify-content-center justify-content-md-end">
+								<a href="#" class="social-icon si-small nobottommargin si-facebook">
+									<i class="icon-facebook"></i>
+									<i class="icon-facebook"></i>
+								</a>
+
+								<a href="#" class="social-icon si-small nobottommargin si-twitter">
+									<i class="icon-twitter"></i>
+									<i class="icon-twitter"></i>
+								</a>
+
+								<a href="#" class="social-icon si-small nobottommargin si-instagram">
+									<i class="icon-instagram"></i>
+									<i class="icon-instagram"></i>
+								</a>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div><!-- #copyrights end -->
+		</footer><!-- #footer end -->
+
+	</div><!-- #wrapper end -->
+
+	<!-- Go To Top
+	============================================= -->
+	<div id="gotoTop" class="icon-angle-up"></div>
+
+	<!-- JavaScripts
+	============================================= -->
+	<script src="/js/jquery.js"></script>
+	<script src="/js/plugins.min.js"></script>
+	<script src="/js/hover-animate.js"></script>
+
+	<!-- Bootstrap Select Plugin -->
+	<script src="/js/components/bs-select.js"></script>
+
+	<!-- Bootstrap Switch Plugin -->
+	<script src="/js/components/bs-switches.js"></script>
+
+	<script>
+		jQuery(".bt-switch").bootstrapSwitch();
+	</script>
+
+	<!-- Footer Scripts
+	============================================= -->
+	<script src="/js/functions.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="es">
+
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<meta name="Grupo-12" content="Karken Craft Brewery" />
+
+	<!-- Stylesheets
+	============================================= -->
+	<link
+		href="https://fonts.googleapis.com/css?family=Popppins:400,500,600,700|Open+Sans:400,600,700|Dancing+Script&display=swap"
+		rel="stylesheet" type="text/css" />
+	<link rel="stylesheet" href="/css/bootstrap.css" type="text/css" />
+	<link rel="stylesheet" href="/css/style.css" type="text/css" />
+	<link rel="stylesheet" href="/css/dark.css" type="text/css" />
+	<link rel="stylesheet" href="/css/swiper.css" type="text/css" />
+
+	<!-- CSS Components -->
+	<link rel="stylesheet" href="/css/components/bs-select.css" type="text/css" />
+	<link rel="stylesheet" href="/css/components/bs-switches.css" type="text/css" />
+	<link rel="stylesheet" href="/css/components/animate.css" type="text/css" />
+	<link rel="stylesheet" href="/css/components/magnific-popup.css" type="text/css" />
+
+	<!-- CSS Fonts Styles -->
+	<link rel="stylesheet" href="/css/fonts/font-icons.css" type="text/css" />
+		<link rel="stylesheet" href="/css/fonts/fonts.css" type="text/css" />
+
+	<!-- Template Specific Stylesheet -->
+	<link rel="stylesheet" href="/css/theme.css" type="text/css" />
+	<link rel="stylesheet" href="/css/custom.css" type="text/css" />
+
+	<!--Document Title
+	============================================= -->
+	<title>Kraken | Craft Brewery</title>
+
+</head>
+
+<body class="stretched">
+
+	<div class="body-overlay"></div>
+
+	<div id="side-panel" class="dark"
+		style="background: #101010 url('/images/bg/section-2.jpg') repeat center center;">
+
+		<!--Cart Panel
+		============================================= -->
+		<div class="">
+			<div class="d-flex justify-content-between">
+				<div class="ml-2 mt-2 d-inline-flex align-items-center">
+					<span class="font-weight-bold mr-2">CARRITO</span>
+					<span class="cart-counter">2</span>
+				</div>
+				<div id="side-panel-trigger-close" class="side-panel-trigger"><a href="#"><i class="icon-line2-close mr-2 mt-2"></i></a></div>
+			</div class="mb-5">
+			<hr>
+			<h3 class="font-secondary ml-2">Productos Seleccionados</h3>
+			<div class="d-flex flex-column bd-highlight mb-3">
+				<div class="cart-panel-product d-flex align-items-center">
+					<div class="w-25">
+						<img class="cart-img-animation" src="/images/product/bottle_02.png" width="25"/>
+					</div>
+					<div class="w-75 d-flex flex-column justify-content-center">
+						<span class="cart-panel-product-title"><a href="/single-product">Mild Lager Beer</a></span>
+						<span class="cart-panel-product-desc">ABV 6,5% | IBU 60 | OG 1.104</span>
+						<span class="cart-panel-product-price">2 x $500,00</span>
+					</div>
+				</div>
+				<div class="cart-panel-product d-flex align-items-center">
+					<div class="w-25">
+						<img class="cart-img-animation" src="/images/product/bottle_03.png" width="25"/>
+					</div>
+					<div class="w-75 d-flex flex-column justify-content-center">
+						<span class="cart-panel-product-title"><a href="/single-product">Mild Lager Beer</a></span>
+						<span class="cart-panel-product-desc">ABV 6,5% | IBU 60 | OG 1.104</span>
+						<span class="cart-panel-product-price">2 x $500,00</span>
+					</div>
+				</div>
+			</div>
+			<div class="d-flex flex-column justify-content-center cart-panel-footer w-100">
+				
+				<span class="cart-panel-total">Subtotal: $2.000,00</span>
+				<div class="d-flex">
+					<a href="/productCart" class="button text-center header-button button-rounded button-reveal w-100 tright">
+										<i class="icon-line-shopping-cart"></i><span>Carrito</span></a>
+					<a href="/checkout" class="button text-center header-button button-rounded button-reveal w-100 tright ">
+										<i class="icon-line-arrow-right"></i><span>Comprar</span></a>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Document Wrapper
+	============================================= -->
+	<div id="wrapper" class="clearfix">
+
+		<!-- Header
+		============================================= -->
+		<header id="header" class="dark" data-sticky-class="dark-color"
+			data-sticky-shrink-offset="0" data-mobile-sticky="true">
+
+			<!-- Top Header
+			============================================= -->
+			<div class="top-header">
+			<div class="d-flex justify-content-around">
+				<div class="p-2 mt-2 text-center">
+					<a href="#" class="top-header-buttom"><i class="icon-headphones-alt"></i> 011 444-3232</a>
+				</div>
+				<div class="p-2 mt-2 text-center">
+				</div>
+				<div class="p-2 mt-2 text-center">
+					<a href="#" class="social-icon si-small si-colored">
+						<i class="icon-facebook"></i>
+						<i class="icon-facebook"></i>
+					</a>
+					<a href="#" class="social-icon si-small si-colored ">
+						<i class="icon-twitter"></i>
+						<i class="icon-twitter"></i>
+					</a>
+					<a href="#" class="social-icon si-small si-colored ">
+						<i class="icon-instagram"></i>
+						<i class="icon-instagram"></i>
+					</a>
+				</div>
+			</div>
+			</div><!-- #top-header end -->
+
+			<div id="header-wrap">
+				<div class="container">
+					<div class="header-row">
+
+						<!-- Logo
+						============================================= -->
+						<div id="logo">
+							<a href="/" class="standard-logo" data-dark-logo="/images/logo/logo-dark.png"
+								data-sticky-logo="/images/logo/logo-sticky.png"><img src="/images/logo/logo.png"
+									alt="Kraken Logo"></a>
+							<a href="/" class="retina-logo" data-dark-logo="/images/logo/logo-dark@2x.png"
+								data-sticky-logo="/images/logo/logo-sticky@2x.png"><img src="/images/logo/logo@2x.png"
+									alt="Karken Logo"></a>
+						</div><!-- #logo end -->
+
+						<div class="header-misc">
+
+							<!-- #cart panel -->
+							<div id="side-panel-trigger" class="side-panel-trigger"><a href="#"><i
+										class="button button-small button-rounded button-reveal d-inline-flex tright font-weight-semibold icon-line-shopping-cart"></i></a></div>
+
+						</div>
+
+						<div id="primary-menu-trigger">
+							<svg class="svg-trigger" viewBox="0 0 100 100">
+								<path
+									d="m 30,33 h 40 c 3.722839,0 7.5,3.126468 7.5,8.578427 0,5.451959 -2.727029,8.421573 -7.5,8.421573 h -20">
+								</path>
+								<path d="m 30,50 h 40"></path>
+								<path
+									d="m 70,67 h -40 c 0,0 -7.5,-0.802118 -7.5,-8.365747 0,-7.563629 7.5,-8.634253 7.5,-8.634253 h 20">
+								</path>
+							</svg>
+						</div>
+
+						<!-- Primary Navigation
+						============================================= -->
+						<nav class="primary-menu">
+
+							<ul class="one-page-menu menu-container" data-easing="easeInOutExpo" data-speed="1250"
+								data-offset="60">
+								<li class="current menu-item"><a class="menu-link menu-link-space" href="/#slider" data-href="#slider">
+										<div>Inicio</div>
+									</a></li>
+								<li class="menu-item"><a class="menu-link menu-link-space" href="/#story" data-href="#story">
+										<div>Nosotros</div>
+									</a></li>
+								<li class="menu-item"><a class="menu-link menu-link-space" href="/#menu" data-href="#menu">
+										<div>Cervezas</div>
+									</a></li>
+								<li class="menu-item"><a class="menu-link menu-link-space" href="/#contact" data-href="#contact"
+										data-offset="20">
+										<div>Contacto</div>
+                                    </a></li>
+                                <li class="menu-item"><a class="menu-link menu-link-space" href="/store"
+										data-offset="20">
+										<div>Tienda</div>
+									</a></li>
+								<li class="menu-item"><a href="/login" class="button button-small header-button button-rounded button-reveal d-inline-flex tright ">
+									<i class="icon-line-arrow-right"></i><span>Ingresar</span></a></li>
+							</ul>
+							<ul class="menu-container mobile-primary-menu">
+								<li class="current menu-item"><a class="menu-link menu-link-space" href="/#slider" data-href="#slider">
+										<div>Inicio</div>
+									</a></li>
+								<li class="menu-item"><a class="menu-link menu-link-space" href="/#story" data-href="#story">
+										<div>Nosotros</div>
+									</a></li>
+								<li class="menu-item"><a class="menu-link menu-link-space" href="/#menu" data-href="#menu">
+										<div>Cervezas</div>
+									</a></li>
+								<li class="menu-item"><a class="menu-link menu-link-space" href="/#menu" data-href="#menu"
+										data-offset="20">
+										<div>Contacto</div>
+									</a></li>
+								<li class="menu-item"><a class="menu-link" href="/login" 
+										data-offset="20">
+										<div>Ingresar</div>
+									</a></li>
+							</ul>
+						</nav><!-- #primary-menu end -->
+
+					</div>
+				</div>
+			</div>
+			<div class="header-wrap-clone"></div>
+		</header><!-- #header end -->
+
+		
+		<!-- Page Title
+		============================================= -->
+		<section id="page-title" class="page-title-parallax page-title-dark" 
+		style="background-image: url('images/others/blog_promo_02-1120x720.jpg'); background-size: cover; padding: 50px 0;" 
+		data-bottom-top="background-position:0px 0px;" data-top-bottom="background-position:0px 0px;">
+
+			<div class="container clearfix">
+				<h1>LAGER GREEN BEER</h1>
+				<ol class="breadcrumb">
+					<li class="breadcrumb-item"><a href="/">Inicio</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Lager</li>
+                    <li class="breadcrumb-item active" aria-current="page">Lager Green Beer</li>
+				</ol>
+			</div>
+
+		</section><!-- #page-title end -->
+
+		
+
+		<!-- Content
+		============================================= -->
+		<section id="dark-content" class="dark noborder parallax pt-3">
+            
+            <div class="content-wrap pt-5">
+				<div class="container">
+
+					<div class="row my-5">
+						<!-- Product Gallery
+							============================================= -->
+						<div class="col-md-6">
+							<div id="section-gallery" class="mr-5">
+								<div class="fslider flex-thumb-grid grid-6" data-animation="fade" data-speed="900" data-pagi="true" data-thumbs="true">
+									<div class="flexslider">
+										<div class="slider-wrap">
+											<div class="slide" data-thumb="/images/others/01-1-550x550.jpg">
+												<img src="/images/others/01-1-550x550.jpg" alt="Image">
+												<div class="bg-overlay">
+													<div class="bg-overlay-content justify-content-start align-items-end">
+														<div class="h4 font-weight-light bg-dark br-5 color px-3 py-2">Craft Beer</div>
+													</div>
+												</div>
+											</div>
+											<div class="slide" data-thumb="/images/others/02-1-550x550.jpg">
+												<img src="/images/others/02-1-550x550.jpg" alt="Image">
+												<div class="bg-overlay">
+													<div class="bg-overlay-content justify-content-start align-items-end">
+														<div class="h4 font-weight-light bg-dark br-5 color px-3 py-2">Craft Beer</div>
+													</div>
+												</div>
+											</div>
+											<div class="slide" data-thumb="/images/others/03-1-550x550.jpg">
+												<img src="/images/others/03-1-550x550.jpg" alt="Image">
+												<div class="bg-overlay">
+													<div class="bg-overlay-content justify-content-start align-items-end">
+														<div class="h4 font-weight-light bg-dark br-5 color px-3 py-2">Craft Beer</div>
+													</div>
+												</div>
+											</div>
+											<div class="slide" data-thumb="/images/others/04-1-550x550.jpg">
+												<img src="/images/others/04-1-550x550.jpg" alt="Image">
+												<div class="bg-overlay">
+													<div class="bg-overlay-content justify-content-start align-items-end">
+														<div class="h4 font-weight-light bg-dark br-5 color px-3 py-2">Craft Beer</div>
+													</div>
+												</div>
+											</div>
+											<div class="slide" data-thumb="/images/others/05-1-550x550.jpg">
+												<img src="/images/others/05-1-550x550.jpg" alt="Image">
+												<div class="bg-overlay">
+													<div class="bg-overlay-content justify-content-start align-items-end">
+														<div class="h4 font-weight-light bg-dark br-5 color px-3 py-2">Craft Beer</div>
+													</div>
+												</div>
+											</div>
+											<div class="slide" data-thumb="/images/others/06-1-550x550.jpg">
+												<img src="/images/others/06-1-550x550.jpg" alt="Image">
+												<div class="bg-overlay">
+													<div class="bg-overlay-content justify-content-start align-items-end">
+														<div class="h4 font-weight-light bg-dark br-5 color px-3 py-2">Craft Beer</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<!-- Product Details
+							============================================= -->
+						<div class="col-md-6">
+							<div class="mb-4">
+								<h2 class="mb-0 h1 font-weight-semibold ls0">LAGER GREEN BEER</h2>
+								<h2 class="mb-0 font-weight-semibold h2 color ls0">$500,00</h2>
+								<small>ABV 6,5% | IBU 60 | OG 1.104</small>
+							</div>
+							
+							<div class="line line-sm my-3"></div>
+							<p>Esta Lager es la especialidad de la casa. Una estrella de intenso amargor con fragancia a lúpulos cítricos y frutales, que te van a llevar a otro planeta. Si hay vida ahí afuera, seguro va a querer una de estas.</p>
+							<div class="card bg-dark mt-5 shadow-sm dark">
+								<div class="card-body">
+									<h3 class="card-title">¡12% OFF comprando 12 o más!</h3>
+									<p>Válido para este producto y todos los de la categoría: LATAS. Podés combinar esta promoción con otros productos de la misma categoría.</p>
+									<img src="/images/checkout/playment_methods.png" class="ml-0" alt="Image">
+									<p>10% de descuento pagando con Efectivo retirando en la fábrica.</p>
+									<a href="#">VER MEDIOS DE PAGO</a>
+									<div class="line line-sm my-3"></div>
+									<div class="card-text d-flex justify-content-center align-items-center mb-2">
+										<div>
+											<div class="quantity">
+												<input type="button" value="-" class="minus">
+												<input type="text" name="quantity" value="1" class="qty" />
+												<input type="button" value="+" class="plus">
+											</div>
+										</div>
+										<div>
+											<a href="#" class="button button-rounded btn-block side-panel-trigger center">AGREGAR AL CARRITO</a>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<!-- Product Description
+							============================================= -->
+					<div class="row">
+						<div class="col-md-12 mt-5">
+							<div class="tabs clearfix" id="tabs">
+
+								<ul class="tab-nav clearfix">
+									<li><a href="#product-description">DESCRIPCION</a></li>
+									<li><a href="#product-comments">COMENTARIOS</a></li>
+								</ul>
+
+								<div class="tab-container">
+									<div class="tab-content clearfix" id="product-description">
+										<h3 class="mb-3">Detalles</h3>
+										<p>Cerveza tradicional de las granjas nórdicas, específicamente de la región de Voss. Tradicionalmente elaborada con malta pilsen (ocasionalmente una parte con trigo malteado), enebro y levaduras Kviek.</p>
+										<div class="line line-sm my-3"></div>
+										<h3 class="mb-3">Cervecería</h3>
+										<p>Cervecería gitana creada por Luis Torre y Diego Setti, dos dementes cerveceros de larga trayectoria que unieron fuerzas para traernos cervezas históricas y revivir técnicas un poco olvidadas por estas latitudes. Los separan más de 600 km, pero eso no impide que se reúnan para llevar a cabo sus creaciones. Con producciones súper limitadas, cada creación es diferente ya que no las repiten.</p>
+										<div class="line line-sm my-3"></div>
+										<h3 class="mb-3">Beerpedia</h3>
+										<p>Recomendaciones para disfrutar una cerveza Vossaøl:</p>
+										<ul class="ml-5">
+											<li> Platos: Excelente con comidas livianas: pollo, ensaladas, salmón o salchichas alemanas.</li>
+											<li>Quesos: Cheddar Vermont blanco y suave.</li>
+											<li>Postres: Postres livianos, mantecado de banana, fresas frescas con sabayón.</li>
+											<li>Temperatura: 4,5-7 °C.</li>
+											<li>Copa Pilsner</li>
+										</ul>
+										
+									</div>
+									<div class="tab-content clearfix" id="product-comments">
+										<!-- Comments
+										============================================= -->
+										<div id="comments" class="clearfix">
+
+											<h3 id="comments-title"><span>3</span> Comentarios</h3>
+
+											<!-- Comments List
+											============================================= -->
+											<ol class="commentlist clearfix">
+
+												<li class="comment even thread-even depth-1" id="li-comment-1">
+
+													<div id="comment-1" class="comment-wrap clearfix">
+														<div class="comment-meta">
+															<div class="comment-author vcard">
+																<span class="comment-avatar clearfix">
+																<img alt='Image' src='https://0.gravatar.com/avatar/ad516503a11cd5ca435acc9bb6523536?s=60' class='avatar avatar-60 photo avatar-default' height='60' width='60' /></span>
+															</div>
+														</div>
+														<div class="comment-content clearfix">
+															<div class="comment-author">Diego Lopez<span><a href="#" title="Permalink to this comment">Hace 15 días</a></span></div>
+															<p>Hola chicos me encanta esta birra, unicamente la estoy encontrando en su web. Gracias!!!</p>
+															<a class='comment-reply-link' href='#'><i class="icon-reply"></i></a>
+														</div>
+														<div class="clear"></div>
+													</div>
+
+													<ul class='children'>
+
+														<li class="comment byuser comment-author-_smcl_admin odd alt depth-2" id="li-comment-3">
+															<div id="comment-3" class="comment-wrap clearfix">
+																<div class="comment-meta">
+																	<div class="comment-author vcard">
+																		<span class="comment-avatar clearfix">
+																		<img alt='Image' src='/images/others/02-1-550x550.jpg' class='avatar avatar-40 photo' height='40' width='40' /></span>
+																	</div>
+																</div>
+																<div class="comment-content clearfix">
+																	<div class="comment-author"><a href='#' rel='external nofollow' class='url'>ArtisKraken</a><span><a href="#" title="Permalink to this comment">Hace 14 días</a></span></div>
+																	<p>Nos encanta tu comentario gracias!!</p>
+																	<a class='comment-reply-link' href='#'><i class="icon-reply"></i></a>
+																</div>
+																<div class="clear"></div>
+															</div>
+														</li>
+
+													</ul>
+
+												</li>
+
+												<li class="comment byuser comment-author-_smcl_admin even thread-odd thread-alt depth-1" id="li-comment-2">
+													<div id="comment-2" class="comment-wrap clearfix">
+														<div class="comment-meta">
+															<div class="comment-author vcard">
+																<span class="comment-avatar clearfix">
+																<img alt='Image' src='/images/others/02-1-550x550.jpg' class='avatar avatar-60 photo' height='60' width='60' /></span>
+															</div>
+														</div>
+														<div class="comment-content clearfix">
+															<div class="comment-author"><a href='https://themeforest.net/user/semicolonweb' rel='external nofollow' class='url'>ArtisKraken</a><span><a href="#" title="Permalink to this comment">Hace 7 días</a></span></div>
+															<p>Hay nuevos productos que te pueden interesar, no olvides visitar la seccion de Lager, nos vemos!!</p>
+															<a class='comment-reply-link' href='#'><i class="icon-reply"></i></a>
+														</div>
+														<div class="clear"></div>
+													</div>
+												</li>
+
+											</ol><!-- .commentlist end -->
+
+											<div class="clear"></div>
+
+											<!-- Comment Form
+											============================================= -->
+											<div id="respond">
+
+												<h3>Dejanos tu <span>Comentario</span></h3>
+
+												<form class="row" action="#" method="post" id="commentform">
+													<div class="col-md-4 form-group">
+														<label for="comment-form-author">*Nombre</label>
+														<input type="text" name="comment-form-author" id="comment-form-author" value="" size="22" tabindex="1" class="sm-form-control" />
+													</div>
+
+													<div class="col-md-4 form-group">
+														<label for="comment-form-email">*Email</label>
+														<input type="text" name="comment-form-email" id="comment-form-email" value="" size="22" tabindex="2" class="sm-form-control" />
+													</div>
+
+													<div class="col-md-4 form-group">
+														<label for="comment-form-tel">Teléfono</label>
+														<input type="tel" name="comment-form-tel" id="comment-form-tel" value="" size="22" tabindex="3" class="sm-form-control" />
+													</div>
+
+													<div class="w-100"></div>
+
+													<div class="col-12 form-group">
+														<label for="comment-form-comment">*Comentario</label>
+														<textarea name="comment-form-comment" cols="58" rows="7" tabindex="4" class="sm-form-control"></textarea>
+													</div>
+
+													<div class="col-12 form-group">
+														<button name="comment-form-submit" type="submit" id="comment-form-submit-button" tabindex="5" value="Submit" class="button button-3d m-0">Listo</button>
+													</div>
+												</form>
+
+											</div><!-- #respond end -->
+
+										</div><!-- #comments end -->
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+		</section><!-- #content end -->
+
+		<!-- Footer
+		============================================= -->
+		<footer id="footer" class="dark noborder parallax pt-3"
+			style="background-image: url('/images/bg/section-2.jpg');"
+			data-top-bottom="background-position:100% -300px" data-bottom-top="background-position: 100% 300px">
+			<div class="container">
+
+				<!-- Footer Widgets
+				============================================= -->
+				<div class="footer-widgets-wrap">
+
+					<div class="row col-mb-50 justify-content-between">
+
+						<div class="col-lg-5 text-center text-lg-left">
+							<img src="/images/logo/logo-footer.png" alt="Image" height="120">
+							
+						</div>
+
+						<div class="col-lg-7">
+							<div class="row col-mb-30">
+								<div class="col-6 col-lg-4">
+									<div class="widget widget_links widget-li-noicon">
+										<h4>Sevicios</h4>
+										<ul>
+											<li><a href="#">Políticas de Privacidad</a></li>
+											<li><a href="#">Términos y Condiciones </a></li>
+											<li><a href="#">Sobre Nosotros</a></li>
+										</ul>
+									</div>
+								</div>
+								<div class="col-6 col-lg-4">
+									<div class="widget widget_links widget-li-noicon">
+										<h4>Contacto</h4>
+										<ul>
+											<li><a href="/contact">Contacto</a></li>
+											<li><a href="#">Ventas</a></li>
+											<li><a href="#">Post-Venta</a></li>
+										</ul>
+									</div>
+								</div>
+								<div class="col-6 col-lg-4">
+									<div class="widget widget_links widget-li-noicon">
+										<h4>Tiendas</h4>
+										<ul>
+											<li><a href="#">CABA</a></li>
+											<li><a href="#">Córdoba</a></li>
+											<li><a href="#">Tucumán</a></li>
+										</ul>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</div><!-- .footer-widgets-wrap end -->
+			</div>
+
+			<!-- Copyrights
+			============================================= -->
+			<div id="copyrights">
+				<div class="container">
+
+					<div class="row col-mb-30">
+						<div class="col-md-6 text-center text-md-left">
+							© 2020 ArtisKraken | Power by Node JS
+						</div>
+
+						<div class="col-md-6 text-center text-md-right">
+							<div class="d-flex justify-content-center justify-content-md-end">
+								<a href="#" class="social-icon si-small nobottommargin si-facebook">
+									<i class="icon-facebook"></i>
+									<i class="icon-facebook"></i>
+								</a>
+
+								<a href="#" class="social-icon si-small nobottommargin si-twitter">
+									<i class="icon-twitter"></i>
+									<i class="icon-twitter"></i>
+								</a>
+
+								<a href="#" class="social-icon si-small nobottommargin si-instagram">
+									<i class="icon-instagram"></i>
+									<i class="icon-instagram"></i>
+								</a>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div><!-- #copyrights end -->
+		</footer><!-- #footer end -->
+
+	</div><!-- #wrapper end -->
+
+	<!-- Go To Top
+	============================================= -->
+	<div id="gotoTop" class="icon-angle-up"></div>
+
+	<!-- JavaScripts
+	============================================= -->
+	<script src="/js/jquery.js"></script>
+	<script src="/js/plugins.min.js"></script>
+	<script src="/js/hover-animate.js"></script>
+
+	<!-- Bootstrap Select Plugin -->
+	<script src="/js/components/bs-select.js"></script>
+
+	<!-- Bootstrap Switch Plugin -->
+	<script src="/js/components/bs-switches.js"></script>
+
+	<script>
+		jQuery(".bt-switch").bootstrapSwitch();
+	</script>
+
+	<!-- Footer Scripts
+	============================================= -->
+	<script src="/js/functions.js"></script>
+
+</body>
+
+</html>

@@ -187,18 +187,21 @@
 /* ----------------------------------------------------------------
 	Register Page
 -----------------------------------------------------------------*/
+.bg-img-register{
+  background-image: url("/images/register/beer-bg2.jpg");
+  background-size: 100%;
+}
 
 #register-boxes{
 	display:flex;
 	justify-content: center;
 	flex-direction: row;
-	align-items: center;
 	flex-wrap: wrap;
 }
 
 #card-one{
 	display: block;
-	background-color: #141313 !important;
+	background-color: #101010 !important;
 	width:450px;
 	border-radius: 15px;
 	height: auto;
@@ -207,7 +210,7 @@
 
 .card.form.b{
 	display: flex;
-	background-color: #141313 !important;
+	background-color: #101010 !important;
 	width: 430px;
 	border-radius: 15px;
 	height: fit-content;
@@ -218,8 +221,8 @@
 #p-card-two{
 	display: block;
     margin: 0px 25px;
-	margin-top: -18px;
-	margin-bottom: 2px;
+    margin-top: -27px;
+    margin-bottom: 3px;
     text-align: justify;
     color: rgb(199, 184, 184);
     font-size: 8pt;
@@ -227,18 +230,51 @@
 .input-group-prepend-s span{
 	display: block;
 	width: 47px;
-	background-color: darkgoldenrod;
-	color: rgb(0, 0, 0);
+	background-color:#805f10 !important;
+	color: rgb(0, 0, 0) !important;
 	border:0 !important;
 	text-align: center;
 	height: 38px;
-	border-radius: 2px;
+  border-radius: 19px;
+  margin-right: 4px;
 }
+
+.border-soft{
+  background-color: rgba(0,0,0,0.2);
+  border-color: rgba(255,255,255,0.15);
+}
+
+.dark .form-control:not(.not-dark), .dark .sm-form-control:not(.not-dark) {
+  color: #805f10 !important;
+  background-color: rgba(0,0,0,0.2);
+  border-color: rgba(255,255,255,0.15);
+}
+
 #reg-title{
 	display: flex;
 	justify-content: center;
 	border-bottom: 2px solid darkgoldenrod;
-	color: white;
+  color: white;
+  font-size:17px;
+  font-weight: 500;
+}
+
+.bord-b{
+  border-bottom: 2px solid rgb(199, 184, 184);;
+}
+
+.darkgoldenrod{
+  color: darkgoldenrod!important;
+  font-weight: bold;
+}
+
+.form-control{
+  border-radius: 40px !important;
+}
+
+#select-number{
+  border-radius: 19px;
+  margin-right: 2px;
 }
 
 #reg-list{
@@ -249,9 +285,10 @@
 }
 
 .gold{
-	color:darkgoldenrod;
+	color:#805f10 !important;
 	font-weight: bold !important;
 }
+
 
 .twitter{
 	background-color: #00ACEE;
@@ -270,6 +307,16 @@
 .c-white{
 	color:white;
 }
+
+.c-grey{
+  color: rgb(199, 184, 184);
+  font-weight: bold;
+}
+
+p{
+  margin-bottom: 20px;
+}
+
 
 @media (max-width:1072px){
 	.card.form.b{

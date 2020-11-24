@@ -48,3 +48,6 @@ app.all("/story", (req, res) => {
     res.sendFile(path.resolve(__dirname, "view/story.html"));
 });
 
+app.all("/forgot", (req, res) => {
+    res.sendFile(path.resolve(__dirname, "view/forgot.html"));
+});

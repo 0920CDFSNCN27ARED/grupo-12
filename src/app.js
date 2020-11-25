@@ -20,6 +20,10 @@ app.all('/register', (req, res) => {
     res.sendFile(path.resolve(__dirname, 'view/register.html'));
 });
 
+app.all("/register/confirm", (req, res) => {
+    res.sendFile(path.resolve(__dirname, "view/confirmation.html"));
+});
+
 app.all('/productDetail', (req, res) => {
     res.sendFile(path.resolve(__dirname, 'view/productDetail.html'));
 });

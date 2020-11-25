@@ -51,3 +51,14 @@ app.all("/story", (req, res) => {
 app.all("/forgot", (req, res) => {
     res.sendFile(path.resolve(__dirname, "view/forgot.html"));
 });
+
+app.get("/productos/:id", (req, res) => {
+    res.send("bienvenidos al detalle del producto" + " "+ req.params.id)
+})
+
+app.get("/productos/:idProductos/comentario/:idComentario?", (req, res) => {
+    if(req.params.idComentario == undefined){
+        res.send("bienvenido a los comentarios de mi producto" + " "+req.params.idProductos )
+ }else
+    res.send("bienvenido a los comentarios de mi producto" + " "+req.params.idProductos + "y estas enfocado en comentario" + req.params.idComentario)
+})

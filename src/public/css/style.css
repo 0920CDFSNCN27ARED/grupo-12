@@ -8018,6 +8018,12 @@ body:not(.device-touch) .entry-link {
 	line-height: 1;
 }
 
+.comment-delete-link {
+	position: absolute;
+    top: 4px;
+    right: 4px;
+}
+
 .review-comment-ratings {
 	width: auto;
 	color: #333;

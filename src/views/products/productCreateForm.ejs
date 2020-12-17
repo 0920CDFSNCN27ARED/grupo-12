@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="es">
+
+	<head>
+		<%- include('../layout/head', { title:"Crear Producto" }) %>
+		<link rel="stylesheet" href="/css/components/bs-filestyle.css" type="text/css" />
+		<link rel="stylesheet" href="/css/components/ion.rangeslider.css" type="text/css" />
+	</head>
+
+	<body class="stretched">
+
+		<!--Cart Panel -->
+		<%- include('../layout/panelCart') %>
+
+		<!-- Header -->
+		<header id="header" class="dark" data-sticky-class="dark-color" data-sticky-shrink-offset="0"
+			data-mobile-sticky="true">
+			<%- include('../layout/header') %>
+		</header>
+
+		<!-- Page Title -->
+		<section id="page-title" class="checkout-page-title page-title-parallax page-title-dark"
+			data-bottom-top="background-position:0px 0px;" data-top-bottom="background-position:0px 0px;">
+			<%- include('../pages/pageTitle' , { title:"Crear Producto", page:"Crear Producto" }) %>
+		</section>
+
+		<!-- Content -->
+		<section id="dark-content" class="dark noborder parallax pt-3">
+			<div class="content-wrap">
+				<div class="container clearfix">
+
+					<% if(typeof errors != 'undefined') { %>
+						<div class="col-12">
+							<ul>
+								<% errors.forEach(error => { %>
+								<li class="text-danger"><%= error.msg %></li>
+								<% });%>
+							</ul>
+						</div>
+					<% } %>
+
+					<div class="col-lg-12">
+						<form action="/products/create" method="POST" enctype="multipart/form-data">
+							<div class="row">
+								<div class="col-6 form-group">
+									<label for="name">Nombre de Producto:</label>
+									<input type="text" name="name" id="name" class="form-control required" value="" placeholder="Cerveza IPA">
+								</div>
+								<div class="col-6 form-group">
+									<label for="brewery">Cervería de Origen:</label>
+									<input type="text" name="brewery" id="brewery" class="form-control" value="" placeholder="Quién fabrica el producto...">
+								</div>
+								<div class="col-6 form-group">
+									<label for="price">Precio:</label>
+									<input type="text" name="price" id="price" class="form-control required" value="" placeholder="Ingrese un valor">
+								</div>
+								<div class="col-6 form-group">
+									<label for="discount">Descuento:</label>
+									<input type="text" name="discount" id="discount" class="form-control required" value="" placeholder="Ingrese un valor">
+								</div>
+								<div class="col-12 form-group">
+									<label for="description">Descripción Corta:</label>
+									<input type="text" name="description" id="description" class="form-control required" value="" placeholder="Describa brevemente el producto...">
+								</div>
+								<div class="col-6 form-group">
+									<label for="type">Tipo:</label>
+									<select class="form-control" name="type" id="type">
+										<option selected disabled >Seleccione una opción</option>
+										<option value="lager">Lager</option>
+										<option value="ale">Ale</option>
+									</select>
+								</div>
+								<div class="col-6 form-group">
+									<label for="category">Categoría:</label>
+									<select class="form-control" name="category" id="category">
+										<option selected disabled >Seleccione una opción</option>
+										<option value="stout">Stout</option>
+										<option value="pilsen">Pilsen</option>
+										<option value="porter">Porter</option>
+										<option value="pale-ale">Pale Ale</option>
+										<option value="german-bock">German Bock</option>
+										<option value="apa">Apa</option>
+										<option value="ipa">Ipa</option>
+										<option value="bunkel">Bunkel</option>
+										<option value="american-lager">American Lager</option>
+									</select>
+								</div>
+								
+								
+								<div class="col-4 form-group">
+									<label for="abv" class="mb-3">ABV (% DE ALCOHOL):</label><br>
+									<input id="abv" name="abv" class="abv required input-range-slider" />
+								</div>
+								<div class="col-4 form-group">
+									<label for="ibu" class="mb-3">IBU (AMARGOR):</label>
+									<input name="ibu" id="ibu" class="ibu required input-range-slider" />
+								</div>
+								<div class="col-4 form-group">
+									<label for="og" class="mb-3">OG (Gravedad Original):</label>
+									<input name="og" id="og" class="og required input-range-slider" />
+								</div>
+
+								<div class="col-6 form-group mt-3">
+									<label for="images">Imagen Producto:</label>
+									<small>Suba la imagen principal del producto</small>
+									<input type="file" id="avatar" name="avatar" class=" form-control" data-show-preview="true" />
+								</div>
+
+								<div class="col-6 form-group mt-3">
+									<label for="images">Galería:</label>
+									<small>Suba 3 hasta imágenes</small>
+									<input type="file" multiple id="gallery" name="gallery" class=" form-control" data-show-preview="true" />
+								</div>
+								<div class="row">
+									<div class="col-12">
+									<div style="max-height: 5rem; max-width: 5rem;" class="preview-images d-flex flex-row ml-2 mt-5"></div>
+									</div>
+								</div>
+								<div class="col-12 form-group mt-3">
+									<label for="details">Detalles:</label>
+									<textarea name="details" id="details" class="form-control" placeholder="Descripción amplia del producto" rows="4"></textarea>
+								</div>
+								<div class="col-12">
+									<button type="submit" class="btn btn-secondary">Crear Producto</button>
+									<a href="/store" class="btn btn-outline-secondary">Cancelar</a>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</section><!-- #content end -->
+
+		<!-- Footer -->
+		<%- include('../layout/footer') %>
+		<script src="/js/components/rangeslider.min.js"></script>
+		<script src="/js/components/bs-filestyle.js"></script>
+		<script>
+			jQuery(document).ready( function(){
+				
+				let abv = $(".abv");
+				abv.ionRangeSlider({
+				 	prefix: "%",
+					min: 0.0,
+					max: 15,
+					from: 0,
+					step: 0.1,
+					max_postfix: "+"
+				});
+
+				let ibu = $(".ibu");
+				ibu.ionRangeSlider({
+				 	prefix: "",
+					min: 0,
+					max: 100,
+					from: 0,
+					step: 0.5,
+					max_postfix: "+"
+				});
+
+				let og = $(".og");
+				og.ionRangeSlider({
+				 	prefix: "",
+					min: 1000,
+					max: 1200,
+					from: 1000,
+					step: 10,
+					max_postfix: "+"
+				});
+
+				$("#avatar").fileinput({
+					browseClass: "btn btn-secondary",
+					browseIcon: "<i class='icon-search'></i>",
+					removeClass: "btn btn-danger",
+					removeLabel: "",
+					removeIcon: "<i class='icon-trash-alt1'></i>",
+					showUpload: false
+				});
+
+				$("#gallery").fileinput({
+					browseClass: "btn btn-secondary",
+					browseIcon: "<i class='icon-search'></i>",
+					removeClass: "btn btn-danger",
+					removeLabel: "",
+					removeIcon: "<i class='icon-trash-alt1'></i>",
+					showUpload: false
+				});
+			})
+		</script>
+	</body>
+	
+</html>

@@ -1,0 +1,41 @@
+<article class="portfolio-item col-12 col-sm-6 col-md-3 <%= product.category %>">
+    <div class="grid-inner">
+        <div class="portfolio-image br-5">
+            <a href="#">
+                <img src="/images/products/<%= product.images.avatar ? product.images.avatar[0].filename : "without-image.png" %>" alt="<%= product.name %>">
+            </a>
+            <!-- Overlay: Start -->
+            <div class="bg-overlay">
+                <div class="bg-overlay-content dark" data-hover-animate="fadeIn">
+                    <a href="/images/products/<%= product.images.avatar ? product.images.avatar[0].filename : "without-image.png" %>" class="overlay-trigger-icon bg-light text-dark"
+                        data-hover-animate="fadeInDownSmall" data-hover-animate-out="fadeOutUpSmall"
+                        data-hover-speed="350" data-lightbox="image" title="<%= product.name %>"><i
+                            class="icon-line-search"></i></a>
+                    <a href="/products/<%= product.id %>/productDetails" class="overlay-trigger-icon bg-light text-dark portfolio-ajax-trigger"
+                        data-hover-animate="fadeInDownSmall" data-hover-animate-out="fadeOutUpSmall"
+                        data-hover-speed="350"><i class="icon-line-eye"></i></a>
+                    <a href="#"
+                        class="overlay-trigger-icon bg-light text-dark portfolio-ajax-trigger side-panel-trigger"
+                        data-hover-animate="fadeInDownSmall" data-hover-animate-out="fadeOutUpSmall"
+                        data-hover-speed="350"><i class="icon-line-shopping-cart"></i></a>
+                </div>
+                <div class="bg-overlay-bg dark" data-hover-animate="fadeIn"></div>
+            </div>
+            <!-- Overlay: End -->
+        </div>
+        <div class="portfolio-desc">
+            <h3 class="text-center text-uppercase"><a href="/products/<%= product.id %>/productDetails" class="white-color"><%= product.name %></a></h3>
+            <div class="line line-sm my-3"></div>
+            <div class="d-flex mt-2 justify-content-center align-items-center product-price font-weight-bold">
+                <del class="mr-2">$<%= product.price %></del> 
+                <h3 class="color">$<%= product.price - product.discount %></h3>
+            </div>
+            <span class="text-center text-uppercase p-1">Categoria: <%= product.category %></span>
+            <div class="d-flex mt-2 justify-content-center">
+                <span class="white-color mr-2">ABV: <%= product.abv %>%</span>
+                <span class="white-color mr-2">IBU: <%= product.ibu %></span>
+                <span class="white-color">OG: <%= product.og %></span>
+            </div>
+        </div>
+    </div>
+</article>

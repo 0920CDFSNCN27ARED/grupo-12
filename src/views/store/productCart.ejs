@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="es">
+
+<head>
+	<%- include('../layout/head', { title:"Carrito" }) %>
+</head>
+
+<body class="stretched">
+
+	<!--Cart Panel -->
+	<%- include('../layout/panelCart') %>
+
+	<!-- Header -->
+	<header id="header" class="dark" data-sticky-class="dark-color" data-sticky-shrink-offset="0"
+		data-mobile-sticky="true">
+		<%- include('../layout/header') %>
+	</header>
+
+	<!-- Page Title -->
+	<section id="page-title" class="cart-page-title page-title-parallax page-title-dark"
+		data-bottom-top="background-position:0px 0px;" data-top-bottom="background-position:0px 0px;">
+		<%- include('../pages/pageTitle' , { title: "Productos Seleccionados", page: 'Carrito' }) %>
+	</section>
+
+		<!-- Content -->
+		<section id="dark-content" class="dark noborder">
+            <div class="content-wrap">
+				<div class="container">
+
+					<div class="table-responsive mb-5">
+						<table class="table cart">
+							<thead>
+								<tr>
+									<th class="cart-product-remove">&nbsp;</th>
+									<th class="cart-product-thumbnail">&nbsp;</th>
+									<th class="cart-product-name"><h4 class="mb-0">PRODUCTO</h4></th>
+									<th class="cart-product-price"><h4 class="mb-0">PRECIO</h4></th>
+									<th class="cart-product-quantity"><h4 class="mb-0">CANTIDAD</h4></th>
+									<th class="cart-product-subtotal"><h4 class="mb-0">TOTAL</h4></th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr class="cart_item">
+									<td class="cart-product-remove">
+										<a href="#" class="remove" title="Remove this item"><i class="icon-trash"></i></a>
+									</td>
+
+									<td class="cart-product-thumbnail">
+										<a href="#"><img class="w-50" src="/images/product/classic_02.png" alt="beer_img"></a>
+									</td>
+
+									<td class="cart-product-name">
+										<a href="/single-product">LAGER GREEN BEER</a>
+									</td>
+
+									<td class="cart-product-price">
+										<span class="amount">$500,00</span>
+									</td>
+
+									<td class="cart-product-quantity">
+										<div class="quantity">
+											<input type="button" value="-" class="minus">
+											<input type="text" name="quantity" value="1" class="qty" />
+											<input type="button" value="+" class="plus">
+										</div>
+									</td>
+
+									<td class="cart-product-subtotal">
+										<span class="amount">$500,00</span>
+									</td>
+								</tr>
+								<tr class="cart_item">
+									<td class="cart-product-remove">
+										<a href="#" class="remove" title="Remove this item"><i class="icon-trash"></i></a>
+									</td>
+
+									<td class="cart-product-thumbnail">
+										<a href="#"><img class="w-50" src="/images/product/classic_03.png" alt="beer_img"></a>
+									</td>
+
+									<td class="cart-product-name">
+										<a href="/single-product">LAGER GREEN BEER</a>
+									</td>
+
+									<td class="cart-product-price">
+										<span class="amount">$500,00</span>
+									</td>
+
+									<td class="cart-product-quantity">
+										<div class="quantity">
+											<input type="button" value="-" class="minus">
+											<input type="text" name="quantity" value="1" class="qty" />
+											<input type="button" value="+" class="plus">
+										</div>
+									</td>
+
+									<td class="cart-product-subtotal">
+										<span class="amount">$500,00</span>
+									</td>
+								</tr>
+								<tr class="cart_item">
+									<td class="cart-product-remove">
+										<a href="#" class="remove" title="Remove this item"><i class="icon-trash"></i></a>
+									</td>
+
+									<td class="cart-product-thumbnail">
+										<a href="#"><img class="w-50" src="/images/product/classic_01.png" alt="beer_img"></a>
+									</td>
+
+									<td class="cart-product-name">
+										<a href="/single-product">LAGER GREEN BEER</a>
+									</td>
+
+									<td class="cart-product-price">
+										<span class="amount">$500,00</span>
+									</td>
+
+									<td class="cart-product-quantity">
+										<div class="quantity">
+											<input type="button" value="-" class="minus">
+											<input type="text" name="quantity" value="1" class="qty" />
+											<input type="button" value="+" class="plus">
+										</div>
+									</td>
+
+									<td class="cart-product-subtotal">
+										<span class="amount">$500,00</span>
+									</td>
+								</tr>
+								<tr class="cart_item">
+									<td colspan="6">
+										<div class="row">
+											<div class="col-lg-4 col-4 p-0">
+												<div class="row">
+													<div class="col-lg-8 col-7">
+														<input type="text" value="" class="sm-form-control" placeholder="Ingresa tu código.." />
+													</div>
+													<div class="col-lg-4 col-5">
+														<a href="#" class="button header-button mt-0 button-rounded button-reveal d-inline-flex">
+															<i class="icon-line-gift"></i><span>Aplicar Descuento</span></a>
+													</div>
+												</div>
+											</div>
+											<div class="col-lg-8 col-8 p-0">
+												<a href="/checkout" class="button header-button mt-0 button-rounded button-reveal d-inline-flex float-right">
+													<i class="icon-money-check"></i><span>Finalizar Compra</span></a>
+												<a href="#" class="button header-button mt-0 button-rounded button-reveal d-inline-flex float-right">
+													<i class="icon-line-reload"></i><span>Actualizar Carrito</span></a>
+											</div>
+										</div>
+									</td>
+								</tr>
+							</tbody>
+
+						</table>
+					</div>
+
+					<div class="row col-mb-30">
+						<div class="col-lg-6">
+							<h4>CALCULAR ENVIO</h4>
+							<form class="row">
+								<div class="col-12 form-group">
+									<select class="sm-form-control">
+										<option value="AR" selected='selected'>Argentina</option>
+										<option value="BR">Brasil</option>
+										<option value="CL">Chile</option>
+										<option value="CO">Colombia</option>
+									</select>
+								</div>
+								<div class="col-6 form-group">
+									<input type="text" class="sm-form-control" placeholder="Provincia / Ciudad" />
+								</div>
+
+								<div class="col-6 form-group">
+									<input type="text" class="sm-form-control" placeholder="Código Postal" />
+								</div>
+								<div class="col-12 form-group">
+									<a href="#" class="button header-button mt-0 button-rounded button-reveal d-inline-flex">
+										<i class="icon-shipping-fast"></i><span>Aplicar Descuento</span></a>
+								</div>
+							</form>
+						</div>
+
+						<div class="col-lg-6">
+							<h4>TOTAL</h4>
+
+							<div class="table-responsive">
+								<table class="table cart">
+									<tbody>
+										<tr class="cart_item">
+											<td class="cart-product-name">
+												<strong>Subtotal</strong>
+											</td>
+
+											<td class="cart-product-name">
+												<span class="amount">$1.500,00</span>
+											</td>
+										</tr>
+										<tr class="cart_item">
+											<td class="cart-product-name">
+												<strong>Envío</strong>
+											</td>
+
+											<td class="cart-product-name">
+												<span class="amount">Gratuito</span>
+											</td>
+										</tr>
+										<tr class="cart_item">
+											<td class="cart-product-name">
+												<strong>Total</strong>
+											</td>
+
+											<td class="cart-product-name">
+												<span class="amount color lead"><strong>$1.500,00</strong></span>
+											</td>
+										</tr>
+									</tbody>
+
+								</table>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</section><!-- #content end -->
+
+	<!-- Footer -->
+	<%- include('../layout/footer') %>
+	
+</body>
+	
+</html>

@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="es">
+
+<head>
+	<%- include('../layout/head', { title:"Detalles del Producto" }) %>
+</head>
+
+<body class="stretched">
+
+	<!--Cart Panel -->
+	<%- include('../layout/panelCart') %>
+
+	<!-- Header -->
+	<header id="header" class="dark" data-sticky-class="dark-color" data-sticky-shrink-offset="0"
+		data-mobile-sticky="true">
+		<%- include('../layout/header') %>
+	</header>
+
+	<!-- Page Title -->
+	<section id="page-title" class="product-page-title page-title-parallax page-title-dark"
+		data-bottom-top="background-position:0px 0px;" data-top-bottom="background-position:0px 0px;">
+		<%- include('../pages/pageTitle' , { title: product.name, page:"Detalles del Producto" }) %>
+	</section>
+
+		<!-- Content -->
+		<section id="dark-content" class="dark noborder parallax pt-3">
+            
+            <div class="content-wrap pt-5">
+				<div class="container">
+
+					<div class="row my-5">
+						<!-- Product Gallery -->
+						<div class="col-md-6">
+							<div id="section-gallery" class="mr-5">
+								<div class="fslider flex-thumb-grid grid-6" data-animation="fade" data-speed="900" data-pagi="true" data-thumbs="true">
+									<div class="flexslider">
+										<div class="slider-wrap">
+											<%- include('productGallery', {image: avatar, category: product.category}) %>
+											<% if(gallery){ %>
+												<% gallery.forEach((galleryItem, index) => { %>
+													<% console.log(galleryItem) %> 
+													<%- include('productGallery', {image: galleryItem.filename, category: product.category}) %>
+												<% }); %> 
+											<% } else { null} %> 
+											
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<!-- Product Details -->
+						<div class="col-md-6">
+							<div class="mb-4">
+								<h2 class="mb-0 h1 font-weight-semibold text-uppercase ls0"><%= product.name %> </h2>
+								<h2 class="mb-0 font-weight-semibold h2 color ls0">
+									<del class="mr-2 white-color"><%= product.discount > 0 ? "$" + product.price : null %></del> 
+									$<%= product.price - product.discount %> 
+								</h2>
+								<small>ABV <%= product.abv %> % | IBU <%= product.ibu %> | OG <%= product.og %></small>
+							</div>
+							
+							<div class="line line-sm my-3"></div>
+							<p><%= product.description %></p>
+							<div class="card bg-dark mt-5 shadow-sm dark">
+								<div class="card-body">
+									<h3 class="card-title">¡12% OFF comprando 12 o más!</h3>
+									<p>Válido para este producto y todos los de la categoría: LATAS. Podés combinar esta promoción con otros productos de la misma categoría.</p>
+									<img src="/images/checkout/playment_methods.png" class="ml-0" alt="Image">
+									<p>10% de descuento pagando con Efectivo retirando en la fábrica.</p>
+									<a href="#">VER MEDIOS DE PAGO</a>
+									<div class="line line-sm my-3"></div>
+									<div class="card-text d-flex justify-content-center align-items-center mb-2">
+										<div>
+											<div class="quantity">
+												<input type="button" value="-" class="minus">
+												<input type="text" name="quantity" value="1" class="qty" />
+												<input type="button" value="+" class="plus">
+											</div>
+										</div>
+										<div>
+											<a href="#" class="button button-rounded btn-block side-panel-trigger center">AGREGAR AL CARRITO</a>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<!-- Product Description -->
+					<div class="row">
+						<div class="col-md-12 mt-5">
+							<div class="tabs clearfix" id="tabs">
+
+								<ul class="tab-nav clearfix">
+									<li><a href="#product-description" class="text-uppercase">Descripción</a></li>
+									<li><a href="#product-comments" class="text-uppercase">Comentarios</a></li>
+									<li><a href="#admin" class="text-uppercase">Administrar Producto</a></li>
+								</ul>
+
+								<div class="tab-container">
+									<div class="tab-content clearfix" id="product-description">
+										<h3 class="mb-3">Detalles</h3>
+										<p><%= product.details %></p>
+										<div class="line line-sm my-3"></div>
+										<h3 class="mb-3">Cervecería</h3>
+										<p><%= product.brewery %></p>
+										<div class="line line-sm my-3"></div>
+									</div>
+									
+									<!-- Comments -->
+									<div class="tab-content clearfix" id="product-comments">
+										<div>
+											<%- include('productComments', {comments}) %>
+											
+											<!-- Comment Form -->
+											<h3>Dejanos tu <span>Comentario</span></h3>
+											<% if(typeof errors != 'undefined') { %>
+												<div class="col-12">
+													<ul>
+														<% errors.forEach(error => { %>
+														<li class="text-danger"><%= error.msg %></li>
+														<% });%>
+													</ul>
+												</div>
+											<% } %>
+											<form action="/products/<%= product.id %>/productDetails" method="POST">
+												<div class="row">
+													<div class="col-md-4 form-group" lang="es">
+														<label for="author">*Nombre</label>
+														<input type="text" name="author" id="author" value="" placeholder="Ingresa tu nombre" class="sm-form-control" lang="es" required/>
+													</div>
+
+													<div class="col-md-4 form-group">
+														<label for="email">*Email</label>
+														<input type="email" name="email" id="email" value="" placeholder="Ingresa tu email" class="sm-form-control" lang="es" required/>
+													</div>
+
+													<div class="col-md-4 form-group">
+														<label for="tel">Teléfono</label>
+														<input type="number" name="tel" id="tel" value="" placeholder="Ingresa tu teléfono" class="sm-form-control"/>
+													</div>
+
+													<div class="w-100"></div>
+
+													<div class="col-12 form-group">
+														<label for="comment">*Comentario</label>
+														<textarea name="comment" cols="58" rows="4" placeholder="Ingresa un comentario..." class="sm-form-control" required></textarea>
+													</div>
+
+													<div class="col-12 form-group">
+														<button type="submit" class="button button-3d m-0">Listo</button>
+													</div>
+												</div>
+											</form>
+										</div>
+									</div>
+									<div class="tab-content clearfix" id="admin">
+										<div class="row mt-3">
+											<div class="col-8">
+												<%- include('productCommentsAdmin', {comments}) %>
+											</div>
+											<div class="col-4">
+												<h3 class="ml-2">Opciones</h3>
+												<div class="col-12 mb-2">
+													<a href="/products/<%= product.id %>/edit" class="btn btn-warning btn-block center">EDITAR PRODUCTO</a>
+												</div>
+												<div class="col-12 mb-2">
+													<a href="/products/create" class="btn btn-secondary btn-block center">CREAR PRODUCTO</a>
+												</div>
+												<div class="col-12 mb-2">
+													<form action="/products/delete/<%= product.id %>?_method=DELETE" method="POST">
+														<button type="submit" class="btn btn-block center btn-danger">ELIMINAR PRODUCTO</button>
+													</form>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+		</section><!-- #content end -->
+
+	<!-- Footer -->
+	<%- include('../layout/footer') %>
+	
+</body>
+
+</html>

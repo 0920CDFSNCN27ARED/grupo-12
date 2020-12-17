@@ -51,6 +51,60 @@
 }
 
 /* ----------------------------------------------------------------
+	Background Sections styles
+-----------------------------------------------------------------*/
+
+.story-page-section {
+    background: linear-gradient(to bottom, #101010, transparent, #101010), url('/images/bg/story-bg.jpg') no-repeat center top / cover;
+}
+
+.products-page-section {
+    background: linear-gradient(to bottom, #101010, rgba(16,16,16,0.3),#101010), url('/images/bg/section-5.jpg') no-repeat center top / cover;
+}
+
+.delivery-page-section {
+    padding: 60px 0 120px; 
+    background: linear-gradient(to bottom, #101010, transparent, #101010), url('/images/bg/story-bg.jpg') no-repeat center top / cover;;
+}
+
+.contact-page-section {
+    background: linear-gradient(to bottom, #101010, rgba(16,16,16,0.3),#101010), url('/images/bg/section-4.jpg') no-repeat center top / cover;
+}
+
+.checkout-page-title {
+    background-image: url('/images/sliders/slider-03.jpg'); 
+    background-size: cover; 
+    padding: 50px 0;
+}
+
+.product-page-title {
+    background-image: url('/images/sliders/slider-03.jpg'); 
+    background-size: cover; 
+    padding: 50px 0;
+}
+
+.cart-page-title {
+    background-image: url('/images/sliders/slider-01.jpg'); 
+    background-size: cover; padding: 50px 0;
+}
+
+.store-page-title {
+    background-image: url('/images/others/blog_promo_01-1120x720.jpg'); 
+    background-size: cover; 
+    padding: 120px 0!important;
+}
+
+.login-page-section {
+    background: url('/images/sliders/slider-bg.jpg') center center no-repeat; 
+    background-size: cover;
+}
+
+.register-page-section {
+    background: linear-gradient(to bottom, #101010, rgba(16,16,16,0.3),#101010), url('/images/bg/section-5.jpg') no-repeat center top / cover;
+}
+
+
+/* ----------------------------------------------------------------
 	Font styles
 -----------------------------------------------------------------*/
 
@@ -187,21 +241,18 @@
 /* ----------------------------------------------------------------
 	Register Page
 -----------------------------------------------------------------*/
-.bg-img-register{
-  background-image: url("/images/register/beer-bg2.jpg");
-  background-size: 100%;
-}
 
 #register-boxes{
 	display:flex;
 	justify-content: center;
 	flex-direction: row;
+	align-items: center;
 	flex-wrap: wrap;
 }
 
 #card-one{
 	display: block;
-	background-color: #101010 !important;
+	background-color: #141313 !important;
 	width:450px;
 	border-radius: 15px;
 	height: auto;
@@ -210,7 +261,7 @@
 
 .card.form.b{
 	display: flex;
-	background-color: #101010 !important;
+	background-color: #141313 !important;
 	width: 430px;
 	border-radius: 15px;
 	height: fit-content;
@@ -221,8 +272,8 @@
 #p-card-two{
 	display: block;
     margin: 0px 25px;
-    margin-top: -27px;
-    margin-bottom: 3px;
+	margin-top: -18px;
+	margin-bottom: 2px;
     text-align: justify;
     color: rgb(199, 184, 184);
     font-size: 8pt;
@@ -230,51 +281,18 @@
 .input-group-prepend-s span{
 	display: block;
 	width: 47px;
-	background-color:#805f10 !important;
-	color: rgb(0, 0, 0) !important;
+	background-color: darkgoldenrod;
+	color: rgb(0, 0, 0);
 	border:0 !important;
 	text-align: center;
 	height: 38px;
-  border-radius: 19px;
-  margin-right: 4px;
+	border-radius: 2px;
 }
-
-.border-soft{
-  background-color: rgba(0,0,0,0.2);
-  border-color: rgba(255,255,255,0.15);
-}
-
-.dark .form-control:not(.not-dark), .dark .sm-form-control:not(.not-dark) {
-  color: #805f10 !important;
-  background-color: rgba(0,0,0,0.2);
-  border-color: rgba(255,255,255,0.15);
-}
-
 #reg-title{
 	display: flex;
 	justify-content: center;
 	border-bottom: 2px solid darkgoldenrod;
-  color: white;
-  font-size:17px;
-  font-weight: 500;
-}
-
-.bord-b{
-  border-bottom: 2px solid rgb(199, 184, 184);;
-}
-
-.darkgoldenrod{
-  color: darkgoldenrod!important;
-  font-weight: bold;
-}
-
-.form-control{
-  border-radius: 40px !important;
-}
-
-#select-number{
-  border-radius: 19px;
-  margin-right: 2px;
+	color: white;
 }
 
 #reg-list{
@@ -285,10 +303,9 @@
 }
 
 .gold{
-	color:#805f10 !important;
+	color:darkgoldenrod;
 	font-weight: bold !important;
 }
-
 
 .twitter{
 	background-color: #00ACEE;
@@ -308,296 +325,9 @@
 	color:white;
 }
 
-.c-grey{
-  color: rgb(199, 184, 184);
-  font-weight: bold;
-}
-
-p{
-  margin-bottom: 20px;
-}
-
-
-#help-button{
-  right: 31px;
-  bottom: 84px;
-  position: fixed;
-  font-size: 27px;
-  border-radius: 14px;
-  width: 39px;
-  border: 0px;
-  background-color: #906a0c;
-  color:black;
-}
-
-#help-chat{
-  right: 100px;
-  bottom: 84px;
-  position: fixed;
-  height: 400px;
-  width: 300px;
-	border-radius: 15px;
-  padding: 5px 10px;
-  background-color:#ece9e9 !important;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
-.border-b-grey{
-  border-bottom: 1px solid rgb(150, 150, 150);
-}
-
-#message-holder{
-  border-radius:10px;
-  margin-bottom:5px;
-  font-size:14px;
-  padding-left:5px;
-  border: 1.8px solid grey;
-  width: 86%;
-  margin-left: 10px;
-}
-
-#send-icon{
-  width: fit-content;
-  margin-left: 4px;
-  margin-top: 4px;
-}
-
 @media (max-width:1072px){
 	.card.form.b{
 		margin-top: 10px !important;
 		margin-bottom: 50px;
-  }
-  .bg-img-register{
-    background-size: 137%
-  }
-}
-
-@media (max-width:800px){
-  .bg-img-register{
-    background-size: 186%
-  }
-}
-
-@media (max-width:580px){
-  .bg-img-register{
-    background-size: 200%
-  }
-  #card-one > article{
-    width: 387px;
-  }
-}
-/* ----------------------------------------------------------------
-	login page
------------------------------------------------------------------*/
-
-@import url('https://fonts.googleapis.com/css?family=Numans');
-
-html,body{
-background-image: url('../images/beer/sign-in2.jpg');
-background-size: cover;
-background-repeat: no-repeat;
-height: 100%;
-font-family: 'Numans', sans-serif;
-}
-
-.container{
-height: 100%;
-align-content: center;
-}
-
-.card{
-height: 370px;
-margin-top: auto;
-margin-bottom: auto;
-width: 400px;
-background-color: rgba(180, 109, 50, 0.3)  !important;
-}
-
-.social_icon span{
-font-size: 60px;
-margin-left: 10px;
-color: #FFC312;
-}
-
-.social_icon span:hover{
-color: white;
-cursor: pointer;
-}
-
-.card-header h3{
-color: white;
-}
-
-.social_icon{
-position: absolute;
-right: 20px;
-top: -45px;
-}
-
-.input-group-prepend span{
-width: 50px;
-background-color: #FFC312;
-color: black;
-border:0 !important;
-}
-
-input:focus{
-outline: 0 0 0 0  !important;
-box-shadow: 0 0 0 0 !important;
-
-}
-
-.remember{
-color: white;
-}
-
-.remember input
-{
-width: 20px;
-height: 20px;
-margin-left: 15px;
-margin-right: 5px;
-}
-
-.login_btn{
-color: black;
-background-color: #FFC312;
-width: 100px;
-}
-
-.login_btn:hover{
-color: black;
-background-color: white;
-}
-
-.links{
-color: white;
-}
-
-.links a{
-margin-left: 4px;
-}
-
-
-/* css forgot.html */
-
-body {
-     background-position: center;
-     background-color: #eee;
-     background-repeat: no-repeat;
-     background-size: cover;
-     color: #505050;
-     font-family: "Rubik", Helvetica, Arial, sans-serif;
-     font-size: 14px;
-     font-weight: normal;
-     line-height: 1.5;
-     text-transform: none
- }
-
- .forgot {
-     background-color: #fff;
-     padding: 12px;
-     border: 1px solid #dfdfdf
- }
-
- .padding-bottom-3x {
-     padding-bottom: 72px !important
- }
-
- .card-footer {
-     background-color: #fff
- }
-
- .btn {
-     font-size: 13px
- }
-
- .form-control:focus {
-     color: #495057;
-     background-color: #fff;
-     border-color: #76b7e9;
-     outline: 0;
-     box-shadow: 0 0 0 0px #28a745
- }
-
-
- /* ----------------------------------------------------------------
-	Confirmation page
------------------------------------------------------------------*/
-.bg-img-conf{
-  background-image: url("/images/register/beer-bg3.jpg");
-  background-size: 100%;
-}
-.w-51{
-  width: 51%;
-}
-
-.border-rad{
-  border-radius: 12px;
-}
-
-.bg-black{
-  background-color: #161616;
-}
-
-#input-code{
-  border-radius:12px;
-  border:0px;
-  background-color: #272727;
-  color: white;
-}
-
-#input-code2{
-  border-radius:12px;
-  border:0px;
-  background-color: #272727;
-  color:#808080;
-  width: 19%;
-}
-
-#input-code3{
-  border-radius:12px;
-  border:0px;
-  background-color: #543f0b;
-  color:#000000;
-  width: 25%;
-}
-.c-white-d2{
-  color: #d2d2d2;
-}
-.m-con{
-  margin-bottom: 150px;
-  margin-top:100px
-}
-
-.p-box{
-  font-size: 14px;
-}
-
-@media (max-width:1072px){
-  .bg-img-conf{
-    background-size: 137%
-  }
-}
-
-@media (max-width:800px){
-  .bg-img-conf{
-    background-size: 186%
-  }
-}
-
-@media (max-width:650px){
-  .bg-img-conf{
-    background-size: 200%
-  }
-  section >.text-center >.container{
-    width:350px;
-  }
-}
-
-@media (max-width:500px){
-  .bg-img-conf{
-    background-size: 290%
-  }
+	}
 }

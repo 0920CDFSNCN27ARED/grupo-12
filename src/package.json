@@ -1,22 +1,22 @@
 {
-  "name": "artiskraken",
-  "version": "1.0.0",
-  "description": "E-commerce website for sales craft beer",
-  "main": "app.js",
+  "name": "src",
+  "version": "0.0.0",
+  "private": true,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "nodemon -e js ./bin/www",
+    "test": "nodemon ./bin/www"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/0920CDFSNCN27ARED/grupo-12.git"
-  },
-  "author": "Grupo-12",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/0920CDFSNCN27ARED/grupo-12/issues"
-  },
-  "homepage": "https://github.com/0920CDFSNCN27ARED/grupo-12#readme",
   "dependencies": {
-    "express": "^4.17.1"
+    "bcrypt": "^5.0.0",
+    "cookie-parser": "~1.4.4",
+    "debug": "~2.6.9",
+    "ejs": "~2.6.1",
+    "express": "~4.16.1",
+    "express-validator": "^6.8.0",
+    "http-errors": "~1.6.3",
+    "method-override": "^3.0.0",
+    "morgan": "~1.9.1",
+    "multer": "^1.4.2",
+    "nodemon": "^2.0.6"
   }
 }

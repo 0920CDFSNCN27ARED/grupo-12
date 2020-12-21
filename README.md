@@ -69,9 +69,3 @@ A continuación se listan una serie de sitios discriminados por categoria de sel
 # Prototipo
 * https://xd.adobe.com/embed/61f5cf1b-64be-4470-ac14-5c3ae960f78e-34a6/?fullscreen
 
-## **Retrospectiva 2** :
- Luego de ya haber trabajdo las primeras semanas y conociendo un poco la forma de trabajar que empleamos cada uno, determinamos los siguientes cambios.
-
- * cambiar las dailies de 5 a 3 veces por semana ya que preferimos ser mas concisos con las reuniones.
- * mantener mas comunicacion por Discord entre nosotros en el caso de que alguno tenga una duda.
- * avanzar de forma pareja y continua para poder llegar a las reuniones grupales con un buen planteo que le sirva al equipo.

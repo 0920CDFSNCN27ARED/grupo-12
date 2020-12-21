@@ -10,3 +10,9 @@
 
 
 ## N° 3:
+
+Nos comprometimos como equipo a sostener los cambios de las retrospectivas anteriores y sumamos los siguientes objetivos:
+
+* definir una cantidad especifica y clara de objetivos dentro del sprint y aumentar la comunicacion sobre el avance, para sostener un control sobre el avance de todos.
+* coordinar las tareas y mantener mayor comunicacion.
+

@@ -238,3 +238,47 @@
 }
 
 
+#help-button{
+  right: 31px;
+  bottom: 84px;
+  position: fixed;
+  font-size: 27px;
+  border-radius: 14px;
+  width: 39px;
+  border: 0px;
+  background-color: #906a0c;
+  color:black;
+}
+
+#help-chat{
+  right: 100px;
+  bottom: 84px;
+  position: fixed;
+  height: 400px;
+  width: 300px;
+	border-radius: 15px;
+  padding: 5px 10px;
+  background-color:#ece9e9 !important;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.border-b-grey{
+  border-bottom: 1px solid rgb(150, 150, 150);
+}
+
+#message-holder{
+  border-radius:10px;
+  margin-bottom:5px;
+  font-size:14px;
+  padding-left:5px;
+  border: 1.8px solid grey;
+  width: 86%;
+  margin-left: 10px;
+}
+
+#send-icon{
+  width: fit-content;
+  margin-left: 4px;
+  margin-top: 4px;
+}

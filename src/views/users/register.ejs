@@ -3,6 +3,7 @@
 
 <head>
 	<%- include('../layout/head', { title:"Registrate" }) %>
+	<link rel="stylesheet" href="/css/register.css" type="text/css" />
 </head>
 
 <body class="stretched">
@@ -33,42 +34,57 @@
 						<p class="divider-text">
 							<span class="c-white text-align-center">ó</span>
 						</p>
-						<form>
+						<form method="POST" action="/users/register">
 							<div class="form-group input-group">
 								<div class="input-group-prepend-s">
 									<span class="input-group-text"> <i class="fa fa-user"></i> </span>
 								</div>
-								<input name="" class="form-control" placeholder="Nombre Completo" type="text">
+								<input name="name" class="form-control" placeholder="Nombre Completo" type="text">
+							</div> <!-- form-group// -->
+							<div class="form-group input-group">
+								<div class="input-group-prepend-s">
+									<span class="input-group-text"><i class="fas fa-at"></i></span>
+								</div>
+								<input name="userName" class="form-control" placeholder="Nombre de Usuario" type="text">
 							</div> <!-- form-group// -->
 							<div class="form-group input-group">
 								<div class="input-group-prepend-s">
 									<span class="input-group-text"> <i class="fa fa-envelope"></i> </span>
 								</div>
-								<input name="" class="form-control" placeholder="Email" type="email">
+								<input name="email" class="form-control" placeholder="Email" type="email">
 							</div> <!-- form-group// -->
 							<div class="form-group input-group">
 								<div class="input-group-prepend-s">
 									<span class="input-group-text"> <i class="fa fa-phone"></i> </span>
 								</div>
-								<select id="select-number"class="custom-select border-soft" style="max-width: 120px;">
+								<select id="select-number"class="custom-select border-soft" name="selectNumber"style="max-width: 120px;">
 									<option selected="">+54</option>
 									<option value="1">+598</option>
 									<option value="2">+56</option>
 									<option value="3">+57</option>
 								</select>
-								<input name="" class="form-control" placeholder="Número de telefono" type="text">
+								<input name="phoneNumber" class="form-control" placeholder="Número de telefono" type="text">
 							</div>
 							<div class="form-group input-group">
 								<div class="input-group-prepend-s">
 									<span class="input-group-text"> <i class="fa fa-lock"></i> </span>
 								</div>
-								<input class="form-control" placeholder="Creá tu contraseña" type="password">
+								<input class="form-control" name="password"placeholder="Creá tu contraseña" type="password">
 							</div> <!-- form-group// -->
 							<div class="form-group input-group">
 								<div class="input-group-prepend-s">
 									<span class="input-group-text"> <i class="fa fa-lock"></i> </span>
 								</div>
 								<input class="form-control" placeholder="Repetí tu contraseña" type="password">
+							</div> <!-- form-group// -->
+							<div class="form-group input-group">
+								<div class="input-group-prepend-s w-14">
+									<span class="input-group-text"> <i class="fas fa-id-badge"></i></span>
+								</div>
+								<div id = "avatar">
+									<p id="profile-p"> Seleccioná tu foto de perfil:</p>
+									<input name="avatar"type="file">
+								</div>
 							</div> <!-- form-group// -->
 							<div class="form-group">
 								<button type="submit" class="btn btn-primary btn-block ">Crear Cuenta </button>

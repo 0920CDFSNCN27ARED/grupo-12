@@ -8,6 +8,9 @@ const usersController = {
     confirmation:function(req, res, next) {
         res.render('users/confirmation');
     },
+    profile: function(req, res, next) {
+        res.render('users/profile');
+    },
 }
 
 module.exports = usersController;

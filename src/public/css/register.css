@@ -126,26 +126,44 @@ p{
   margin-bottom: 20px;
 }
 
-#avatar{
-  display: block;
-  width: 86%;
-  font-size: 12px;
-  padding-top: 0px;
-  padding-left: 8px;
-  color: #757171;
-  border: 1px solid rgba(255,255,255,0.15);
-  background-color: rgba(0,0,0,0.2);
-  padding-bottom: 5px;
-}
-
-#profile-p{
-  margin-bottom: 5px !important;
-}
-
 .w-14{
   width:14%;
+  margin-top:13px;
 }
 
+.select-avatar{
+  display: flex;
+  width: 86%;
+  border: 1px #343434 solid;
+  padding-top: 13px;
+  background-color: #0d0d0d;
+}
+.w-avatar{
+  width:51%;
+}
+.mt-14{
+  margin-top: -14px;
+}
+#p-avatar{
+  width: 83%;
+  font-size: 13px;
+  margin-top: 10px;
+  margin-bottom: 0px;
+  color: #797676;
+}
+
+#errors{
+  display: flex;
+  align-items: center;
+  width: fit-content;
+  padding-left: 29px;
+  flex-direction: column;
+  border:3px solid rgb(190, 55, 55);
+  background-color:#ff4040;
+  border-radius: 5px;
+  color:rgb(0, 0, 0);
+  margin-bottom: -20px;
+}
 @media (max-width:1072px){
 	.card.form.b{
 		margin-top: 10px !important;

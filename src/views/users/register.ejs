@@ -19,6 +19,13 @@
 
 		<!-- Content -->
 		<section class="bg-img-register dark noborder parallax pt-3">
+			<% if (typeof errors!="undefined") { %>
+				<ul id="errors" class="container-lg">
+					<% for( let i = 0; i < errors.length; i++ ) { %>
+					<li ><%= errors[i].msg %> </li>
+					<% } %>
+				</ul>
+			   <% } %>
 			<div id="register-boxes">
 				<!-- 1st card -->
 				<div id="card-one">
@@ -75,16 +82,19 @@
 								<div class="input-group-prepend-s">
 									<span class="input-group-text"> <i class="fa fa-lock"></i> </span>
 								</div>
-								<input class="form-control" placeholder="Repetí tu contraseña" type="password">
+								<input class="form-control" name="confirmPassword"placeholder="Repetí tu contraseña" type="password">
 							</div> <!-- form-group// -->
 							<div class="form-group input-group">
 								<div class="input-group-prepend-s w-14">
-									<span class="input-group-text"> <i class="fas fa-id-badge"></i></span>
+									<span class="input-group-text"> <i class="fas fa-id-badge"></i> </span>
 								</div>
-								<div id = "avatar">
-									<p id="profile-p"> Seleccioná tu foto de perfil:</p>
-									<input name="avatar"type="file">
-								</div>
+								<div class="select-avatar">
+								<p id="p-avatar"class="ml-1 mr-1">Seleccioná tu foto de perfil:</p>
+								<label for="avatar"class="w-avatar">
+									<input type="file" name="avatar" id="avatar" style="display:none;" />
+									<img class="w-avatar mt-14"src="/images/register/avatar.png"/>
+								 </label>
+								 </div>
 							</div> <!-- form-group// -->
 							<div class="form-group">
 								<button type="submit" class="btn btn-primary btn-block ">Crear Cuenta </button>

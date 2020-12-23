@@ -14,9 +14,10 @@ const usersController = {
     },
     register:function(req, res, next) {
         let errors = validationResult(req);
+        const users= getUsers();
         if(errors.isEmpty()){
-            let users= getUsers();
             const newId = users.length !=0 ? users[users.length - 1].id + 1 : 1;
+            const avatar = req.file ? req.file.filename: "default-avatar.png"
             let user = {
                 id : newId,
                 name: req.body.name,
@@ -24,7 +25,7 @@ const usersController = {
                 phone: req.body.selectNumber + req.body.phoneNumber,
                 email: req.body.email,
                 password: bcrypt.hashSync(req.body.password,10),
-                avatar: req.files ? req.files[0].filename: "default-avatar.png",
+                avatar: avatar,
             };
             users.push(user);
             let usersJSON = JSON.stringify(users);

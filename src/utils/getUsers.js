@@ -4,7 +4,7 @@ function getUsers() {
     const usersFilePath = path.join(__dirname, "../data/usersDB.json");
     const usersFile = fs.readFileSync(usersFilePath, "utf-8");
 
-    let products;
+    let users;
     if (usersFile == "") {
         users = [];
     } else {

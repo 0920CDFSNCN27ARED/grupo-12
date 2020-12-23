@@ -41,7 +41,7 @@
 						<p class="divider-text">
 							<span class="c-white text-align-center">ó</span>
 						</p>
-						<form method="POST" action="/users/register">
+						<form method="POST" action="/users/register" enctype="multipart/form-data">
 							<div class="form-group input-group">
 								<div class="input-group-prepend-s">
 									<span class="input-group-text"> <i class="fa fa-user"></i> </span>
@@ -91,7 +91,7 @@
 								<div class="select-avatar">
 								<p id="p-avatar"class="ml-1 mr-1">Seleccioná tu foto de perfil:</p>
 								<label for="avatar"class="w-avatar">
-									<input type="file" name="avatar" id="avatar" style="display:none;" />
+									<input type="file" name="avatar" id="avatar"style="display:none;" />
 									<img class="w-avatar mt-14"src="/images/register/avatar.png"/>
 								 </label>
 								 </div>

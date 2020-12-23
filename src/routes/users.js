@@ -5,10 +5,11 @@ const {check,validationResult, body}= require("express-validator");
 const multer = require('multer');
 const confirmPassword = require('../middlewares/confirmPassword');
 const checkUserDB = require('../middlewares/checkUser')
+const path = require('path');
 
 var storage = multer.diskStorage({
     destination: function (req, file, cb) {
-      cb(null, 'public/images/products')
+      cb(null, 'public/images/users')
     },
     filename: function (req, file, cb) {
       cb(null,file.fieldname + "-" + Date.now() + path.extname(file.originalname))
@@ -22,7 +23,7 @@ router.get('/login', usersController.getLogin);
 
 /* GET register page. */
 router.get('/register', usersController.getRegister);
-router.post('/register',upload.any(),[
+router.post('/register',upload.single("avatar"),[
     check("name").isLength({min:4,max:50}).withMessage("El nombre debe tener entre 4 y 50 caracteres de largo"),
     check("userName").isLength({min:4,max:15}).withMessage("El nombre de usuario debe tener entre 4 y 15 caracteres de largo"),
     check("email").isEmail().withMessage("Email inválido"),

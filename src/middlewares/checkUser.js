@@ -22,6 +22,7 @@ function checkUser(req,res,next){
             ]});
         }
     }
+    next();
 }
 
 module.exports = checkUser;

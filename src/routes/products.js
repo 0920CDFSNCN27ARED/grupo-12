@@ -4,6 +4,7 @@ const multer = require("multer");
 const path = require("path");
 const productsController = require("../controllers/productsController");
 const { check, validationResult, body } = require("express-validator");
+const assertIsAdmin = require('../middlewares/assert-is-admin');
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -39,7 +40,7 @@ imagesUpload = upload.fields([{ name: 'avatar', maxCount: 1 }, { name: 'gallery'
 router.get('/:id/productDetails', productsController.details);
 
 /* Create product page. */
-router.get('/create', productsController.getCreate);
+router.get('/create', assertIsAdmin,productsController.getCreate);
 router.post(
     "/create",
     imagesUpload,
@@ -61,7 +62,7 @@ router.post(
 );
 
 /* Edit product page. */
-router.get('/:id/edit', productsController.getEdit);
+router.get('/:id/edit', assertIsAdmin, productsController.getEdit);
 router.put(
     "/:id/edit",
     imagesUpload,
@@ -83,7 +84,7 @@ router.put(
 );
 
 /* Delete one product */ 
-router.delete('/delete/:id', productsController.destroy);
+router.delete('/delete/:id', assertIsAdmin, productsController.destroy);
 
 /**** PRODUCT COMMENTS ROUTES ****/
 router.post("/:id/productDetails",
@@ -94,6 +95,6 @@ router.post("/:id/productDetails",
     // ],
     productsController.postComment
 );
-router.delete('/deleteComment/:comment_id', productsController.destroyComment);
+router.delete('/deleteComment/:comment_id', assertIsAdmin, productsController.destroyComment);
 
 module.exports = router;

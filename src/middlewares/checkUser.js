@@ -11,8 +11,7 @@ function checkUser(req,res,next){
             res.render("users/register", {errors:[
                 {msg:"El email y usuario ingresado ya se encuentran en uso"}
             ]});
-        }
-        else if(req.body.email == user.email){
+        }else if(req.body.email == user.email){
             res.render("users/register", {errors:[
                 {msg:"El email ingresado ya está en uso"}
             ]});

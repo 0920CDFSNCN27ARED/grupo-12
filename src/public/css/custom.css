@@ -43,6 +43,22 @@
   padding-right: 10px;
 }
 
+#login-button{
+  width: 88%;
+  margin-left: 11px;
+  background-color: #444242;
+}
+
+.dropdown-login:empty::after {
+  margin-left: 5px!important;
+  margin-top: 7px!important;
+  margin-right: -6px!important;
+}
+
+.bg-logout{
+  background-color: #d40808 !important;
+}
+
 @media (max-width: 667px) {
   .button.button-reveal.button-small {
       padding-left: 10px;
@@ -125,6 +141,9 @@
 
 .image-cat-position {
   right: 5%!important;
+}
+.position-fade-in {
+  right: -7%!important;
 }
 
 .product-bottle {

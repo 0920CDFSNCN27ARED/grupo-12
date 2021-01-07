@@ -4,6 +4,9 @@ const path = require("path");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 const methodOverride =  require('method-override'); 
+const session = require("express-session");
+const rememberMe = require("./middlewares/rememberMe");
+const authenticate = require('./middlewares/authenticate');
 
 const indexRouter = require("./routes/index");
 const usersRouter = require("./routes/users");
@@ -16,6 +19,9 @@ const app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
+/// APPLY VIEWS VARIABLES ANDS FUNCTIONS
+app.locals.user = null;
+
 // ************ Middlewares ************
 app.use(logger('dev'));
 app.use(express.json());
@@ -23,6 +29,9 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(methodOverride('_method')); 
+app.use(session({secret:"Nuestro msj secreto!", resave: true, saveUninitialized: false,}));
+app.use(rememberMe);
+app.use(authenticate);
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);

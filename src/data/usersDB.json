@@ -1,0 +1,57 @@
+[
+    {
+        "id": 1,
+        "name": "Engelbert",
+        "userName": "egrieg0",
+        "email": "ethay0@unicef.org",
+        "password": "2sA6IH2FJm4W",
+        "avatar": "default-user01",
+        "admin": false
+    },
+    {
+        "id": 2,
+        "name": "Rosamund",
+        "userName": "rbrislane1",
+        "email": "rmaccarter1@about.me",
+        "password": "bXx3ZzC9",
+        "avatar": "avatar04.jpg",
+        "admin": false
+    },
+    {
+        "id": 3,
+        "name": "Gradeigh",
+        "userName": "gharteley2",
+        "email": "gbulley2@sourceforge.net",
+        "password": "Xcx5VqdGfIY",
+        "avatar": "avatar03.jpg",
+        "admin": false
+    },
+    {
+        "id": 4,
+        "name": "Sioux",
+        "userName": "scampe3",
+        "email": "sdulake3@google.pl",
+        "password": "IDKE2oOxGQ",
+        "avatar": "avatar02.jpg",
+        "admin": true
+    },
+    {
+        "id": 5,
+        "name": "Taylor",
+        "userName": "tcregeen4",
+        "email": "tskipping4@wunderground.com",
+        "password": "eMeGVga",
+        "avatar": "avatar01.jpg",
+        "admin": false
+    },
+    {
+        "id": 6,
+        "name": "Santiago Nihany",
+        "userName": "santi.nihany",
+        "phone": "+542213548021",
+        "email": "santi.nihany@gmail.com",
+        "password": "$2b$10$oWq5xxHVDbjucn6Vfj46GeJAi3jfhEDlFcIzDuh2mK3PZMYcgVQNm",
+        "avatar": "default-avatar.png",
+        "admin": true
+    }
+]

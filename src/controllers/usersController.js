@@ -9,6 +9,34 @@ const usersController = {
     getLogin: function(req, res, next) {
         res.render('users/login');
     },
+    login:function(req, res) {
+        const users= getUsers();
+        let errors = validationResult(req);
+        let usuarioALoguearse;
+        if(errors.isEmpty()){
+            for (let i = 0; i < users.length; i++) {
+                const user = users[i];
+                if (user.email==req.body.email) {
+                    if (bcrypt.compareSync(req.body.password, user.password)) {
+                        usuarioALoguearse =user;
+                        break;
+                    }
+                }
+            }
+            if (!usuarioALoguearse) {
+                return res.render("users/login",{errors:[
+                    {msg: "Email o contraseña incorrectos"}
+                ]})
+            }
+            req.session.loggedUserId = usuarioALoguearse.id;
+            if(req.body.remember){
+                res.cookie('remember',usuarioALoguearse.email,{maxAge:60000})
+            }
+            res.redirect("/")
+        }else{
+            return res.render("users/login",{errors:errors.errors})
+        }   
+    },
     getRegister: function(req, res, next) {
         res.render('users/register');
     },
@@ -26,6 +54,7 @@ const usersController = {
                 email: req.body.email,
                 password: bcrypt.hashSync(req.body.password,10),
                 avatar: avatar,
+                admin: false
             };
             users.push(user);
             let usersJSON = JSON.stringify(users);

@@ -95,7 +95,9 @@
 								<ul class="tab-nav clearfix">
 									<li><a href="#product-description" class="text-uppercase">Descripción</a></li>
 									<li><a href="#product-comments" class="text-uppercase">Comentarios</a></li>
-									<li><a href="#admin" class="text-uppercase">Administrar Producto</a></li>
+									<% if (user && user.admin) { %>
+										<li><a href="#admin" class="text-uppercase">Administrar Producto</a></li>
+									<% } %>
 								</ul>
 
 								<div class="tab-container">
@@ -155,27 +157,29 @@
 											</form>
 										</div>
 									</div>
-									<div class="tab-content clearfix" id="admin">
-										<div class="row mt-3">
-											<div class="col-8">
-												<%- include('productCommentsAdmin', {comments}) %>
+									<% if (user && user.admin) { %>
+											<div class="tab-content clearfix" id="admin">
+												<div class="row mt-3">
+													<div class="col-8">
+														<%- include('productCommentsAdmin', {comments}) %>
+													</div>
+													<div class="col-4">
+														<h3 class="ml-2">Opciones</h3>
+														<div class="col-12 mb-2">
+															<a href="/products/<%= product.id %>/edit" class="btn btn-warning btn-block center">EDITAR PRODUCTO</a>
+														</div>
+														<div class="col-12 mb-2">
+															<a href="/products/create" class="btn btn-secondary btn-block center">CREAR PRODUCTO</a>
+														</div>
+														<div class="col-12 mb-2">
+															<form action="/products/delete/<%= product.id %>?_method=DELETE" method="POST">
+																<button type="submit" class="btn btn-block center btn-danger">ELIMINAR PRODUCTO</button>
+															</form>
+														</div>
+													</div>
+												</div>
 											</div>
-											<div class="col-4">
-												<h3 class="ml-2">Opciones</h3>
-												<div class="col-12 mb-2">
-													<a href="/products/<%= product.id %>/edit" class="btn btn-warning btn-block center">EDITAR PRODUCTO</a>
-												</div>
-												<div class="col-12 mb-2">
-													<a href="/products/create" class="btn btn-secondary btn-block center">CREAR PRODUCTO</a>
-												</div>
-												<div class="col-12 mb-2">
-													<form action="/products/delete/<%= product.id %>?_method=DELETE" method="POST">
-														<button type="submit" class="btn btn-block center btn-danger">ELIMINAR PRODUCTO</button>
-													</form>
-												</div>
-											</div>
-										</div>
-									</div>
+									<% } %>
 								</div>
 							</div>
 						</div>

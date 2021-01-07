@@ -19,7 +19,13 @@
 
 		<!-- Content -->
 		<section id="dark-content" class="dark noborder parallax pt-3">
-		
+			<% if (typeof errors!="undefined") { %>
+				<ul id="errors" class="container-lg">
+					<% for( let i = 0; i < errors.length; i++ ) { %>
+					<li ><%= errors[i].msg %> </li>
+					<% } %>
+				</ul>
+			   <% } %>
 			<div class="container">
 				<div class="d-flex justify-content-center h-100">
 					<div class="card mt-4 mb-4">
@@ -32,34 +38,33 @@
 							</div>
 						</div>
 						<div class="card-body">
-							<form>
+							<form method="POST" action="/users/login">
 								<div class="input-group form-group">
 									<div class="input-group-prepend">
 										<span class="input-group-text"><i class="fas fa-user"></i></span>
 									</div>
-									<input type="text" class="form-control" placeholder="username">
-		
+									<input name="email" class="form-control" placeholder="Email" type="email">
 								</div>
 								<div class="input-group form-group">
 									<div class="input-group-prepend">
 										<span class="input-group-text"><i class="fas fa-key"></i></span>
 									</div>
-									<input type="password" class="form-control" placeholder="password">
+									<input type="password" class="form-control" name="password"placeholder="Ingresá tu contraseña">
 								</div>
 								<div class="row align-items-center remember">
-									<input type="checkbox">Remember Me
+									<input type="checkbox" name="remember">Recordame
 								</div>
 								<div class="form-group">
-									<input type="submit" value="Login" class="btn float-right login_btn">
+									<input type="submit" value="Ingresá" class="btn float-right login_btn">
 								</div>
 							</form>
 						</div>
 						<div class="card-footer">
 							<div class="d-flex justify-content-center links">
-								Don't have an account?<a href="/users/register">Sign Up</a>
+								¿No tenés cuenta?<a href="/users/register">Registrate</a>
 							</div>
 							<div class="d-flex justify-content-center">
-								<a href="#">Forgot your password?</a>
+								<a href="#">¿Olvidaste tu contraseña?</a>
 							</div>
 						</div>
 					</div>

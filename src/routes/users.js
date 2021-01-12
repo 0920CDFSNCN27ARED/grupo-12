@@ -19,27 +19,43 @@ var storage = multer.diskStorage({
    
   var upload = multer({ storage: storage });
 
-/* GET login page. */
+// GET Login page
 router.get('/login',usersController.getLogin);
-router.post('/login',[
-  check("email").isEmail().withMessage("Email inválido"),
-  check("password").isLength({min:8,max:undefined}).withMessage("Contraseña inválida: minimo 8 caracteres"),
-],usersController.login)
 
-/* GET register page. */
+// POST Login page
+router.post(
+  '/login',
+  [
+    check("email").isEmail().withMessage("Email inválido"),
+    check("password").isLength({min:8,max:undefined}).withMessage("Contraseña inválida: minimo 8 caracteres"),
+  ],
+  usersController.postLogin)
+
+// GET Register page
 router.get('/register', usersController.getRegister);
-router.post('/register',upload.single("avatar"),[
+
+// POST Register Page
+router.post(
+  '/register',
+  upload.single("avatar"),
+  [
     check("name").isLength({min:4,max:50}).withMessage("El nombre debe tener entre 4 y 50 caracteres de largo"),
     check("userName").isLength({min:4,max:15}).withMessage("El nombre de usuario debe tener entre 4 y 15 caracteres de largo"),
     check("email").isEmail().withMessage("Email inválido"),
     check("phoneNumber").isMobilePhone().withMessage("Numero de telefono inválido"),
     check("password").isLength({min:8, max:undefined}).isAlphanumeric().withMessage("Contraseña inválida: minimo 8 caracteres,letras(a-zA-Z) y números"), 
-],confirmPassword,checkUserDB,usersController.register);
+  ],
+  confirmPassword,
+  checkUserDB,
+  usersController.postRegister);
 
-/* GET profile page. */
-router.get('/profile',assertSignedIn, usersController.profile);
+// GET Profile page
+router.get('/profile',assertSignedIn, usersController.getProfile);
 
-/* GET confirmation register page. */
-router.get('/register/confirmation', usersController.confirmation);
+// GET Confirmation Register page
+router.get('/register/confirmation', usersController.getConfirmation);
+
+// DESTTROY User Session
+router.delete("/destroy-session", usersController.destroySession);
 
 module.exports = router;

@@ -26,7 +26,7 @@
                 <div>Tienda</div>
             </a>
         </li>
-        <% if (!user) { %>
+        <% if (!current_user) { %>
             <li class="menu-item">
                 <i type="button"data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"class="button button-small header-button button-rounded button-reveal d-inline-flex tright font-weight-semibold icon-user dropdown-toggle dropdown-login"></i>
                 <div class="dropdown-menu dropdown-menu-right">
@@ -39,8 +39,8 @@
                 </div>
             </li>
         <% } %>
-        <% if (user){ 
-              if (user.admin == true) { %>
+        <% if (current_user){ 
+              if (current_user.admin == true) { %>
                 <li class="menu-item">
                     <a href="/products/create">
                     <i class="button button-small header-button button-rounded button-reveal d-inline-flex tright font-weight-semibold icon-beer">+</i>
@@ -56,8 +56,10 @@
                     <span style="margin-left: 37px;">Ayuda <i class="far fa-question-circle"></i></span></a>
                     <a href="#" id="login-button"class="button button-small d-inline-flex tright">
                     <span style="margin-left: 4px;">Configuración <i class="fas fa-cog"></i></span></a>
-                    <a href="#" id="login-button"class="button button-small button-reveal d-inline-flex tright bg-logout">
-                        <i class="icon-line-arrow-right"></i><span style="margin-left: 12px;">Cerrar Sesión</span></a>
+                    <form class="m-0" action="/users/destroy-session?_method=DELETE" method="POST">
+                        <button type="submit" id="login-button" class="button button-small button-reveal d-inline-flex tright bg-logout">
+                            <i class="icon-line-arrow-right"></i><span style="margin-left: 12px;">Cerrar Sesión</span></button>
+                    </form>
                 </div>
             </li>
         <% } %>

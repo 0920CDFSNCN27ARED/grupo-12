@@ -1,75 +1,108 @@
-const getUsers = require("../utils/getUsers");
+// require
 const fs = require("fs");
 const path = require("path");
 const { validationResult } = require("express-validator");
-const usersFilePath = path.join(__dirname, "../data/usersDB.json");
 const bcrypt = require("bcrypt");
 
+// Data
+const getUsers = require("../utils/getUsers");
+const usersFilePath = path.join(__dirname, "../data/usersDB.json");
+
+// Controller
 const usersController = {
-    getLogin: function(req, res, next) {
-        res.render('users/login');
+    // GET Login
+    getLogin: function (req, res, next) {
+        res.render("users/login");
     },
-    login:function(req, res) {
-        const users= getUsers();
+
+    // POST Login
+    postLogin: function (req, res) {
+        const users = getUsers();
         let errors = validationResult(req);
-        let usuarioALoguearse;
-        if(errors.isEmpty()){
+        let userLogin;
+        if (errors.isEmpty()) {
             for (let i = 0; i < users.length; i++) {
                 const user = users[i];
-                if (user.email==req.body.email) {
+                if (user.email == req.body.email) {
                     if (bcrypt.compareSync(req.body.password, user.password)) {
-                        usuarioALoguearse =user;
+                        userLogin = user;
                         break;
                     }
                 }
             }
-            if (!usuarioALoguearse) {
-                return res.render("users/login",{errors:[
-                    {msg: "Email o contraseña incorrectos"}
-                ]})
+            if (!userLogin) {
+                return res.render("users/login", {
+                    errors: [{ msg: "Email o contraseña incorrectos" }],
+                });
             }
-            req.session.loggedUserId = usuarioALoguearse.id;
-            if(req.body.remember){
-                res.cookie('remember',usuarioALoguearse.email,{maxAge:60000})
+            req.session.loggedUserId = userLogin.id;
+            if (req.body.remember) {
+                res.cookie("remember", userLogin.id, {
+                    maxAge: 60000,
+                });
             }
-            res.redirect("/")
-        }else{
-            return res.render("users/login",{errors:errors.errors})
-        }   
+            res.redirect("/");
+        } else {
+            return res.render("users/login", { errors: errors.errors });
+        }
     },
-    getRegister: function(req, res, next) {
-        res.render('users/register');
+
+    // GET Register
+    getRegister: function (req, res, next) {
+        res.render("users/register");
     },
-    register:function(req, res, next) {
+
+    // POST Login
+    postRegister: function (req, res, next) {
         let errors = validationResult(req);
-        const users= getUsers();
-        if(errors.isEmpty()){
-            const newId = users.length !=0 ? users[users.length - 1].id + 1 : 1;
-            const avatar = req.file ? req.file.filename: "default-avatar.png"
+        const users = getUsers();
+        if (errors.isEmpty()) {
+            const newId =
+                users.length != 0 ? users[users.length - 1].id + 1 : 1;
+            const avatar = req.file ? req.file.filename : "default-avatar.png";
             let user = {
-                id : newId,
+                id: newId,
                 name: req.body.name,
                 userName: req.body.userName,
                 phone: req.body.selectNumber + req.body.phoneNumber,
                 email: req.body.email,
-                password: bcrypt.hashSync(req.body.password,10),
+                password: bcrypt.hashSync(req.body.password, 10),
                 avatar: avatar,
-                admin: false
+                admin: false,
+                status: "active"
             };
             users.push(user);
             let usersJSON = JSON.stringify(users);
             fs.writeFileSync(usersFilePath, usersJSON);
             res.redirect("login");
-        }else{
-            res.render("users/register",{errors:errors.errors})
+        } else {
+            res.render("users/register", { errors: errors.errors });
         }
     },
-    confirmation:function(req, res, next) {
-        res.render('users/confirmation');
+
+    // DELETE session logout
+    destroySession: function (req, res, next) {
+        cookie = req.cookies;
+        for (var prop in cookie) {
+            if (!cookie.hasOwnProperty(prop)) {
+                continue;
+            }
+            res.cookie(prop, "", { expires: new Date(0) });
+        }
+        req.session.destroy((err) => {
+            res.redirect("/users/login");
+        });
     },
-    profile: function(req, res, next) {
-        res.render('users/profile');
+
+    // GET user confirmation
+    getConfirmation: function (req, res, next) {
+        res.render("users/confirmation");
     },
-}
+
+    // GET user profile
+    getProfile: function (req, res, next) {
+        res.render("users/profile");
+    },
+};
 
 module.exports = usersController;

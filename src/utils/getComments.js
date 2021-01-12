@@ -1,5 +1,4 @@
 function getComments() {
-    
     const fs = require("fs");
     const path = require("path");
     const commentsFilePath = path.join(__dirname, "../data/commentsDB.json");

@@ -30,15 +30,15 @@
 				<div class="row clearfix">
 	
 					<div class="col-md-9">
-						<% if (user) { %>
-							<img src= "/images/users/<%= user.avatar%>" class="alignleft img-circle img-thumbnail my-0" alt="Avatar"
+						
+							<img src= "/images/users/<%= current_user.avatar%>" class="alignleft img-circle img-thumbnail my-0" alt="Avatar"
 							style="max-width: 84px;">
 	
 						<div class="heading-block border-0">
-							<h3><%= user.name %> </h3>
+							<h3><%= current_user.name %> </h3>
 							<span>Cliente</span>
 						</div>
-						<% } %>
+						
 						<div class="clear"></div>
 	
 						<div class="row clearfix">

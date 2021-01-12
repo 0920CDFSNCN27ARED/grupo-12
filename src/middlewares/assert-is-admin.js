@@ -1,11 +1,11 @@
 function assertIsAdmin(req, res, next) {
-    if(res.locals.user){
-        if (!res.locals.user.admin) {
+    if (res.locals.current_user) {
+        if (!res.locals.current_user.admin) {
             res.redirect("/");
-        } else{
+        } else {
             next();
         }
-    }else{
+    } else {
         res.redirect("/users/login");
     }
 }

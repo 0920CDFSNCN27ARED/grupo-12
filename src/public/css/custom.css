@@ -59,6 +59,10 @@
   background-color: #d40808 !important;
 }
 
+.bg-cart{
+  background-color: #FFC429 !important;
+}
+
 @media (max-width: 667px) {
   .button.button-reveal.button-small {
       padding-left: 10px;

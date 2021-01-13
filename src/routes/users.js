@@ -52,6 +52,32 @@ router.post(
 // GET Profile page
 router.get('/profile',assertSignedIn, usersController.getProfile);
 
+// PUT Profile user data
+router.put(
+  '/edit-data',
+  upload.single("avatar"),
+  [
+    check("name").isLength({min:4,max:30}).withMessage("El nombre debe tener entre 4 y 30 caracteres de largo"),
+    check("userName").isLength({min:4,max:15}).withMessage("El nombre de usuario debe tener entre 4 y 15 caracteres de largo"),
+    check("email").isEmail().withMessage("Email inválido"),
+  ],
+  usersController.putUserData);
+
+// PUT Profile user data
+router.put(
+  '/edit-password',
+  [
+    check("password", "La constraseña actual es requerida.").notEmpty(),
+    check("new_password", "La nueva constraseña es requerida.").notEmpty(),
+    check("new_password", "La nueva constraseña debe tener al menos 8 caracteres.").isLength({ min: 8 }),
+    body('confirmation').custom((value, { req }) => {
+        if (value !== req.body.new_password) { 
+            throw new Error('Las contraseñas deben ser iguales');
+        } return true 
+    }),
+  ],
+  usersController.putUserPassword);
+
 // GET Confirmation Register page
 router.get('/register/confirmation', usersController.getConfirmation);
 

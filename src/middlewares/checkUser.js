@@ -1,7 +1,8 @@
-const getUsers = require('../utils/getUsers')
+// Data
+const getData = require("../utils/getData");
+let users = getData("../data/usersDB.json");
 
 function checkUser(req,res,next){
-    let users = getUsers();
     if(users.length == 0){
         next();
     }

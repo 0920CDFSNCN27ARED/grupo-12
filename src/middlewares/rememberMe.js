@@ -1,7 +1,9 @@
-const getUsers = require('../utils/getUsers');
+
+// Data
+const getData = require("../utils/getData");
+let users = getData("../data/usersDB.json");
 
 function rememberMe (req,res,next){
-    let users = getUsers();
     if(req.cookies.remember && !req.session.loggedUserId){
         let loggedUser;
         for (let i = 0; i < users.length; i++) {

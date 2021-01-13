@@ -38,8 +38,7 @@
 											<%- include('productGallery', {image: avatar, category: product.category}) %>
 											<% if(gallery){ %>
 												<% gallery.forEach((galleryItem, index) => { %>
-													<% console.log(galleryItem) %> 
-													<%- include('productGallery', {image: galleryItem.filename, category: product.category}) %>
+													<%- include('productGallery', {image: galleryItem, category: product.category}) %>
 												<% }); %> 
 											<% } else { null} %> 
 											
@@ -95,7 +94,7 @@
 								<ul class="tab-nav clearfix">
 									<li><a href="#product-description" class="text-uppercase">Descripción</a></li>
 									<li><a href="#product-comments" class="text-uppercase">Comentarios</a></li>
-									<% if (user && user.admin) { %>
+									<% if (current_user && current_user.admin) { %>
 										<li><a href="#admin" class="text-uppercase">Administrar Producto</a></li>
 									<% } %>
 								</ul>
@@ -114,50 +113,37 @@
 									<div class="tab-content clearfix" id="product-comments">
 										<div>
 											<%- include('productComments', {comments}) %>
-											
-											<!-- Comment Form -->
-											<h3>Dejanos tu <span>Comentario</span></h3>
-											<% if(typeof errors != 'undefined') { %>
-												<div class="col-12">
-													<ul>
-														<% errors.forEach(error => { %>
-														<li class="text-danger"><%= error.msg %></li>
-														<% });%>
-													</ul>
-												</div>
+											<% if (current_user == null) { %>
+												<h3>Para dejar un comentario por favor <span><a class="button button-large button-rounded px-4 button-border button-light button-white font-weight-semibold fadeInUp animated" href="/users/login">Ingresa o Registrate</a></span></h3>
 											<% } %>
-											<form action="/products/<%= product.id %>/productDetails" method="POST">
-												<div class="row">
-													<div class="col-md-4 form-group" lang="es">
-														<label for="author">*Nombre</label>
-														<input type="text" name="author" id="author" value="" placeholder="Ingresa tu nombre" class="sm-form-control" lang="es" required/>
+											<!-- Comment Form -->
+											<% if (current_user) { %>
+												<h3>Hola <%= current_user.name %>, dejanos tu <span>Comentario</span></h3>
+												<% if(typeof errors != 'undefined') { %>
+													<div class="col-12">
+														<ul>
+															<% errors.forEach(error => { %>
+															<li class="text-danger"><%= error.msg %></li>
+															<% });%>
+														</ul>
 													</div>
-
-													<div class="col-md-4 form-group">
-														<label for="email">*Email</label>
-														<input type="email" name="email" id="email" value="" placeholder="Ingresa tu email" class="sm-form-control" lang="es" required/>
+												<% } %>
+												<form action="/products/<%= product.id %>/productDetails" method="POST">
+													<div class="row">
+														<div class="w-100"></div>
+														<div class="col-12 form-group">
+															<label for="comment">*Comentario</label>
+															<textarea name="comment" cols="58" rows="4" placeholder="Ingresa un comentario..." class="sm-form-control" required></textarea>
+														</div>
+														<div class="col-12 form-group">
+															<button type="submit" class="button button-3d m-0">Comentar</button>
+														</div>
 													</div>
-
-													<div class="col-md-4 form-group">
-														<label for="tel">Teléfono</label>
-														<input type="number" name="tel" id="tel" value="" placeholder="Ingresa tu teléfono" class="sm-form-control"/>
-													</div>
-
-													<div class="w-100"></div>
-
-													<div class="col-12 form-group">
-														<label for="comment">*Comentario</label>
-														<textarea name="comment" cols="58" rows="4" placeholder="Ingresa un comentario..." class="sm-form-control" required></textarea>
-													</div>
-
-													<div class="col-12 form-group">
-														<button type="submit" class="button button-3d m-0">Listo</button>
-													</div>
-												</div>
-											</form>
+												</form>
+											<% } %>
 										</div>
 									</div>
-									<% if (user && user.admin) { %>
+									<% if (current_user && current_user.admin) { %>
 											<div class="tab-content clearfix" id="admin">
 												<div class="row mt-3">
 													<div class="col-8">

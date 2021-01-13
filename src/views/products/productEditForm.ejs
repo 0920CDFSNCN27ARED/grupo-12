@@ -44,23 +44,27 @@
 							<div class="row">
 								<div class="col-6 form-group">
 									<label for="name">Nombre de Producto:</label>
-									<input type="text" name="name" id="name" class="form-control required" value="<%= product.name %>" placeholder="Cerveza IPA">
+									<input type="text" name="name" class="form-control required" value="<%= product.name %>" placeholder="Cerveza IPA">
 								</div>
 								<div class="col-6 form-group">
 									<label for="brewery">Cervería de Origen:</label>
-									<input type="text" name="brewery" id="brewery" class="form-control" value="<%= product.brewery %>" placeholder="Quién fabrica el producto...">
+									<input type="text" name="brewery" class="form-control" value="<%= product.brewery %>" placeholder="Quién fabrica el producto...">
 								</div>
 								<div class="col-6 form-group">
 									<label for="price">Precio:</label>
-									<input type="text" name="price" id="price" class="form-control required" value="<%= product.price %>" placeholder="Ingrese un valor">
+									<input type="text" name="price" class="form-control required" value="<%= product.price %>" placeholder="Ingrese un valor">
 								</div>
 								<div class="col-6 form-group">
 									<label for="discount">Descuento:</label>
-									<input type="text" name="discount" id="discount" class="form-control required" value="<%= product.discount %>" placeholder="Ingrese un valor">
+									<input type="text" name="discount" class="form-control required" value="<%= product.discount %>" placeholder="Ingrese un valor">
 								</div>
-								<div class="col-12 form-group">
+								<div class="col-6 form-group">
+									<label for="stock">Stock:</label>
+									<input type="number" name="stock" class="form-control required" value="<%= product.stock %>" placeholder="Ingrese un valor">
+								</div>
+								<div class="col-6 form-group">
 									<label for="description">Descripción Corta:</label>
-									<input type="text" name="description" id="description" class="form-control required" value="<%= product.description %>" placeholder="Describa brevemente el producto...">
+									<input type="text" name="description" class="form-control required" value="<%= product.description %>" placeholder="Describa brevemente el producto...">
 								</div>
 								<div class="col-6 form-group">
 									<label for="type">Tipo:</label>
@@ -104,7 +108,7 @@
 								<div class="col-6 form-group mt-3">
 									<label for="images">Imagen Producto:</label>
 									<small class="mr-2">Imagen actual</small>
-									<img alt='Image' src='/images/products/<%= product.images.avatar ? product.images.avatar[0].filename : "without-image.png" %>'
+									<img alt='Image' src='/images/products/<%= product.avatar ? product.avatar : "without-image.png" %>'
                                     class='avatar avatar-60 photo avatar-default mb-3' height='60' width='60' />
 									<input type="file" id="avatar" name="avatar" class=" form-control" data-show-preview="true" />
 								</div>
@@ -114,7 +118,7 @@
 									<small class="mr-2">Imagenes actuales</small>
 									<% if(gallery){ %>
 										<% gallery.forEach(image => { %>
-											<img alt='Image' src='/images/products/<%= image.filename %>'
+											<img alt='Image' src='/images/products/<%= image %>'
 											class='avatar avatar-60 photo avatar-default mb-3' height='60' width='60' />
 										<% }); %>
 									<% } else { %>
@@ -144,7 +148,7 @@
 		<script src="/js/components/bs-filestyle.js"></script>
 		<script>
 			jQuery(document).ready( function(){
-				
+
 				let abv = $(".abv");
 				abv.ionRangeSlider({
 				 	prefix: "%",

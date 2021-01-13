@@ -1,11 +1,11 @@
-const getUsers = require('../utils/getUsers');
+// Data
+const getData = require("../utils/getData");
+let users = getData("../data/usersDB.json");
 
 function authenticate(req, res, next) {
     const id = req.session.loggedUserId;
 
     if (!id) return next();
-
-    const users = getUsers();
 
     const loggedUser = users.find((user) => {
         return user.id == id;
@@ -14,9 +14,10 @@ function authenticate(req, res, next) {
     if (!loggedUser) {
         delete req.session.loggedUserId;
         return next();
-    }
+    };
 
     res.locals.current_user = loggedUser;
+    req.session.current_user = loggedUser;
 
     next();
 }

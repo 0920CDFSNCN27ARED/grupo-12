@@ -16,14 +16,55 @@
                         alt="Karken Logo"></a>
             </div><!-- #logo end -->
 
-            <div class="header-misc">
-
                 <!-- #cart panel -->
-                <div id="side-panel-trigger" class="side-panel-trigger"><a href="#"><i
-                            class="button button-small button-rounded button-reveal d-inline-flex tright font-weight-semibold icon-line-shopping-cart"></i></a>
+                <div class="header-misc">
+                    <!-- #cart panel -->
+                    <% if (!current_user) { %>
+                        <div>
+                            <i type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                                class="button button-small header-button button-rounded button-reveal d-inline-flex tright font-weight-semibold icon-user dropdown-toggle dropdown-login"></i>
+                            <div class="dropdown-menu" style="width: 200px;">
+                
+                                <a href="/users/login" id="login-button" class="button button-small button-reveal d-inline-flex tright">
+                                    <i class="fas fa-id-badge"></i><span>Ingresa</span></a>
+                
+                                <a href="/users/register" id="login-button"
+                                    class="button button-small button-reveal d-inline-flex tright">
+                                    <i class="fas fa-address-card"></i><span>Registrate</span></a>
+                            </div>
+                        </div>
+                    <% } %>
+                    <% if (current_user){ %>
+                        <div class="">
+                            <i data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class=" d-inline-flex dropdown-login">
+                                <img src="/images/users/<%= current_user.avatar%>" class="alignleft img-circle img-thumbnail my-0" alt="Avatar"
+                                    style="max-width: 45px;">
+                            </i>
+                            <div class="dropdown-menu" style="width: 200px;">
+                            
+                                <a href="/users/profile" id="login-button" class="button button-small button-reveal d-inline-flex tright">
+                                    <i class="fas fa-user-circle"></i><span>Mi Perfil</a>
+                            
+                                <a href="#" id="login-button"
+                                    class="button button-small button-reveal d-inline-flex tright bg-cart side-panel-trigger">
+                                    <i class="icon-line-shopping-cart"></i><span>Carrito</a>
+                            
+                                <% if (current_user.admin==true) { %>
+                                    <a href="/products/create" id="login-button" class="button button-small button-reveal d-inline-flex tright">
+                                        <i class="icon-beer"></i><span>+ Productos</a>
+                                <% } %>
+                                <form class="m-0" action="/users/destroy-session?_method=DELETE" method="POST">
+                                    <button type="submit" id="login-button"
+                                        class="button button-small button-reveal d-inline-flex tright bg-logout">
+                                        <i class="icon-line-arrow-right"></i><span>Cerrar Sesión</span></button>
+                                </form>
+                            </div>
+                        </div>
+                    <% } %>
                 </div>
+               
+                
 
-            </div>
 
             <div id="primary-menu-trigger">
                 <svg class="svg-trigger" viewBox="0 0 100 100">

@@ -5,6 +5,7 @@ const path = require("path");
 const productsController = require("../controllers/productsController");
 const { check, validationResult, body } = require("express-validator");
 const assertIsAdmin = require('../middlewares/assert-is-admin');
+const assertIsSeller = require('../middlewares/assert-is-seller');
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -37,12 +38,18 @@ imagesUpload = upload.fields([{ name: 'avatar', maxCount: 1 }, { name: 'gallery'
 /**** PRODUCTS ROUTES ****/
 
 /* GET product detail page. */
-router.get('/:id/productDetails', productsController.details);
+router.get('/:id/productDetails', productsController.getDetails);
 
-/* Create product page. */
-router.get('/create', assertIsAdmin,productsController.getCreate);
+// GET Create product page
+router.get(
+    '/create', 
+    assertIsSeller,
+    productsController.getCreate);
+
+// POST Create product page    
 router.post(
     "/create",
+    assertIsSeller,
     imagesUpload,
     [
         check("name", "El nombre no puede estar vacio").notEmpty(),
@@ -61,10 +68,16 @@ router.post(
     productsController.postCreate
 );
 
-/* Edit product page. */
-router.get('/:id/edit', assertIsAdmin, productsController.getEdit);
+// GET Edit product page
+router.get(
+    '/:id/edit', 
+    assertIsSeller, 
+    productsController.getEdit);
+
+// PUT Edit product page
 router.put(
     "/:id/edit",
+    assertIsSeller,
     imagesUpload,
     [
         check("name", "El nombre no puede estar vacio").notEmpty(),
@@ -83,18 +96,26 @@ router.put(
     productsController.putEdit
 );
 
-/* Delete one product */ 
-router.delete('/delete/:id', assertIsAdmin, productsController.destroy);
+// DELETE one product 
+router.delete(
+    '/delete/:id', 
+    assertIsSeller, 
+    productsController.destroy);
 
 /**** PRODUCT COMMENTS ROUTES ****/
-router.post("/:id/productDetails",
-    // [
-    //     check("autor", "El nombre no puede estar vacio").notEmpty(),
-    //     check("email", "El precio no puede estar vacio").notEmpty(),
-    //     check("comment", "El descuento no puede estar vacio").notEmpty(),
-    // ],
+
+// POST comments
+router.post(
+    "/:id/productDetails",
+    [
+        check("comment", "El descuento no puede estar vacio").notEmpty(),
+    ],
     productsController.postComment
 );
-router.delete('/deleteComment/:comment_id', assertIsAdmin, productsController.destroyComment);
+
+// DELETE comments
+router.delete(
+    '/deleteComment/:id', 
+    productsController.destroyComment);
 
 module.exports = router;

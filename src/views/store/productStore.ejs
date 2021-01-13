@@ -2,12 +2,12 @@
     <div class="grid-inner">
         <div class="portfolio-image br-5">
             <a href="#">
-                <img src="/images/products/<%= product.images.avatar ? product.images.avatar[0].filename : "without-image.png" %>" alt="<%= product.name %>">
+                <img src="/images/products/<%= product.avatar ? product.avatar : "without-image.png" %>" alt="<%= product.name %>">
             </a>
             <!-- Overlay: Start -->
             <div class="bg-overlay">
                 <div class="bg-overlay-content dark" data-hover-animate="fadeIn">
-                    <a href="/images/products/<%= product.images.avatar ? product.images.avatar[0].filename : "without-image.png" %>" class="overlay-trigger-icon bg-light text-dark"
+                    <a href="/images/products/<%= product.avatar ? product.avatar : "without-image.png" %>" class="overlay-trigger-icon bg-light text-dark"
                         data-hover-animate="fadeInDownSmall" data-hover-animate-out="fadeOutUpSmall"
                         data-hover-speed="350" data-lightbox="image" title="<%= product.name %>"><i
                             class="icon-line-search"></i></a>

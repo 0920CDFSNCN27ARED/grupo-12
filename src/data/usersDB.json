@@ -1,67 +1,6 @@
 [
     {
         "id": 1,
-        "name": "Engelbert",
-        "userName": "egrieg0",
-        "email": "ethay0@unicef.org",
-        "password": "2sA6IH2FJm4W",
-        "avatar": "default-user01",
-        "admin": false,
-        "status": "active"
-    },
-    {
-        "id": 2,
-        "name": "Rosamund",
-        "userName": "rbrislane1",
-        "email": "rmaccarter1@about.me",
-        "password": "bXx3ZzC9",
-        "avatar": "avatar04.jpg",
-        "admin": false,
-        "status": "active"
-    },
-    {
-        "id": 3,
-        "name": "Gradeigh",
-        "userName": "gharteley2",
-        "email": "gbulley2@sourceforge.net",
-        "password": "Xcx5VqdGfIY",
-        "avatar": "avatar03.jpg",
-        "admin": false,
-        "status": "active"
-    },
-    {
-        "id": 4,
-        "name": "Sioux",
-        "userName": "scampe3",
-        "email": "sdulake3@google.pl",
-        "password": "IDKE2oOxGQ",
-        "avatar": "avatar02.jpg",
-        "admin": true,
-        "status": "active"
-    },
-    {
-        "id": 5,
-        "name": "Taylor",
-        "userName": "tcregeen4",
-        "email": "tskipping4@wunderground.com",
-        "password": "eMeGVga",
-        "avatar": "avatar01.jpg",
-        "admin": false,
-        "status": "active"
-    },
-    {
-        "id": 6,
-        "name": "Santiago Nihany",
-        "userName": "santi.nihany",
-        "phone": "+542213548021",
-        "email": "santi.nihany@gmail.com",
-        "password": "$2b$10$oWq5xxHVDbjucn6Vfj46GeJAi3jfhEDlFcIzDuh2mK3PZMYcgVQNm",
-        "avatar": "default-avatar.png",
-        "admin": true,
-        "status": "active"
-    },
-    {
-        "id": 7,
         "name": "Esteban Burgos",
         "userName": "mercadosoft",
         "phone": "+541126790610",
@@ -69,6 +8,29 @@
         "password": "$2b$10$iVndD6XNtV89tpz.nRx6SuZna8My/PZMPbiXEO9mQ.HZoCmN92BSK",
         "avatar": "avatar-1610394886669.jpeg",
         "admin": true,
-        "status": "active"
+        "status": "active",
+        "role": "seller",
+        "shopId": 1,
+        "bio": "Me gusta la gente",
+        "facebook": "https://www.facebook.com/",
+        "instagram": "https://www.instagram.com/",
+        "twitter": ""
+    },
+    {
+        "id": 2,
+        "name": "German Lopez Sunino",
+        "userName": "german.lo",
+        "phone": "+5401123394859",
+        "email": "german@lopez.com",
+        "password": "$2b$10$IP64fBK2CHwt7PIjlAmquObIh/vh78DKb5nqKEfY/r/orvdCh8//u",
+        "avatar": "avatar-1610548711024.png",
+        "admin": false,
+        "status": "active",
+        "shopId": null,
+        "role": "buyer",
+        "bio": "Me gusta la gente",
+        "facebook": "https://www.facebook.com/",
+        "instagram": "https://www.instagram.com/",
+        "twitter": ""
     }
 ]

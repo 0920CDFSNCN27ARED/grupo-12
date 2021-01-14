@@ -45,18 +45,22 @@
                                 <a href="/users/profile" id="login-button" class="button button-small button-reveal d-inline-flex tright">
                                     <i class="fas fa-user-circle"></i><span>Mi Perfil</a>
                             
-                                <a href="#" id="login-button"
-                                    class="button button-small button-reveal d-inline-flex tright bg-cart side-panel-trigger">
-                                    <i class="icon-line-shopping-cart"></i><span>Carrito</a>
+                                <% if (current_user.role == "seller" && current_user.shopId != null) { %>
+                                    <a href="/shops" id="login-button" class="button button-small button-reveal d-inline-flex tright">
+                                        <i class="icon-home"></i><span>Mi Comercio</a>
+                                <% } %>
                             
-                                <% if (current_user.admin==true) { %>
+                                <% if (current_user.admin == true) { %>
                                     <a href="/products/create" id="login-button" class="button button-small button-reveal d-inline-flex tright">
                                         <i class="icon-beer"></i><span>+ Productos</a>
                                 <% } %>
+
+                                <a href="#" id="login-button" class="button button-small button-reveal d-inline-flex tright bg-cart side-panel-trigger">
+                                    <i class="icon-line-shopping-cart"></i><span>Carrito</a>
+
                                 <form class="m-0" action="/users/destroy-session?_method=DELETE" method="POST">
-                                    <button type="submit" id="login-button"
-                                        class="button button-small button-reveal d-inline-flex tright bg-logout">
-                                        <i class="icon-line-arrow-right"></i><span>Cerrar Sesión</span></button>
+                                    <button type="submit" id="login-button" class="button button-small button-reveal d-inline-flex tright bg-logout">
+                                    <i class="icon-line-arrow-right"></i><span>Cerrar Sesión</span></button>
                                 </form>
                             </div>
                         </div>

@@ -1,7 +1,7 @@
 [
     {
         "id": 1,
-        "name": "Esteban Burgos",
+        "name": "Esteban Burgos Edgardo",
         "userName": "mercadosoft",
         "phone": "+541126790610",
         "email": "mercadosoftoficial@gmail.com",
@@ -9,12 +9,12 @@
         "avatar": "avatar-1610394886669.jpeg",
         "admin": true,
         "status": "active",
-        "role": "seller",
         "shopId": 1,
+        "role": "seller",
         "bio": "Me gusta la gente",
         "facebook": "https://www.facebook.com/",
         "instagram": "https://www.instagram.com/",
-        "twitter": ""
+        "twitter": "https://www.twitter.com/"
     },
     {
         "id": 2,

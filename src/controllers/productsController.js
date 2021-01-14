@@ -1,6 +1,4 @@
 // Require
-const fs = require("fs");
-const path = require("path");
 const { check, validationResult, body } = require("express-validator");
 
 // Utils
@@ -8,7 +6,6 @@ const getData = require("../utils/getData");
 const saveData = require("../utils/saveData");
 const updateData = require("../utils/updateData");
 const deleteData = require("../utils/deleteData");
-const getUserData = require("../utils/getCurrentUserData");
 
 // Data
 const products = getData("../data/productsDB.json");
@@ -222,6 +219,7 @@ const productsController = {
             let newComment = {
                 id: 0,
                 userId: current_user.id,
+                shopId: current_user.shopId,
                 productId: parseInt(req.params.id),
                 author: current_user.name,
                 avatar: current_user.avatar,

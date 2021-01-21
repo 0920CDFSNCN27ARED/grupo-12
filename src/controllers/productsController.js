@@ -144,6 +144,9 @@ const productsController = {
 
             let avatar = req.files.avatar;
             if (req.files.avatar != null) {
+                // Delete old image
+                fs.unlinkSync(__dirname + '/../public/images/products/'+ products[findIndex].avatar)
+                // Replace old image
                 avatar = req.files.avatar[0].filename;
             } else {
                 avatar = products[findIndex].avatar;
@@ -155,10 +158,17 @@ const productsController = {
                 for (let i = 0; i < array.length; i++) {
                     const image = array[i].filename;
                     gallery.push(image);  
-                }
+                };
+
+                //Delete old gallery
+                let oldGallery = products[findIndex].gallery;
+                for (let i = 0; i < oldGallery.length; i++) {
+                    const element = oldGallery[i];
+                    fs.unlinkSync(__dirname + '/../public/images/products/'+ element)
+                };
             } else {
                 gallery = products[findIndex].gallery;
-            }
+            };
 
             let ibu = req.body.ibu == "0" ? product.ibu : req.body.ibu;
             let abv = req.body.abv == "0" ? product.abv : req.body.abv;

@@ -69,24 +69,19 @@
 								<div class="col-6 form-group">
 									<label for="type">Tipo:</label>
 									<select class="form-control" name="type" id="type">
-										<option selected disabled >Seleccione una opción</option>
-										<option value="lager">Lager</option>
-										<option value="ale">Ale</option>
+										<% types.forEach((type) => {%>
+											<option value="<%=type.name %> "><%=type.name %> </option>
+										<% });%> 
+										
+									
 									</select>
 								</div>
 								<div class="col-6 form-group">
 									<label for="category">Categoría:</label>
 									<select class="form-control" name="category" id="category">
-										<option selected disabled >Seleccione una opción</option>
-										<option value="stout">Stout</option>
-										<option value="pilsen">Pilsen</option>
-										<option value="porter">Porter</option>
-										<option value="pale-ale">Pale Ale</option>
-										<option value="german-bock">German Bock</option>
-										<option value="apa">Apa</option>
-										<option value="ipa">Ipa</option>
-										<option value="bunkel">Bunkel</option>
-										<option value="american-lager">American Lager</option>
+										<% categories.forEach((category) => {%>
+											<option value="<%=category.name %> "><%=category.name %></option>
+										<% }); %> 
 									</select>
 								</div>
 								

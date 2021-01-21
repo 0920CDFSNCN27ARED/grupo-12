@@ -32,5 +32,22 @@
         "facebook": "https://www.facebook.com/",
         "instagram": "https://www.instagram.com/",
         "twitter": ""
+    },
+    {
+        "id": 3,
+        "name": "juan",
+        "userName": "juan",
+        "phone": "+541140912002",
+        "email": "rodriguezgreiserjuan@gmail.com",
+        "password": "$2b$10$P.phI41p.eJFdsl3aF4tnuqQpPyleCY9yzh93jlmysoQnf/Bi0eVK",
+        "avatar": "default-avatar.png",
+        "admin": true,
+        "shopId": 1,
+        "role": "seller",
+        "status": "active",
+        "bio": "",
+        "facebook": "",
+        "instagram": "",
+        "twitter": ""
     }
 ]

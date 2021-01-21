@@ -10,6 +10,9 @@ const deleteData = require("../utils/deleteData");
 // Data
 const products = getData("../data/productsDB.json");
 const comments = getData("../data/commentsDB.json");
+const categories = getData("../data/categoriesDB.json");
+const types = getData("../data/typesDB.json");
+
 
 // Controller
 const productsController = {
@@ -44,7 +47,7 @@ const productsController = {
 
     // GET Create Product Form
     getCreate: function (req, res, next) {
-        res.render("products/productCreateForm");
+        res.render("products/productCreateForm", {categories,types});
     },
 
     // POST Create Product Form 

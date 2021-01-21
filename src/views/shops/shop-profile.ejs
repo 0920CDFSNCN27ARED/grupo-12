@@ -32,12 +32,13 @@
 	
 					<div class="col-md-9">
 						
-							<img src= "/images/shops/<%= shop.avatar%>" class="alignleft img-circle img-thumbnail my-0" alt="Avatar"
+						<img src= "/images/shops/<%= shop.avatar%>" class="alignleft img-circle img-thumbnail my-0" alt="Avatar"
 							style="max-width: 84px;">
 	
 						<div class="heading-block border-0">
 							<h3><%= shop.name %></h3>
-							<span class="m-0"><%= shop.email %></span>
+							<small><span class="m-0"><%= shop.email %></span></small><br>
+							<small class="m-0"><span class="badge badge-pill badge-warning">Perfil Comercial</span></small>
 						</div>
 						
 						<div class="clear"></div>
@@ -50,10 +51,10 @@
 	
 									<ul class="tab-nav clearfix">
 										<% if( shop.status == "active" && current_user.shopId == shop.id ) { %>
-											<li><a href="#tab-products"><i class="icon-box"></i> Productos</a></li>
-											<li><a href="#tab-comments"><i class="icon-reply"></i> Comentarios</a></li>
-											<li><a href="#tab-sales"><i class="icon-credit-cards"></i> Ventas </a></li>
-											<li><a href="#tab-data"><i class="icon-pencil2"></i> Editar Datos</a></li>
+											<li><a href="#tab-products"><i class="icon-box"></i> Administrar Productos</a></li>
+											<li><a href="#tab-comments"><i class="icon-reply"></i> Comentarios del Público</a></li>
+											<li><a href="#tab-sales"><i class="icon-credit-cards"></i> Ventas</a></li>
+											<li><a href="#tab-data"><i class="icon-home"></i> Editar Negocio</a></li>
 										<% } %>
 									</ul>
 	
@@ -108,7 +109,7 @@
 											</div>
 
 											<div class="tab-content clearfix" id="tab-products">
-												<p>Administre todos sus productos</p>
+												<a href="/products/create" class="btn btn-warning float-right mb-5">Publicar Producto</a>
 												<div class="table-responsive">
 													<table id="datatable2" class="table table-striped table-bordered" cellspacing="0" width="100%">
 														<thead>
@@ -255,7 +256,7 @@
 					<div class="col-md-3">
 						
 						<div class="fancy-title topmargin title-border">
-							<h4>Información</h4>
+							<h4>Datos de contacto</h4>
 						</div>
 						<p>
 							Nombre: <%= shop.name %></br>
@@ -265,13 +266,13 @@
 
 						<% if(shop.bio != "") {%> 
 							<div class="fancy-title topmargin title-border">
-								<h4>Sobre Mí</h4>
+								<h4>Sobre el negocio</h4>
 							</div>
 							<p><%= shop.bio %></p>
 						<% } %>
 
 						<div class="fancy-title topmargin title-border">
-							<h4>Perfiles Conectados</h4>
+							<h4>Redes comerciales</h4>
 						</div>
 						
 						<% if(shop.facebook !="" ) {%>

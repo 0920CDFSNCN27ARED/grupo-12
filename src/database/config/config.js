@@ -2,9 +2,13 @@ module.exports = {
   "development": {
     "username": "root",
     "password": "root",
-    "database": "artis_development",
-    "host": "127.0.0.1",
-    "dialect": "mysql"
+    "database": "artis_db",
+    "host": "localhost",
+    "dialect": "mysql",
+    "port": "8889",
+    "define": {
+      "underscored": true,
+    }
   },
   "test": {
     "username": "root",

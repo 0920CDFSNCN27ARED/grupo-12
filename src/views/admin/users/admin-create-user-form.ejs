@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="es">
+
+<head>
+	<%- include('../layout/head', { title:"Perfil de Negocio" }) %>
+	<link rel="stylesheet" href="/css/components/bs-datatable.css" type="text/css" />
+</head>
+
+<body class="stretched">
+
+	<!--Cart Panel -->
+	<%- include('../layout/panelCart') %>
+
+	<!-- Header -->
+	<header id="header" class="dark" data-sticky-class="dark-color" data-sticky-shrink-offset="0"
+		data-mobile-sticky="true">
+		<%- include('../layout/header') %>
+	</header>
+
+	<!-- Content -->
+	<section id="dark-content" class="dark noborder parallax pt-3">
+		<div class="content-wrap">
+			<div class="container clearfix">
+				<div class="row clearfix">
+					<div class="col-md-12">
+						
+						<img src= "/images/users/<%= admin.avatar%>" class="alignleft img-circle img-thumbnail my-0" alt="Avatar"
+							style="max-width: 84px;">
+	
+						<div class="heading-block border-0">
+							<h3><%= admin.name %></h3>
+							<small class="m-0"><%= admin.email %></small><br>
+							<small class="m-0"><span class="badge badge-pill badge-warning">Administrador</span></small>
+						</div>
+						
+						<div class="clear"></div>
+	
+						<div class="row clearfix">
+	
+							<div class="col-lg-12">
+	
+								<div class="tabs tabs-alt clearfix" id="tabs-profile">
+	
+									<ul class="tab-nav clearfix">
+										<li><a href="#tab-user"><i class="icon-user"></i> Crear Usuario</a></li>
+									</ul>
+	
+									<div class="tab-container">
+										
+										<% if(typeof errors !='undefined' ) { %>
+											<div class="col-12">
+												<ul>
+													<% errors.forEach(error=> { %>
+														<li class="text-danger">
+															<%= error.msg %>
+														</li>
+														<% });%>
+												</ul>
+											</div>
+										<% } %>
+										<div class="tab-content clearfix" id="tab-user">
+											<form action="/admin/create-user-data" method="POST" enctype="multipart/form-data">
+												<div class="row mt-5 mb-3">
+													<div class="col-lg-6 col-md-6 form-group">
+														<label for="name">* Nombre Completo:</label>
+														<input type="text" name="name" value="" class="form-control" />
+													</div>
+													<div class="col-lg-6 col-md-6 form-group">
+														<label for="userName">* Nombre de Usuario:</label>
+														<input type="text" name="userName" value="" class="form-control" />
+													</div>
+													<div class="w-100"></div>
+													<div class="col-lg-6 col-md-6 form-group">
+														<label for="avatar">Avatar:</label>
+														<input type="file" name="avatar" value="" class="form-control" />
+													</div>
+													<div class="col-lg-6 col-md-6 form-group">
+														<label for="email">* Email:</label>
+														<input type="email" name="email" value="" class="form-control" />
+													</div>
+													<div class="col-lg-6 col-md-6 form-group">
+														<label for="phone">Teléfono:</label>
+														<input type="tel" name="phone" value="" class="form-control" />
+													</div>
+													<div class="divider"><i class="icon-circle"></i></div>
+													<div class="col-md-6">
+														<div class="form-group">
+															<label for="new_password">Ingresar Nueva Contraseña</label>
+															<div class="input-group input-group-merge form-password-toggle">
+																<input class="form-control form-control-merge" type="password" name="new_password"
+																	placeholder="Ingrese la nueva contraseña" />
+																<div class="input-group-append"><span class="input-group-text cursor-pointer"><i
+																			class="icon-eye"></i></span></div>
+															</div>
+														</div>
+													
+													</div>
+													<div class="col-md-6">
+														<div class="form-group">
+															<label for="confirmation">Confirmar Nueva Contraseña</label>
+															<div class="input-group input-group-merge form-password-toggle">
+																<input class="form-control form-control-merge" type="password" name="confirmation"
+																	placeholder="Confirme su nueva contraseña" />
+																<div class="input-group-append"><span class="input-group-text cursor-pointer"><i
+																			class="icon-eye"></i></span></div>
+															</div>
+														</div>
+													</div>
+													<div class="divider"><i class="icon-circle"></i></div>
+													<div class="col-lg-6 col-md-6 form-group">
+														<label for="bio">Sobre Mí:</label>
+														<input type="text" name="bio" value="" placeholder="Escribe algo sobre ti..."
+															class="form-control" />
+													</div>
+													<div class="col-lg-6 col-md-6 form-group">
+														<label for="twitter">Twitter</label>
+														<div class="input-group input-group-merge">
+															<div class="input-group-prepend">
+																<span class="input-group-text" id="basic-addon3">
+																	<i class="icon-twitter" class="font-medium-2"></i>
+																</span>
+															</div>
+															<input name="twitter" type="text" class="form-control" value=""
+																placeholder="https://www.twitter.com/su-usuario" />
+														</div>
+													</div>
+													<div class="col-lg-6 col-md-6 form-group">
+														<label for="facebook">Facebook</label>
+														<div class="input-group input-group-merge">
+															<div class="input-group-prepend">
+																<span class="input-group-text" id="basic-addon4">
+																	<i class="icon-facebook" class="font-medium-2"></i>
+																</span>
+															</div>
+															<input name="facebook" type="text" class="form-control" value=""
+																placeholder="https://www.facebook.com/su-usuario" />
+														</div>
+													</div>
+													<div class="col-lg-6 col-md-6 form-group">
+														<label for="instagram">Instagram</label>
+														<div class="input-group input-group-merge">
+															<div class="input-group-prepend">
+																<span class="input-group-text" id="basic-addon5">
+																	<i class="icon-instagram" class="font-medium-2"></i>
+																</span>
+															</div>
+															<input name="instagram" type="text" class="form-control" value=""
+																placeholder="https://www.instagram.com/su-usuario" />
+														</div>
+													</div>
+													<div class="divider"></div>
+													<div class="col-lg-12 col-md-12 form-group mt-3">
+														<a href="/admin" class="btn btn-dark pl-5 pr-5 mr-2">Volver</a>
+														<button class="btn btn-warning" type="submit">Crear Usuario</button>
+													</div>
+												</div>
+											</form>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="w-100 line d-block d-md-none"></div>
+				</div>
+			</div>
+		</div>
+	</section><!-- #content end -->
+
+	
+
+	<!-- Footer -->
+	<%- include('../layout/footer') %>
+	<script src="/js/components/bs-datatable.js"></script>
+	<script>
+		$(document).ready(function () {
+				$('#datatable1').dataTable();
+				$('#datatable2').dataTable();
+		});
+
+		$('.form-password-toggle .input-group-text').on('click', function (e) {
+			e.preventDefault();
+			var $this = $(this),
+				inputGroupText = $this.closest('.form-password-toggle'),
+				formPasswordToggleIcon = $this,
+				formPasswordToggleInput = inputGroupText.find('input');
+
+			if (formPasswordToggleInput.attr('type') === 'text') {
+				formPasswordToggleInput.attr('type', 'password');
+				if (feather) {
+					formPasswordToggleIcon.find('svg').replaceWith(feather.icons['eye'].toSvg({ class: 'font-small-4' }));
+				}
+			} else if (formPasswordToggleInput.attr('type') === 'password') {
+				formPasswordToggleInput.attr('type', 'text');
+				if (feather) {
+					formPasswordToggleIcon.find('svg').replaceWith(feather.icons['eye-off'].toSvg({ class: 'font-small-4' }));
+				}
+			}
+		});
+	</script>
+
+</body>
+
+</html>

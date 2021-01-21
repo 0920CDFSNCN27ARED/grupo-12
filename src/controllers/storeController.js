@@ -29,9 +29,33 @@ const storeController = {
     cart: function(req, res) {
         res.render('store/productCart');
     },
-    checkout: function(req, res) {
+    getCheckout: function(req, res) {
         res.render('store/checkout');
-    }
+    },
+    postCheckout:function(req, res) {
+        let errors = validationResult(req);
+        
+        if (errors.isEmpty()) {
+            const newId = orders.length != 0 ? orders[orders.length - 1].id + 1 : 1;
+            let newOrder={
+                id: newId,
+                first_name: req.body.first_name,
+                last_name: req.body.last_name,
+                DNI: req.body.dni,
+                country: req.body.country,
+                province: req.body.province,
+                city: req.body.city,
+                postal_code: req.body.postal_code,
+                adress: req.body.adress,
+                phone: req.body.phone,
+                email: req.body.email,
+            }
+            saveData(orders, newOrder, "../data/ordersDB.json");
+            res.redirect("/")
+        } else {
+            res.render("store/checkout", { errors: errors.errors });
+        }
+    },
 }
 
 module.exports = storeController;

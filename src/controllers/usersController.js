@@ -74,6 +74,8 @@ const usersController = {
                 avatar: avatar,
                 admin: false,
                 status: "active",
+                shopId: null,
+                role:"buyer",
                 bio: "",
                 facebook: "",
                 instagram: "",

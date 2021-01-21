@@ -31,7 +31,7 @@
 							<div class="col-md-6">
 								<div class="card">
 									<div class="card-body">
-										Ya eres cliente? <a href="/users/login">Toca aquí para registrarte</a>
+										Ya eres cliente? <a href="/users/login">Toca aquí para iniciar sesión</a>
 									</div>
 								</div>
 							</div>
@@ -49,49 +49,69 @@
 								<div>
 									<h3 class="mb-0">Dirección de Facturación</h3><small>Los campos como * son obligatorios.</small>
 
-									<form id="billing-form" name="billing-form" class="row  mt-4" action="#" method="post">
+									<form id="billing-form" name="billing-form" class="row  mt-4" action="/store/checkout" method="POST">
 
 										<div class="col-md-6 form-group">
-											<label for="billing-form-name">*Nombre:</label>
-											<input type="text" id="billing-form-name" name="billing-form-name" value="" class="sm-form-control" />
+											<label for="first_name">*Nombre:</label>
+											<input type="text" id="first_name" name="first_name" value="<%= current_user ? current_user.name : "" %> " class="sm-form-control" />
 										</div>
-
-										<div class="col-md-6 form-group">
-											<label for="billing-form-lname">*Apellido:</label>
-											<input type="text" id="billing-form-lname" name="billing-form-lname" value="" class="sm-form-control" />
-										</div>
+										<% if (!current_user) { %>
+											<div class="col-md-6 form-group">
+												<label for="billing-form-lname">*Apellido:</label>
+												<input type="text" id="billing-form-lname" name="last_name" value="" class="sm-form-control" />
+											</div>
+										<% } %>
 
 										<div class="w-100"></div>
 
 										<div class="col-12 form-group">
-											<label for="billing-form-companyid">*CUIT / DNI:</label>
-											<input type="text" id="billing-form-companyid" name="billing-form-companyid" value="" class="sm-form-control" />
+											<label for="billing-form-companyid">*DNI:</label>
+											<input type="text" id="billing-form-companyid" name="dni" value="" class="sm-form-control" />
+										</div>
+
+										<div class="col-12 form-group">
+											<label for="country">*País:</label>
+											<select type="text" id="country" name="country" value="" class="sm-form-control" >
+												<option value="1">Argentina</option>
+												<option value="2">Brasil</option>
+											</select>
+										</div>
+
+										<div class="col-12 form-group">
+											<label for="province">*Provincia</label>
+											<input type="text" id="province" name="province" value="" class="sm-form-control" />
+										</div>
+
+										<div class="col-12 form-group">
+											<label for="city">*Ciudad</label>
+											<input type="text" id="city" name="city" value="" class="sm-form-control" />
+										</div>
+
+										<div class="col-12 form-group">
+											<label for="postal-code">*Código postal</label>
+											<input type="text" id="postal-code" name="postal_code" value="" class="sm-form-control" />
 										</div>
 
 										<div class="col-12 form-group">
 											<label for="billing-form-address">*Dirección:</label>
-											<input type="text" id="billing-form-address" name="billing-form-address" value="" class="sm-form-control" />
-										</div>
-
-										<div class="col-12 form-group">
-											<input type="text" id="billing-form-address2" name="billing-form-adress" value="" class="sm-form-control" />
-										</div>
-
-										<div class="col-12 form-group">
-											<label for="billing-form-city">*Provincia / Ciudad</label>
-											<input type="text" id="billing-form-city" name="billing-form-city" value="" class="sm-form-control" />
+											<input type="text" id="billing-form-address" name="address" value="" class="sm-form-control" />
 										</div>
 
 										<div class="col-md-6 form-group">
 											<label for="billing-form-email">*Email:</label>
-											<input type="email" id="billing-form-email" name="billing-form-email" value="" class="sm-form-control" />
+											<input type="email" id="billing-form-email" name="email" value="" class="sm-form-control" />
 										</div>
 
 										<div class="col-md-6 form-group">
 											<label for="billing-form-phone">Teléfono:</label>
-											<input type="text" id="billing-form-phone" name="billing-form-phone" value="" class="sm-form-control" />
+											<input type="text" id="billing-form-phone" name="phone" value="" class="sm-form-control" />
 										</div>
 
+										<div class="form-check form-check-inline" style="width:100%; margin: 10px 0px 10px 16px;">
+											<input class="form-check-input" type="checkbox" id="save-data" name="save-data"value="option2">
+											<label class="form-check-label nott ls0 mb-0 font-weight-semibold" for="save-data" style="font-size: 14px;">Guardar datos de envío</label>
+										</div>
+										
 										<div class="accordion clearfix" data-state="closed">
 											<div class="accordion-header">
 												<div class="accordion-icon">
@@ -129,35 +149,42 @@
 
 											<form id="shipping-form" name="shipping-form" class="row mt-4" action="#" method="post">
 
+												<div class="col-12 form-group">
+													<label for="country">*País:</label>
+													<select type="text" id="country" name="country" value="" class="sm-form-control" >
+														<option value="1">Argentina</option>
+														<option value="2">Brasil</option>
+													</select>
+												</div>
+		
+												<div class="col-12 form-group">
+													<label for="province">*Provincia</label>
+													<input type="text" id="province" name="province" value="" class="sm-form-control" />
+												</div>
+		
+												<div class="col-12 form-group">
+													<label for="city">*Ciudad</label>
+													<input type="text" id="city" name="city" value="" class="sm-form-control" />
+												</div>
+		
+												<div class="col-12 form-group">
+													<label for="postal-code">*Código postal</label>
+													<input type="text" id="postal-code" name="postal_code" value="" class="sm-form-control" />
+												</div>
+		
+												<div class="col-12 form-group">
+													<label for="billing-form-address">*Dirección:</label>
+													<input type="text" id="billing-form-address" name="address" value="" class="sm-form-control" />
+												</div>
+		
 												<div class="col-md-6 form-group">
-													<label for="shipping-form-name">*Nombre:</label>
-													<input type="text" id="shipping-form-name" name="shipping-form-name" value="" class="sm-form-control" />
+													<label for="billing-form-email">*Email:</label>
+													<input type="email" id="billing-form-email" name="email" value="" class="sm-form-control" />
 												</div>
-
+		
 												<div class="col-md-6 form-group">
-													<label for="shipping-form-lname">*Apellido:</label>
-													<input type="text" id="shipping-form-lname" name="shipping-form-lname" value="" class="sm-form-control" />
-												</div>
-
-												<div class="w-100"></div>
-
-												<div class="col-12 form-group">
-													<label for="shipping-form-companyname">*CUIT / DNI:</label>
-													<input type="text" id="shipping-form-companyid" name="shipping-form-companyid" value="" class="sm-form-control" />
-												</div>
-
-												<div class="col-12 form-group">
-													<label for="shipping-form-address">*Dirección:</label>
-													<input type="text" id="shipping-form-address" name="shipping-form-address" value="" class="sm-form-control" />
-												</div>
-
-												<div class="col-12 form-group">
-													<input type="text" id="shipping-form-address2" name="shipping-form-adress" value="" class="sm-form-control" />
-												</div>
-
-												<div class="col-12 form-group">
-													<label for="shipping-form-city">*Provincia / Ciudad</label>
-													<input type="text" id="shipping-form-city" name="shipping-form-city" value="" class="sm-form-control" />
+													<label for="billing-form-phone">Teléfono:</label>
+													<input type="text" id="billing-form-phone" name="phone" value="" class="sm-form-control" />
 												</div>
 
 												<div class="col-12 form-group">
@@ -270,7 +297,9 @@
 													</td>
 
 													<td class="cart-product-name">
-														<span class="amount">Gratuito</span>
+														<input type="radio" name="address"> A mi domicilio <a style="color:rgb(255 196 39)"href="#">Calcular</a><br>
+														<input type="radio" name="address"> Retirar por el correo más cercano <br>
+														<input type="radio" name="address"> Arreglar con el vendedor<br>
 													</td>
 												</tr>
 												<tr class="cart_item">

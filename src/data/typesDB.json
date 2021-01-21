@@ -1,0 +1,12 @@
+[
+    {
+         "id": 1,
+        "name": "Lager",
+        "description": "Cerveza de baja fermentación, son refrescantes y poseen un color rubio"
+    },
+    {
+         "id": 2,
+        "name": "Ale",
+        "description": "Cerveza de alta fermentación, "
+    }
+]

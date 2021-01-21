@@ -1,0 +1,57 @@
+[
+    {
+        "id": 1,
+        "name": "Stout",
+        "description": "Cerveza negra, espesa, con un gusto fuerte ",
+        "count": 999
+    },
+    {
+        "id": 2,
+        "name": "Pilsen",
+        "description": "Cerveza rubia, ligera,  ",
+        "count": 999
+    },
+    {
+        "id": 3,
+        "name": "Porter",
+        "description": "Cerveza negra, con un sabor moderado, complejo y equilibrado ",
+        "count": 999
+    },
+    {
+        "id": 4,
+        "name": "Pale Ale",
+        "description": "Cerveza rubia, amarga, caracterizada por tener un alto porcentaje de alchool ",
+        "count": 999
+    },
+    {
+        "id": 5,
+        "name": "German Bock",
+        "description": "Cerveza fuerte, de color oscuro",
+        "count": 999
+    },
+    {
+        "id": 6,
+        "name": "Apa",
+        "description": "Cerveza de cuerpo ligero, refrescante, muy equilibrada",
+        "count": 999
+    },
+    {
+        "id": 7,
+        "name": "Ipa",
+        "description": "Cerveza rubia, con amargor y aroma intenso",
+        "count": 999
+    },
+    {
+        "id": 8,
+        "name": "Dunkel",
+        "description": "Cerveza oscura",
+        "count": 999
+    },
+    {
+        "id": 9,
+        "name": "American Lager",
+        "description": "Cerveza rubia, refrescante, con un sabor seco y fresco ",
+        "count": 999
+    }
+    
+]

@@ -32,5 +32,39 @@
         "facebook": "https://www.facebook.com/",
         "instagram": "https://www.instagram.com/",
         "twitter": ""
+    },
+    {
+        "id": 3,
+        "name": "juan",
+        "userName": "juan",
+        "phone": "+541140912002",
+        "email": "rodriguezgreiserjuan@gmail.com",
+        "password": "$2b$10$P.phI41p.eJFdsl3aF4tnuqQpPyleCY9yzh93jlmysoQnf/Bi0eVK",
+        "avatar": "default-avatar.png",
+        "admin": true,
+        "shopId": 1,
+        "role": "seller",
+        "status": "active",
+        "bio": "",
+        "facebook": "",
+        "instagram": "",
+        "twitter": ""
+    },
+    {
+        "id": 4,
+        "name": "Santiago Nihany",
+        "userName": "santi.nihany",
+        "phone": "+542213548021",
+        "email": "santi.nihany@gmail.com",
+        "password": "$2b$10$g6GJ2JYQFDyZn1ilIqio2egxGoyGGymflkx5LXmy0ZpMSp1EFxf.i",
+        "avatar": "default-avatar.png",
+        "admin": false,
+        "status": "active",
+        "shopId": 1,
+        "role": "seller",
+        "bio": "",
+        "facebook": "",
+        "instagram": "",
+        "twitter": ""
     }
 ]

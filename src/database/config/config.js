@@ -3,11 +3,11 @@ module.exports = {
     "username": "root",
     "password": "root",
     "database": "artis_db",
-    "host": "localhost",
+    "host": "127.0.0.1",
     "dialect": "mysql",
     "port": "8889",
     "define": {
-      "underscored": true,
+      //"underscored": true,
     }
   },
   "test": {

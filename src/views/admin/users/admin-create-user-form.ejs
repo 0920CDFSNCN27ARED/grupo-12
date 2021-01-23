@@ -59,7 +59,7 @@
 											</div>
 										<% } %>
 										<div class="tab-content clearfix" id="tab-user">
-											<form action="/admin/create-user-data" method="POST" enctype="multipart/form-data">
+											<form action="/admin/create-user" method="POST" enctype="multipart/form-data">
 												<div class="row mt-5 mb-3">
 													<div class="col-lg-6 col-md-6 form-group">
 														<label for="name">* Nombre Completo:</label>
@@ -82,36 +82,58 @@
 														<label for="phone">Teléfono:</label>
 														<input type="tel" name="phone" value="" class="form-control" />
 													</div>
+													<div class="col-lg-6 col-md-6 form-group">
+														<label for="bio">Sobre Mí:</label>
+														<input type="text" name="bio" value="" placeholder="Escribe algo sobre ti..." class="form-control" />
+													</div>
+													<div class="col-lg-4 col-md-4 form-group">
+														<label for="admin">Administrador:</label>
+														<select class="form-control" name="admin" id="admin">
+															<option selected value="0">NO</option>
+															<option value="1">SI</option>
+														</select>
+													</div>
+													<div class="col-lg-4 col-md-4 form-group">
+														<label for="status">Estado:</label>
+														<select class="form-control" name="status" id="status">
+															<option selected value="active">Activo</option>
+															<option value="blocked">Bloquedo</option>
+														</select>
+													</div>
+													<div class="col-lg-4 col-md-4 form-group">
+														<label for="rol">Rol:</label>
+														<select class="form-control" name="role" id="role">
+															<option selected value="buyer">Comprador</option>
+															<option disabled value="">Vendedor (para ser vendedor debe crear un negocio y luego asignar el usuario)</option>
+														</select>
+													</div>
+
 													<div class="divider"><i class="icon-circle"></i></div>
+
 													<div class="col-md-6">
 														<div class="form-group">
-															<label for="new_password">Ingresar Nueva Contraseña</label>
+															<label for="password">Ingresar Contraseña</label>
 															<div class="input-group input-group-merge form-password-toggle">
-																<input class="form-control form-control-merge" type="password" name="new_password"
+																<input class="form-control form-control-merge" type="password" name="password"
 																	placeholder="Ingrese la nueva contraseña" />
-																<div class="input-group-append"><span class="input-group-text cursor-pointer"><i
-																			class="icon-eye"></i></span></div>
+																<div class="input-group-append"><span class="input-group-text cursor-pointer"><i class="icon-eye"></i></span></div>
 															</div>
 														</div>
 													
 													</div>
 													<div class="col-md-6">
 														<div class="form-group">
-															<label for="confirmation">Confirmar Nueva Contraseña</label>
+															<label for="confirmation">Confirmar Contraseña</label>
 															<div class="input-group input-group-merge form-password-toggle">
 																<input class="form-control form-control-merge" type="password" name="confirmation"
 																	placeholder="Confirme su nueva contraseña" />
-																<div class="input-group-append"><span class="input-group-text cursor-pointer"><i
-																			class="icon-eye"></i></span></div>
+																<div class="input-group-append"><span class="input-group-text cursor-pointer"><i class="icon-eye"></i></span></div>
 															</div>
 														</div>
 													</div>
+
 													<div class="divider"><i class="icon-circle"></i></div>
-													<div class="col-lg-6 col-md-6 form-group">
-														<label for="bio">Sobre Mí:</label>
-														<input type="text" name="bio" value="" placeholder="Escribe algo sobre ti..."
-															class="form-control" />
-													</div>
+													
 													<div class="col-lg-6 col-md-6 form-group">
 														<label for="twitter">Twitter</label>
 														<div class="input-group input-group-merge">

@@ -1,5 +1,6 @@
 // Require
 const { check, validationResult, body } = require("express-validator");
+const fs = require("fs");
 
 // Utils
 const getData = require("../utils/getData");
@@ -12,6 +13,10 @@ const products = getData("../data/productsDB.json");
 const comments = getData("../data/commentsDB.json");
 const categories = getData("../data/categoriesDB.json");
 const types = getData("../data/typesDB.json");
+
+const { Category } = require("../database/models");
+
+
 
 
 // Controller
@@ -46,7 +51,9 @@ const productsController = {
     },
 
     // GET Create Product Form
-    getCreate: function (req, res, next) {
+    getCreate: async (req, res, next) => {
+        let categories = await Category.findAll();
+        console.log(categories)
         res.render("products/productCreateForm", {categories,types});
     },
 

@@ -45,7 +45,13 @@ const usersController = {
                     maxAge: 60000,
                 });
             }
-            res.redirect("/");
+            
+            if(req.session.current_user.admin){
+                res.redirect("/admin");
+            } else {
+                res.redirect("/");
+            };
+            
         } else {
             return res.render("users/login", { errors: errors.errors });
         }

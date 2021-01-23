@@ -14,6 +14,7 @@ function rememberMe (req,res,next){
             }
         }
         req.session.loggedUserId = loggedUser.id;
+        req.session.current_user.id = loggedUser.id;
     }
     next();
 };

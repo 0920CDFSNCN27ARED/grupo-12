@@ -1,5 +1,5 @@
 module.exports = (sequelize, dataTypes) => {
-    let alias = "Users";
+    let alias = "User";
     let cols = {
         id: {
             type: dataTypes.INTEGER,
@@ -28,17 +28,14 @@ module.exports = (sequelize, dataTypes) => {
         avatar: {
             type: dataTypes.STRING, 
             allowNull: false, 
-            defaultValue: "default-avatar.png"
         },
         admin: {
             type: dataTypes.BOOLEAN, 
             allowNull: false, 
-            defaultValue: false
         },
         status: {
             type: dataTypes.STRING, 
             allowNull: false,
-            defaultValue: "active"
         },
         shopId: {
             type: dataTypes.INTEGER,
@@ -47,7 +44,6 @@ module.exports = (sequelize, dataTypes) => {
         role: {
             type: dataTypes.STRING, 
             allowNull: false,
-            defaultValue: "buyer"
         },
         bio: {
             type: dataTypes.STRING
@@ -65,7 +61,21 @@ module.exports = (sequelize, dataTypes) => {
     let config = {
         tableName: "Users"
     }
-    
+
+    // User.associate = ({ Shop }) => {
+    //     User.belongsTo(Shop, {
+    //         through: "shopId"
+    //     })
+    // };
+   
     const User = sequelize.define(alias, cols, config);
+
+    User.associate = function(models) {
+        User.belongsTo(models.Shop, {
+            as: "shops",
+            foreignKey: "shopId"
+        })
+    };
+    
     return User;
 }

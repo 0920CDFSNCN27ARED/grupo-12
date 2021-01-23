@@ -1,1 +1,17 @@
-[{"id":1,"userId":1,"name":"mercadosoft","phone":"+541126790610","email":"mercadosoftoficial@gmail.com","avatar":"avatar-1610655939143.jpg","ranking":4.5,"status":"active","sales":45,"bio":"Me gusta la gente","facebook":"https://www.facebook.com/","instagram":"https://www.instagram.com/","twitter":"https://www.twitter.com/"}]
+[
+    {
+        "id": 1,
+        "userId": 1,
+        "name": "mercadosoft",
+        "phone": "+541126790610",
+        "email": "mercadosoftoficial@gmail.com",
+        "avatar": "avatar-1610655939143.jpg",
+        "ranking": 4.5,
+        "status": "active",
+        "sales": 45,
+        "bio": "Me gusta la gente",
+        "facebook": "https://www.facebook.com/",
+        "instagram": "https://www.instagram.com/",
+        "twitter": "https://www.twitter.com/"
+    }
+]

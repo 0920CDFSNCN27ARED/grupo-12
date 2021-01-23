@@ -1,0 +1,37 @@
+// Util Commands--------------------------------------------------------
+
+npm i mysql2 -g (para que tome cli-sequelize)
+sequelize db:migrate (para correr migraciones)
+
+// Ejemplo para agregar una columna ------------------------------------
+
+1. Crear la migracion
+sequelize migration:create --name modify_categories_add_new_field_typeId
+
+2. Modificar la migracion 
+module.exports = {
+  up: async (queryInterface, Sequelize) => {
+    await queryInterface.addColumn(
+        'Categories', // table name
+        'typeId', // new field name
+        {
+          type: Sequelize.INTEGER,
+          references: { model: 'categories', key: 'id' }
+        },
+    ) 
+  }
+};
+
+3. Ejecular la migracion 
+sequelize db:migrate
+
+// Models create --------------------------------------------------------
+
+Categories
+sequelize model:generate --name Category --attributes name:string,description:string,count:integer,typeId:integer
+
+Types
+sequelize model:generate --name Type --attributes name:string,description:string,count:integer
+
+Shops
+sequelize model:generate --name Shop --attributes name:string,phone:string,email:string,avatar:string,ranking:integer,status:string,sales:integer,bio:string,facebook:string,instagram:string,twiter:string

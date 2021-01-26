@@ -3,7 +3,7 @@ const { check, validationResult, body } = require("express-validator");
 const bcrypt = require("bcrypt");
 
 // Data
-const { User, Category, Type, Shop } = require("../database/models");
+const { User, Category, Type, Shop, Product } = require("../database/models");
 const getCurrentUserData = require("../utils/getCurrentUserData");
 
 // Controller
@@ -28,12 +28,20 @@ const adminController = {
                 let shops = await Shop.findAll({
                     include: [{association: "users"}]
                 });
+                let products = await Product.findAll({
+                    include: [
+                        {association: "shops"},
+                        {association: "categories"},
+                        {association: "types"}
+                    ]
+                });
                 res.render("admin/admin-profile", {
                     admin: current_user,
                     users: users, 
                     categories: categories,
                     types: types,
-                    shops: shops
+                    shops: shops,
+                    products: products
                 });
             } catch (error) {
                 res.status(400).send(error.message);
@@ -265,7 +273,7 @@ const adminController = {
         }
     },
 
-    //******************* Products Controllers *******************//
+    //******************* Categories Controllers *******************//
 
     //POST create category
     postCreateCategory: async (req, res, next) => {
@@ -346,6 +354,8 @@ const adminController = {
             res.status(400).send(error.message);
         }
     },
+
+    //******************* Types Controllers *******************//
 
     //POST create type
     postCreateType: async (req, res, next) => {
@@ -431,11 +441,27 @@ const adminController = {
     getShopProfile: async (req, res, next) => {
         let errors = validationResult(req);
         let current_user = req.session.current_user;
-        
+        console.log(req.url);
         if (errors.isEmpty()) {
             try {
                 let shop = await Shop.findByPk(req.params.id);
                 let user = await User.findByPk(req.params.id);
+                let products = await Product.findAll({
+                    where: {
+                        shopId: req.params.id
+                    },
+                    include: [
+                        {association: "shops"},
+                        {association: "categories"},
+                        {association: "types"}
+                    ]
+                });
+                let categories = await Category.findAll({
+                    include: [{association: "types"}]
+                });
+                let types = await Type.findAll({
+                    include: [{association: "categories"}]
+                });
 
                 // Temporal
                 let userData = getCurrentUserData(user);
@@ -445,7 +471,10 @@ const adminController = {
                     admin: current_user,
                     shop: shop,
                     user: user,
-                    comments: userComments
+                    comments: userComments,
+                    products: products,
+                    categories: categories,
+                    types: types,
                 });
             } catch (error) {
                 res.status(400).send(error.message);
@@ -493,19 +522,121 @@ const adminController = {
                 res.status(400).send(error.message);
             }
         } else {
-            let users = await User.findAll();
+            let users = await User.findAll({
+                include: [{association: "shops"}]
+            });
             let categories = await Category.findAll({
                 include: [{association: "types"}]
             });
-            let types = await Type.findAll();
-            let shops = await Shop.findAll();
+            let types = await Type.findAll({
+                include: [{association: "categories"}]
+            });
+            let shops = await Shop.findAll({
+                include: [{association: "users"}]
+            });
+            let products = await Product.findAll({
+                include: [
+                    {association: "shops"},
+                    {association: "categories"},
+                    {association: "types"}
+                ]
+            });
             res.render("admin/admin-profile", {
                 errors: errors.errors,
                 admin: current_user,
                 users: users, 
                 categories: categories,
                 types: types,
-                shops: shops
+                shops: shops,
+                products: products
+            });
+        }
+    },
+
+    //******************* Products Controllers *******************//
+
+    //POST create product
+    postCreateProduct: async (req, res, next) => {
+        let errors = validationResult(req);
+        let current_user = req.session.current_user;
+
+        let avatar = req.files.avatar;
+        if (req.files.avatar != null) {
+            avatar = req.files.avatar[0].filename;
+        } else {
+            avatar = "without-image.png";
+        }
+
+        let gallery = [];
+        if (req.files.gallery != null) {
+            let array = req.files.gallery;
+            for (let i = 0; i < array.length; i++) {
+                const image = array[i].filename;
+                gallery.push(image);  
+            }
+        } else {
+            gallery = ["without-image.png","without-image.png","without-image.png"];
+        }
+
+        if (errors.isEmpty()) {
+            try {
+                await Product.create({ 
+                    shopId: req.body.shopId,
+                    name: req.body.name,
+                    description: req.body.description,
+                    details: req.body.details,
+                    brewery: req.body.brewery,
+                    price: parseFloat(req.body.price),
+                    discount: parseFloat(req.body.discount),
+                    stock: req.body.stock || 0,
+                    categoryId: req.body.categoryId,
+                    typeId: req.body.typeId,
+                    ibu: req.body.ibu,
+                    abv: req.body.abv,
+                    og: req.body.og,
+                    avatar: avatar,
+                    gallery01: gallery[0] ? gallery[0] : "without-image.png",
+                    gallery02: gallery[1] ? gallery[1] : "without-image.png",
+                    gallery03: gallery[2] ? gallery[2] : "without-image.png",
+                });
+
+                if(req.url == `/${req.body.shopId}/shop-profile`){
+                    return res.redirect(`/admin/${req.body.shopId}/shop-profile`);
+                }else {
+                    return res.redirect(`/admin`);
+                }
+                
+            } catch (error) {
+                res.status(400).send(error.message);
+            }
+        } else {
+            let users = await User.findAll({
+                include: [{association: "shops"}]
+            });
+            let categories = await Category.findAll({
+                include: [{association: "types"}]
+            });
+            let types = await Type.findAll({
+                include: [{association: "categories"}]
+            });
+            let shops = await Shop.findAll({
+                include: [{association: "users"}]
+            });
+            let products = await Product.findAll({
+                include: [
+                    {association: "shops"},
+                    {association: "categories"},
+                    {association: "types"}
+                ]
+            });
+            res.render("admin/admin-profile", {
+                errors: errors.errors,
+                admin: current_user,
+                users: users, 
+                categories: categories,
+                types: types,
+                shops: shops,
+                products: products
             });
         }
     },

@@ -14,7 +14,7 @@ const assertIsAdmin = require('../middlewares/assert-is-admin');
 // Multer
 const uploadUser = multerOneImage('users');
 const uploadShop = multerOneImage('shops');
-const uploadProduct = multerProducts('products', 'avatar', 'gallery');
+const productImages = multerProducts('products', 'avatar', 'gallery');
 
 
 //******************* Admin Routes *******************//
@@ -82,12 +82,36 @@ router.put(
 // DELETE user 
 router.delete('/:id/user-destroy', assertIsAdmin, adminController.destroyUser);
 
+//******************* Products Routes *******************//
+
+// POST create shop modal 
+router.post(
+  '/create-product', 
+  assertIsAdmin, 
+  productImages,
+    [
+        check("shopId", "La tienda propietaria del producto es requerida.").notEmpty(),
+        check("name", "El nombre es requerido.").notEmpty(),
+        check("price", "El precio es requerido.").notEmpty(),
+        check("price", "El precio debe ser un numero").isNumeric(),
+        check("discount", "El descuento es requerido.").notEmpty(),
+        check("discount", "El descuento es requerido.").isNumeric(),
+        check("categoryId", "Seleccione una categoría").notEmpty(),
+        check("typeId", "Seleccione un tipo de cerveza").notEmpty(),
+        check("brewery", "La cervecería es requerida.").notEmpty(),
+        check(
+            "description",
+            "La descripcion debe tener al menos 10 caracteres"
+        ).isLength({ min: 10 }),
+    ],
+  adminController.postCreateProduct);
+
 //******************* Shops Routes *******************//
 
 // GET shop profile
 router.get('/:id/shop-profile', assertIsAdmin, adminController.getShopProfile);
 
-// POST create user form 
+// POST create product modal 
 router.post(
   '/create-shop', 
   assertIsAdmin, 
@@ -98,7 +122,7 @@ router.post(
   ],
   adminController.postCreateShop);
 
-//******************* Products Routes *******************//
+//******************* Categories Routes *******************//
 
 // POST create category
 router.post(
@@ -124,6 +148,8 @@ router.put(
 
 // DELETE category 
 router.delete('/:id/category-destroy', assertIsAdmin, adminController.destroyCategory);
+
+//******************* Types Routes *******************//
 
 // POST create type
 router.post(

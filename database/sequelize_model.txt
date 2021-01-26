@@ -35,3 +35,6 @@ sequelize model:generate --name Type --attributes name:string,description:string
 
 Shops
 sequelize model:generate --name Shop --attributes name:string,phone:string,email:string,avatar:string,ranking:integer,status:string,sales:integer,bio:string,facebook:string,instagram:string,twiter:string
+
+Products
+sequelize model:generate --name Product --attributes name:string,description:string,details:string,brewery:string,price:float,discount:float,stock:integer,ibu:float,og:float,abv:float,avatar:string,gallery01:string,gallery02:string,gallery03:string,shopId:integer,typeId:integer,categoryId:integer

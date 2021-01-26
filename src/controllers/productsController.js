@@ -52,8 +52,7 @@ const productsController = {
 
     // GET Create Product Form
     getCreate: async (req, res, next) => {
-        let categories = await Category.findAll();
-        console.log(categories)
+        //let categories = await Category.findAll();
         res.render("products/productCreateForm", {categories,types});
     },
 

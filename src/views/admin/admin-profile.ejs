@@ -4,6 +4,8 @@
 <head>
 	<%- include('../layout/head', { title:"Perfil de Negocio" }) %>
 	<link rel="stylesheet" href="/css/components/bs-datatable.css" type="text/css" />
+	<link rel="stylesheet" href="/css/components/bs-filestyle.css" type="text/css" />
+	<link rel="stylesheet" href="/css/components/ion.rangeslider.css" type="text/css" />
 </head>
 
 <body class="stretched">
@@ -183,6 +185,55 @@
 											</div>
 										</div>
 
+										<div class="tab-content clearfix" id="tab-products">
+											<button class="btn btn-warning float-right mb-5" data-toggle="modal" data-target="#createProduct">Crear Producto</button>
+											<div class="table-responsive">
+												<table id="products" class="table table-striped table-bordered" cellspacing="0" width="100%">
+													<thead>
+														<tr>
+															<th>#</th>
+															<th>ID</th>
+															<th>Nombre</th>
+															<th>Tienda</th>
+															<th>Cervería</th>
+															<th>Stock</th>
+															<th>Precio</th>
+															<th>Categoria</th>
+															<th>Tipo</th>
+															<th>ABV</th>
+															<th>IBU</th>
+															<th>OG</th>
+															<th class="text-center">Opciones</th>
+														</tr>
+													</thead>
+													<tbody>
+														<% products.forEach((product, index)=> { %>
+															<tr>
+																<td><small><%= index +1 %></small></td>
+																<td><small><%= product.id %></small></td>
+																<td><small><%= product.name %></small></td>
+																<td><small><%= product.shops.name %></small></td>
+																<td><small><%= product.brewery %></small></td>
+																<td><small><%= product.stock %></small></td>
+																<td><small><%= product.price %></small></td>
+																<td><small><%= product.categories.name %></small></td>
+																<td><small><%= product.types.name %></small></td>
+																<td><small><%= product.abv %></small></td>
+																<td><small><%= product.ibu %></small></td>
+																<td><small><%= product.og %></small></td>
+																<td class="d-flex justify-content-center">
+																	<a href="/admin/<%= product.id %>/product-profile" class="btn btn-outline btn-sm p-0"><i
+																			class="m-0 i-rounded i-small icon-eye"></i></a>
+																	<a href="/admin/<%= product.id %>/shop-profile#tab-data" class="btn btn-outline btn-sm p-0"><i
+																			class="m-0 i-rounded i-small icon-pencil2"></i></a>
+																</td>
+															</tr>
+															<% });%>
+													</tbody>
+												</table>
+											</div>
+										</div>
+
 										<div class="tab-content clearfix" id="tab-categories">
 											<button class="btn btn-warning float-right mb-5" data-toggle="modal" data-target="#createCategory">Crear Categoría</button>
 											<div class="table-responsive">
@@ -274,25 +325,28 @@
 	</section><!-- #content end -->
 	
 	<!-- Create Category Modal -->
-	<%- include('./products/create-category-modal') %>
+	<%- include('./categories/create-category-modal') %>
 
 	<!-- Update Category Modal-->
-	<%- include('./products/edit-category-modal') %>
+	<%- include('./categories/edit-category-modal') %>
 
 	<!-- Destroy Category Modal -->
-	<%- include('./products/destroy-category-modal') %>
+	<%- include('./categories/destroy-category-modal') %>
 
 	<!-- Create Type Modal-->
-	<%- include('./products/create-type-modal') %>
+	<%- include('./types/create-type-modal') %>
 
 	<!-- Update Type Modal-->
-	<%- include('./products/edit-type-modal') %>
+	<%- include('./types/edit-type-modal') %>
 
 	<!-- Destroy Type Modal -->
-	<%- include('./products/destroy-type-modal') %>
+	<%- include('./types/destroy-type-modal') %>
 
 	<!-- Create Shop Modal -->
 	<%- include('./shops/create-shop-modal') %>
+
+	<!-- Create Product Modal -->
+	<%- include('./products/create-product-modal') %>
 
 	<!-- Footer -->
 	<%- include('../layout/footer') %>
@@ -303,7 +357,62 @@
 				$('#categories').dataTable();
 				$('#types').dataTable();
 				$('#shops').dataTable();
+				$('#products').dataTable();
 		});
+	</script>
+	<script src="/js/components/rangeslider.min.js"></script>
+	<script src="/js/components/bs-filestyle.js"></script>
+	<script>
+		jQuery(document).ready(function () {
+
+			let abv = $(".abv");
+			abv.ionRangeSlider({
+				prefix: "%",
+				min: 0.0,
+				max: 15,
+				from: 0,
+				step: 0.1,
+				max_postfix: "+"
+			});
+
+			let ibu = $(".ibu");
+			ibu.ionRangeSlider({
+				prefix: "",
+				min: 0,
+				max: 100,
+				from: 0,
+				step: 0.5,
+				max_postfix: "+"
+			});
+
+			let og = $(".og");
+			og.ionRangeSlider({
+				prefix: "",
+				min: 1000,
+				max: 1200,
+				from: 1000,
+				step: 10,
+				max_postfix: "+"
+			});
+
+			$("#avatar").fileinput({
+				browseClass: "btn btn-secondary",
+				browseIcon: "<i class='icon-search'></i>",
+				removeClass: "btn btn-danger",
+				removeLabel: "",
+				removeIcon: "<i class='icon-trash-alt1'></i>",
+				showUpload: false
+			});
+
+			$("#gallery").fileinput({
+				browseClass: "btn btn-secondary",
+				browseIcon: "<i class='icon-search'></i>",
+				removeClass: "btn btn-danger",
+				removeLabel: "",
+				removeIcon: "<i class='icon-trash-alt1'></i>",
+				showUpload: false
+			});
+		})
 	</script>
 
 </body>

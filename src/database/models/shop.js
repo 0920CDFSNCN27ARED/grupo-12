@@ -13,7 +13,11 @@ module.exports = (sequelize, DataTypes) => {
       Shop.hasOne(models.User, {
         as: "users",
         foreignKey: "shopId"
-      })
+      });
+      Shop.hasMany(models.Product, {
+        as: "products",
+        foreignKey: "shopId"
+      });
     }
   };
   Shop.init({

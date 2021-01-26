@@ -4,6 +4,8 @@
 <head>
 	<%- include('../../layout/head', { title:"Perfil de Negocio" }) %>
 	<link rel="stylesheet" href="/css/components/bs-datatable.css" type="text/css" />
+	<link rel="stylesheet" href="/css/components/bs-filestyle.css" type="text/css" />
+	<link rel="stylesheet" href="/css/components/ion.rangeslider.css" type="text/css" />
 </head>
 
 <body class="stretched">
@@ -45,9 +47,9 @@
 	
 									<ul class="tab-nav clearfix">
 										<% if( shop.status == "active" ) { %>
-											<li><a href="#tab-products"><i class="icon-box"></i> Administrar Productos</a></li>
-											<li><a href="#tab-comments"><i class="icon-reply"></i> Comentarios del Público</a></li>
-											<li><a href="#tab-sales"><i class="icon-credit-cards"></i> Ventas</a></li>
+											<li><a href="#tab-products"><i class="icon-line-box"></i> Productos</a></li>
+											<li><a href="#tab-comments"><i class="icon-comments1"></i> Comentarios</a></li>
+											<li><a href="#tab-orders"><i class="icon-line-shopping-cart"></i> Pedidos</a></li>
 											<li><a href="#tab-data"><i class="icon-home"></i> Editar Negocio</a></li>
 										<% } else { %> 
 											<h3>Su tienda se encuentra bloqueda, por favor <a href="#">contáctenos.</a></h3>
@@ -68,6 +70,49 @@
 											</div>
 										<% } %>
 										<% if( shop.status == "active" ) { %>
+
+											<div class="tab-content clearfix" id="tab-products">
+											<button class="btn btn-warning float-right mb-5" data-toggle="modal" data-target="#createProduct">Publicar Producto</button>
+											<div class="table-responsive">
+												<table id="products" class="table table-striped table-bordered" cellspacing="0" width="100%">
+													<thead>
+														<tr>
+															<th>#</th>
+															<th>ID</th>
+															<th>Nombre</th>
+															<th>Cervería</th>
+															<th>Stock</th>
+															<th>Precio</th>
+															<th>Descuento</th>
+															<th>Categoria</th>
+															<th>Tipo</th>
+															<th class="text-center">Opciones</th>
+														</tr>
+													</thead>
+													<tbody>
+														<% products.forEach((product, index)=> { %>
+															<tr>
+																<td><small><%= index +1 %></small></td>
+																<td><small><%= product.id %></small></td>
+																<td><small><%= product.shops.name %></small></td>
+																<td><small><%= product.brewery %></small></td>
+																<td><small><%= product.stock %></small></td>
+																<td><small><%= product.price %></small></td>
+																<td><small><%= product.discount %></small></td>
+																<td><small><%= product.categories.name %></small></td>
+																<td><small><%= product.types.name %></small></td>
+																<td class="d-flex justify-content-center">
+																	<a href="/admin/<%= product.id %>/product-profile" class="btn btn-outline btn-sm p-0"><i
+																			class="m-0 i-rounded i-small icon-eye"></i></a>
+																	<a href="/admin/<%= product.id %>/shop-profile#tab-data" class="btn btn-outline btn-sm p-0"><i
+																			class="m-0 i-rounded i-small icon-pencil2"></i></a>
+																</td>
+															</tr>
+															<% });%>
+													</tbody>
+												</table>
+											</div>
+										</div>
 											
 											<div class="tab-content clearfix" id="tab-comments">
 												<div class="clear topmargin-sm"></div>
@@ -104,45 +149,7 @@
 												</ol><!-- .commentlist end -->
 											</div>
 
-											<div class="tab-content clearfix" id="tab-products">
-												<a href="/products/create" class="btn btn-warning float-right mb-5">Publicar Producto</a>
-												<div class="table-responsive">
-													<table id="datatable2" class="table table-striped table-bordered" cellspacing="0" width="100%">
-														<thead>
-															<tr>
-																<th>#</th>
-																<th>ID</th>
-																<th>Nombre</th>
-																<th>Stock</th>
-																<th>Categoría</th>
-																<th>Tipo</th>
-																<th class="text-center">Opciones</th>
-															</tr>
-														</thead>
-														<tbody>
-															<!-- < products.forEach((product, index) => { %>
-																<tr>
-																	<td><= index +1 %></td>
-																	<td><= product.id %></td>
-																	<td><= product.name %></td>
-																	<td><= product.stock %></td>
-																	<td><= product.category %></td>
-																	<td><= product.type %></td>
-																	<td class="text-center">
-																		<span><a href="/products/<= product.id %>/productDetails"><i class="icon-eye"></i>&nbsp;</a></span>
-																		<span><a href="/products/<= product.id %>/edit"><i class="icon-pencil2"></i>&nbsp;</a></span>
-																		 <form action="/products/delete/<= product.id %>?_method=DELETE" method="POST">
-																			<span><a type="submit"><i class="icon-line-trash-2"></i></a></span>
-																		</form> 
-																	</td>
-																</tr>
-															 }); %> -->
-														</tbody>
-													</table>
-												</div>
-											</div>
-
-											<div class="tab-content clearfix" id="tab-sales">
+											<div class="tab-content clearfix" id="tab-orders">
 												<p>Administre todas sus compras</p>
 												<div class="table-responsive">
 													<div class="table-responsive">
@@ -310,7 +317,10 @@
 	
 			</div>
 		</div>
-	</section><!-- #content end -->
+	</section>
+
+	<!-- Create Product Modal -->
+	<%- include('./create-shop-product-modal') %>
 
 	<!-- Footer -->
 	<%- include('../../layout/footer') %>
@@ -320,6 +330,60 @@
 				$('#datatable1').dataTable();
 				$('#datatable2').dataTable();
 		});
+	</script>
+	<script src="/js/components/rangeslider.min.js"></script>
+	<script src="/js/components/bs-filestyle.js"></script>
+	<script>
+		jQuery(document).ready(function () {
+
+			let abv = $(".abv");
+			abv.ionRangeSlider({
+				prefix: "%",
+				min: 0.0,
+				max: 15,
+				from: 0,
+				step: 0.1,
+				max_postfix: "+"
+			});
+
+			let ibu = $(".ibu");
+			ibu.ionRangeSlider({
+				prefix: "",
+				min: 0,
+				max: 100,
+				from: 0,
+				step: 0.5,
+				max_postfix: "+"
+			});
+
+			let og = $(".og");
+			og.ionRangeSlider({
+				prefix: "",
+				min: 1000,
+				max: 1200,
+				from: 1000,
+				step: 10,
+				max_postfix: "+"
+			});
+
+			$("#avatar").fileinput({
+				browseClass: "btn btn-secondary",
+				browseIcon: "<i class='icon-search'></i>",
+				removeClass: "btn btn-danger",
+				removeLabel: "",
+				removeIcon: "<i class='icon-trash-alt1'></i>",
+				showUpload: false
+			});
+
+			$("#gallery").fileinput({
+				browseClass: "btn btn-secondary",
+				browseIcon: "<i class='icon-search'></i>",
+				removeClass: "btn btn-danger",
+				removeLabel: "",
+				removeIcon: "<i class='icon-trash-alt1'></i>",
+				showUpload: false
+			});
+		})
 	</script>
 
 </body>

@@ -16,9 +16,6 @@ const types = getData("../data/typesDB.json");
 
 const { Category } = require("../database/models");
 
-
-
-
 // Controller
 const productsController = {
     //GET Product Details
@@ -53,10 +50,10 @@ const productsController = {
     // GET Create Product Form
     getCreate: async (req, res, next) => {
         //let categories = await Category.findAll();
-        res.render("products/productCreateForm", {categories,types});
+        res.render("products/productCreateForm", { categories, types });
     },
 
-    // POST Create Product Form 
+    // POST Create Product Form
     postCreate: function (req, res, next) {
         let current_user = req.session.current_user;
         let errors = validationResult(req);
@@ -73,10 +70,14 @@ const productsController = {
             let array = req.files.gallery;
             for (let i = 0; i < array.length; i++) {
                 const image = array[i].filename;
-                gallery.push(image);  
+                gallery.push(image);
             }
         } else {
-            gallery = ["without-image.png","without-image.png","without-image.png"];
+            gallery = [
+                "without-image.png",
+                "without-image.png",
+                "without-image.png",
+            ];
         }
 
         if (errors.isEmpty()) {
@@ -151,7 +152,11 @@ const productsController = {
             let avatar = req.files.avatar;
             if (req.files.avatar != null) {
                 // Delete old image
-                fs.unlinkSync(__dirname + '/../public/images/products/'+ products[findIndex].avatar)
+                fs.unlinkSync(
+                    __dirname +
+                        "/../public/images/products/" +
+                        products[findIndex].avatar
+                );
                 // Replace old image
                 avatar = req.files.avatar[0].filename;
             } else {
@@ -163,18 +168,15 @@ const productsController = {
                 let array = req.files.gallery;
                 for (let i = 0; i < array.length; i++) {
                     const image = array[i].filename;
-                    gallery.push(image);  
-                };
+                    gallery.push(image);
+                }
 
                 //Delete old gallery
                 let oldGallery = products[findIndex].gallery;
-                for (let i = 0; i < oldGallery.length; i++) {
-                    const element = oldGallery[i];
-                    fs.unlinkSync(__dirname + '/../public/images/products/'+ element)
-                };
+                oldGallery.map((file) => fs.unlinkSync(file));
             } else {
                 gallery = products[findIndex].gallery;
-            };
+            }
 
             let ibu = req.body.ibu == "0" ? product.ibu : req.body.ibu;
             let abv = req.body.abv == "0" ? product.abv : req.body.abv;
@@ -232,7 +234,8 @@ const productsController = {
         let current_user = req.session.current_user;
         let errors = validationResult(req);
         let f = new Date();
-        let date = (f.getDate() + "/" + (f.getMonth() +1) + "/" + f.getFullYear());
+        let date =
+            f.getDate() + "/" + (f.getMonth() + 1) + "/" + f.getFullYear();
 
         if (errors.isEmpty()) {
             let newComment = {
@@ -290,7 +293,5 @@ const productsController = {
         res.redirect(`/products/${productID}/productDetails`);
     },
 };
-
-
 
 module.exports = productsController;

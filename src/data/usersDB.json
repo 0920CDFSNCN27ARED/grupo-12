@@ -58,7 +58,7 @@
         "email": "santi.nihany@gmail.com",
         "password": "$2b$10$g6GJ2JYQFDyZn1ilIqio2egxGoyGGymflkx5LXmy0ZpMSp1EFxf.i",
         "avatar": "default-avatar.png",
-        "admin": false,
+        "admin": true,
         "status": "active",
         "shopId": 1,
         "role": "seller",

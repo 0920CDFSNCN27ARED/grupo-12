@@ -38,3 +38,16 @@ sequelize model:generate --name Shop --attributes name:string,phone:string,email
 
 Products
 sequelize model:generate --name Product --attributes name:string,description:string,details:string,brewery:string,price:float,discount:float,stock:integer,ibu:float,og:float,abv:float,avatar:string,gallery01:string,gallery02:string,gallery03:string,shopId:integer,typeId:integer,categoryId:integer
+
+Payment
+sequelize model:generate --name Payment --attributes name:string,description:string
+
+Order
+sequelize model:generate --name Order --attributes email:string,totalProducts:string,totalShipping:integer,discountCoupon:string,tax:integer,total:integer,status:string,userId:integer,cartItemsId:integer,paymentId:integer,couponId:integer,shippingMethodId:integer,billAddressId:integer,shippingAddressId:integer
+
+CartItem
+sequelize model:generate --name CartItem --attributes subtotal:integer,quantity:integer,price:integer,discount:integer,expireTime:date,productId:integer,orderId:integer
+
+ShippingMethod
+sequelize model:generate --name ShippingMethod --attributes name:string,amount:integer,description:string,location:string
+

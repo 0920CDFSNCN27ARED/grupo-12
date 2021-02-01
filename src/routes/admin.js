@@ -174,4 +174,27 @@ router.put(
 // DELETE type 
 router.delete('/:id/type-destroy', assertIsAdmin, adminController.destroyType);
 
+// POST create payment
+router.post(
+  '/create-payment', 
+  assertIsAdmin, 
+  [
+    check("name", "El nombre del método de pago es requerido.").notEmpty(),
+    check("description", "La descripción del método de pago es requerida.").notEmpty(),
+  ],
+  adminController.postCreatePayment);
+
+// PUT edit payment
+  router.put(
+    '/:id/edit-payment', 
+    assertIsAdmin, 
+    [
+      check("name", "El nombre del método de pago es requerido.").notEmpty(),
+      check("description", "La descripción del método de pago es requerida.").notEmpty(),
+    ],
+    adminController.putEditPayment);
+
+// DELETE Payment 
+router.delete('/:id/payment-destroy', assertIsAdmin, adminController.destroyPayment);
+
 module.exports = router;

@@ -3,7 +3,7 @@ const { check, validationResult, body } = require("express-validator");
 const bcrypt = require("bcrypt");
 
 // Data
-const { User, Category, Type, Shop, Product } = require("../database/models");
+const { User, Category, Type, Shop, Product, Payment, Order, CartItem, ShippingMethod} = require("../database/models");
 const getCurrentUserData = require("../utils/getCurrentUserData");
 
 // Controller
@@ -35,13 +35,40 @@ const adminController = {
                         {association: "types"}
                     ]
                 });
+                let payments = await Payment.findAll({
+                    include:[
+                        {association: "orders"},
+                    ]
+                });
+                let orders = await Order.findAll({
+                    include:[
+                        {association: "payments"},
+                        {association: "users"},
+                        {association: "cartItems"},
+                        {association: "shippingMethods"},
+                    ]
+                });
+                let cartItems = await CartItem.findAll({
+                    include:[
+                        {association: "orders"},
+                    ]
+                });
+                let shippingMethods = await ShippingMethod.findAll({
+                    include:[
+                        {association: "orders"},
+                    ]
+                });
                 res.render("admin/admin-profile", {
                     admin: current_user,
                     users: users, 
                     categories: categories,
                     types: types,
                     shops: shops,
-                    products: products
+                    products: products,
+                    payments:payments,
+                    orders:orders,
+                    cartItems:cartItems,
+                    shippingMethods:shippingMethods
                 });
             } catch (error) {
                 res.status(400).send(error.message);
@@ -640,7 +667,83 @@ const adminController = {
             });
         }
     },
+    //******************* Payments Controllers *******************//
 
+    //POST create payment
+    postCreatePayment: async (req, res, next) => {
+        let errors = validationResult(req);
+        let current_user = req.session.current_user;
+
+        if (errors.isEmpty()) {
+            try {
+                await Payment.create({
+                    name: req.body.name,
+                    description: req.body.description,
+                });
+                res.redirect(`/admin`);
+            } catch (error) {
+                res.status(400).send(error.message);
+            }
+        } else {
+            let users = await User.findAll();
+            let categories = await Category.findAll({
+                include: [{association: "types"}]
+            });
+            let types = await Type.findAll();
+            res.render("admin/admin-profile", {
+                errors: errors.errors,
+                admin: current_user,
+                users: users, 
+                categories: categories,
+                types: types
+            });
+        }
+    },
+    //PUT edit type
+    putEditPayment: async (req, res, next) => {
+        let errors = validationResult(req);
+        let current_user = req.session.current_user;
+
+        if (errors.isEmpty()) {
+            try {
+                await Payment.update({
+                    name: req.body.name,
+                    description: req.body.description
+                }, {
+                    where: { id: req.params.id }
+                });
+                res.redirect(`/admin`);
+            } catch (error) {
+                res.status(400).send(error.message);
+            }
+        } else {
+            let users = await User.findAll();
+            let categories = await Category.findAll({
+                include: [{association: "types"}]
+            });
+            let types = await Type.findAll();
+            res.render("admin/admin-profile", {
+                errors: errors.errors,
+                admin: current_user,
+                users: users, 
+                categories: categories,
+                types: types
+            });
+        }
+    },
+    // DELETE Payment
+    destroyPayment: async (req, res, next) => {
+        try {
+            await Payment.destroy({
+                where: {
+                    id: req.params.id
+                }
+            });
+            res.redirect(`/admin`);
+        } catch (error) {
+            res.status(400).send(error.message);
+        }
+    },
 };
 
 module.exports = adminController;

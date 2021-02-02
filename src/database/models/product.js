@@ -22,10 +22,18 @@ module.exports = (sequelize, DataTypes) => {
         as: "types",
         foreignKey: "typeId"
       });
-      Product.belongsToMany(models.Order, {
-        as: "orders",
-        foreignKey:"productId",
-        through: "CartItem"
+      // Product.belongsToMany(models.Order, {
+      //   as: "orders",
+      //   foreignKey:"productId",
+      //   through: "CartItem"
+      // });
+      Product.hasMany(models.CartItem, {
+        as: "cartItems",
+        foreignKey:"productId"
+      });
+      Product.hasMany(models.Comment, {
+        as: "comments",
+        foreignKey:"productId"
       });
     }
   };

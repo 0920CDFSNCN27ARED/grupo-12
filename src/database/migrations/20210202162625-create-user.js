@@ -1,7 +1,7 @@
 'use strict';
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('Products', {
+    await queryInterface.createTable('Users', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -11,52 +11,46 @@ module.exports = {
       name: {
         type: Sequelize.STRING
       },
-      description: {
+      userName: {
         type: Sequelize.STRING
       },
-      details: {
+      phone: {
         type: Sequelize.STRING
       },
-      brewery: {
+      email: {
         type: Sequelize.STRING
       },
-      price: {
-        type: Sequelize.FLOAT
-      },
-      discount: {
-        type: Sequelize.FLOAT
-      },
-      stock: {
-        type: Sequelize.INTEGER
-      },
-      ibu: {
-        type: Sequelize.FLOAT
-      },
-      og: {
-        type: Sequelize.FLOAT
-      },
-      abv: {
-        type: Sequelize.FLOAT
+      password: {
+        type: Sequelize.STRING
       },
       avatar: {
         type: Sequelize.STRING
       },
-      gallery01: {
+      admin: {
+        type: Sequelize.BOOLEAN
+      },
+      status: {
         type: Sequelize.STRING
       },
-      gallery02: {
+      role: {
         type: Sequelize.STRING
       },
-      gallery03: {
+      bio: {
+        type: Sequelize.STRING
+      },
+      facebook: {
+        type: Sequelize.STRING
+      },
+      instagram: {
+        type: Sequelize.STRING
+      },
+      twiter: {
         type: Sequelize.STRING
       },
       shopId: {
         type: Sequelize.INTEGER
       },
-      typeId: {
-        type: Sequelize.INTEGER
-      },
-      categoryId: {
+      orderId: {
         type: Sequelize.INTEGER
       },
       createdAt: {
@@ -70,6 +64,6 @@ module.exports = {
     });
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('Products');
+    await queryInterface.dropTable('Users');
   }
 };

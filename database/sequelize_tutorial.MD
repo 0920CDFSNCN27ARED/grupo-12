@@ -1,3 +1,26 @@
+// Seteando variables de entorno ----------------------------------------------
+
+1. Actualizamos dependencias > npm install (para usar el paquete dotenv)
+2. Crear un archivo llamado ".env" en la carpeta src y asignar los valores 
+correspondientes a las variables:
+
+// Este es un ejemplo
+USERNAME=root
+PASSWORD=root
+DATABASE=artis_db
+HOST=127.0.0.1
+DIALECT=mysql
+DB_PORT=3306
+
+// Generando DB, models y seeders --------------------------------------
+
+1. Borrar DB si es que existe
+2. Correr sequelize db:create
+3. Correr sequelize db:migrate
+4. Correr sequelize db:seed:all
+5. Inicializar proyecto npm test
+
+
 // Util Commands--------------------------------------------------------
 
 npm i mysql2 -g (para que tome cli-sequelize)
@@ -25,10 +48,19 @@ module.exports = {
 3. Ejecular la migracion 
 sequelize db:migrate
 
+4. Running Seeds
+sequelize db:seed:all
+
 // Models create --------------------------------------------------------
+
+Users
+sequelize model:generate --name User --attributes name:string,userName:string,phone:string,email:string,password:string,avatar:string,admin:boolean,status:string,role:string,bio:string,facebook:string,instagram:string,twiter:string,shopId:integer,orderId:integer
 
 Categories
 sequelize model:generate --name Category --attributes name:string,description:string,count:integer,typeId:integer
+
+Comments
+sequelize model:generate --name Comment --attributes comment:string,date:dateonly,userId:integer,productId:integer
 
 Types
 sequelize model:generate --name Type --attributes name:string,description:string,count:integer
@@ -51,3 +83,6 @@ sequelize model:generate --name CartItem --attributes subtotal:integer,quantity:
 ShippingMethod
 sequelize model:generate --name ShippingMethod --attributes name:string,amount:integer,description:string,location:string
 
+// Seeders create --------------------------------------------------------
+
+sequelize seed:generate --name admin-user

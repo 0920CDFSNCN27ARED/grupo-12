@@ -14,9 +14,6 @@ module.exports = (sequelize, DataTypes) => {
         as:'orders',
         foreignKey:"orderId"
       });
-      //CartItem.hasMany(models.User,{
-        //as:'user'
-      //});
       CartItem.belongsTo(models.Product,{
         as:'products',
         foreignKey:"productId"
@@ -30,7 +27,6 @@ module.exports = (sequelize, DataTypes) => {
     discount: DataTypes.INTEGER,
     expireTime: DataTypes.DATE,
     productId: DataTypes.INTEGER,
-    userId: DataTypes.INTEGER,
     orderId: DataTypes.INTEGER
   }, {
     sequelize,

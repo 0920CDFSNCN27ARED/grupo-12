@@ -1,85 +1,49 @@
-module.exports = (sequelize, dataTypes) => {
-    let alias = "User";
-    let cols = {
-        id: {
-            type: dataTypes.INTEGER,
-            primaryKey: true,
-            autoIncrement: true
-        },
-        name: {
-            type: dataTypes.STRING, 
-            allowNull: false
-        },
-        userName: {
-            type: dataTypes.STRING, 
-            allowNull: false
-        },
-        phone: {
-            type: dataTypes.STRING
-        },
-        email: {
-            type: dataTypes.STRING, 
-            allowNull: false
-        },
-        password: {
-            type: dataTypes.STRING, 
-            allowNull: false
-        },
-        avatar: {
-            type: dataTypes.STRING, 
-            allowNull: false, 
-        },
-        admin: {
-            type: dataTypes.BOOLEAN, 
-            allowNull: false, 
-        },
-        status: {
-            type: dataTypes.STRING, 
-            allowNull: false,
-        },
-        shopId: {
-            type: dataTypes.INTEGER,
-            defaultValue: null
-        },
-        role: {
-            type: dataTypes.STRING, 
-            allowNull: false,
-        },
-        bio: {
-            type: dataTypes.STRING
-        },
-        facebook: {
-            type: dataTypes.STRING
-        },
-        instagram: {
-            type: dataTypes.STRING
-        },
-        twitter: {
-            type: dataTypes.STRING
-        }
-    };
-    let config = {
-        tableName: "Users"
+'use strict';
+const {
+  Model
+} = require('sequelize');
+module.exports = (sequelize, DataTypes) => {
+  class User extends Model {
+    /**
+     * Helper method for defining associations.
+     * This method is not a part of Sequelize lifecycle.
+     * The `models/index` file will call this method automatically.
+     */
+    static associate(models) {
+      User.belongsTo(models.Shop, {
+          as: "shops",
+          foreignKey: "shopId"
+      });
+      User.hasMany(models.Order, {
+          as: "orders",
+          foreignKey: "userId"
+      });
+      User.hasMany(models.Comment, {
+          as: "comments",
+          foreignKey: "userId"
+      });
     }
-
-    // User.associate = ({ Shop }) => {
-    //     User.belongsTo(Shop, {
-    //         through: "shopId"
-    //     })
-    // };
-   
-    const User = sequelize.define(alias, cols, config);
-
-    User.associate = function(models) {
-        User.belongsTo(models.Shop, {
-            as: "shops",
-            foreignKey: "shopId"
-        });
-        User.hasMany(models.Order, {
-            as: "orders",
-            foreignKey: "userId"
-        });
-    };
-    
-    return User;
-}
+  };
+  User.init({
+    name: DataTypes.STRING,
+    userName: DataTypes.STRING,
+    phone: DataTypes.STRING,
+    email: DataTypes.STRING,
+    password: DataTypes.STRING,
+    avatar: DataTypes.STRING,
+    admin: DataTypes.BOOLEAN,
+    status: DataTypes.STRING,
+    role: DataTypes.STRING,
+    bio: DataTypes.STRING,
+    facebook: DataTypes.STRING,
+    instagram: DataTypes.STRING,
+    twiter: DataTypes.STRING,
+    shopId: DataTypes.INTEGER,
+    orderId: DataTypes.INTEGER
+  }, {
+    sequelize,
+    modelName: 'User',
+    tableName: 'Users',
+  });
+  return User;
+};

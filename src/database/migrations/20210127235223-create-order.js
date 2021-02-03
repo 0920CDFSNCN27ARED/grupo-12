@@ -32,7 +32,7 @@ module.exports = {
       userId: {
         type: Sequelize.INTEGER
       },
-      cartItemsId: {
+      shopId: {
         type: Sequelize.INTEGER
       },
       paymentId: {

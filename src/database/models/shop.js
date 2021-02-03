@@ -18,6 +18,10 @@ module.exports = (sequelize, DataTypes) => {
         as: "products",
         foreignKey: "shopId"
       });
+      Shop.hasMany(models.Order, {
+        as: "orders",
+        foreignKey: "shopId",
+      });
     }
   };
   Shop.init({
@@ -31,7 +35,7 @@ module.exports = (sequelize, DataTypes) => {
     bio: DataTypes.STRING,
     facebook: DataTypes.STRING,
     instagram: DataTypes.STRING,
-    twiter: DataTypes.STRING
+    twitter: DataTypes.STRING,
   }, {
     sequelize,
     modelName: 'Shop',

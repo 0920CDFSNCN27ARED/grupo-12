@@ -1,18 +1,7 @@
 // Require
 const { check, validationResult, body } = require("express-validator");
 
-// Utils
-const getData = require("../utils/getData");
-const saveData = require("../utils/saveData");
-const updateData = require("../utils/updateData");
-const deleteData = require("../utils/deleteData");
-const getShopData = require("../utils/getShopData");
-
-// Data
-const shops = getData("../data/shopsDB.json");
-
 // Services
-const { Shop } = require("../database/models");
 const shopService = require("../services/shopService");
 const userService = require("../services/userService");
 
@@ -23,28 +12,28 @@ const shopsController = {
     getShop: async (req, res, next) => {
         let errors = validationResult(req);
         let id = req.session.loggedUserId;
-        
-        if (errors.isEmpty()) {
-            try {
+        try {
+            if (errors.isEmpty()) {
+
                 let currentUser = await userService.findOne(id);
                 let shop = await shopService.findOne(currentUser.shopId)
                 let shopData = await shopService.getShopData(currentUser);
-
+                console.log(shopData.products);
                 res.render("shops/shop-profile", {
                     products: shopData.products,
                     comments: shopData.comments,
+                    orders: shopData.orders,
                     shop,
                 });
 
-            } catch (error) {
-                res.status(400).send(error.message);
+            } else {
+                res.render("shops/shop-profile", {
+                    errors: errors.errors,
+                });
             };
-
-        } else {
-            res.render("shops/shop-profile", {
-                errors: errors.errors,
-            });
-        }
+        } catch (error) {
+            res.status(400).send(error.message);
+        };
     },
 
     // PUT shop profile data form
@@ -62,7 +51,7 @@ const shopsController = {
                     ? req.file.filename
                     : shop.avatar;
                 
-                let updateShop = { 
+                let shopToEdit = { 
                     name: req.body.name,
                     phone: req.body.phone,
                     email: req.body.email,
@@ -73,7 +62,7 @@ const shopsController = {
                     twitter: req.body.twitter
                 };
 
-                await shopService.update(shop.id, updateShop);
+                await shopService.update(shop.id, shopToEdit);
                 res.redirect("/shops");
 
             } else {

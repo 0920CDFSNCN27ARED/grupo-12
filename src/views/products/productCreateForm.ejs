@@ -67,20 +67,20 @@
 									<input type="text" name="description" class="form-control required" value="" placeholder="Describa brevemente el producto...">
 								</div>
 								<div class="col-6 form-group">
-									<label for="type">Tipo:</label>
-									<select class="form-control" name="type" id="type">
+									<label for="typeId">Tipo:</label>
+									<select class="form-control" name="typeId" id="typeId">
 										<% types.forEach((type) => {%>
-											<option value="<%=type.name %> "><%=type.name %> </option>
+											<option value="<%=type.id %> "><%=type.name %></option>
 										<% });%> 
 										
 									
 									</select>
 								</div>
 								<div class="col-6 form-group">
-									<label for="category">Categoría:</label>
-									<select class="form-control" name="category" id="category">
+									<label for="categoryId">Categoría:</label>
+									<select class="form-control" name="categoryId" id="categoryId">
 										<% categories.forEach((category) => {%>
-											<option value="<%=category.name %> "><%=category.name %></option>
+											<option value="<%=category.id %> "><%=category.name %></option>
 										<% }); %> 
 									</select>
 								</div>

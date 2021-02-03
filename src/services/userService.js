@@ -3,13 +3,26 @@ const { User, Shop, Comment, Order } = require("../database/models");
 module.exports = {
     findOne: async (id) => {
         return await User.findByPk(id, {
-            include: ["shops"],
+            include:[
+                {association: "shops"},
+                {association: "comments"},
+                {association: "orders"},
+            ],
         });
     },
     findAll: async () => {
         return await User.findAll({
-            include: ["shops"],
+            include:[
+                {association: "shops"},
+                {association: "comments"},
+                {association: "orders"},
+            ],
         });
+    },
+    create: async (attributes) => {
+        return await User.create(
+            attributes
+        );
     },
     destroy: async (id) => {
         return await User.destroy({
@@ -23,15 +36,10 @@ module.exports = {
         );
     },
     getCurrentUserData: async (currentUser) => {
-        try {
-            let comments = await Comment.findAll({ where: { userId: currentUser.id } });
-            let orders = await Order.findAll({ where: { userId: currentUser.id } });
-
-            return (data = { comments, orders });
-
-        } catch (error) {
-            res.status(400).send(error.message);
-        }
+        let shop = await Shop.findAll({ where: { id: currentUser.shopId } });
+        let comments = await Comment.findAll({ where: { userId: currentUser.id } });
+        let orders = await Order.findAll({ where: { userId: currentUser.id } });
+        return (data = { comments, orders, shop });
     },
 };
 

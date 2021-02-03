@@ -2,17 +2,7 @@
 const { validationResult } = require("express-validator");
 const bcrypt = require("bcrypt");
 
-// Utils
-const getData = require("../utils/getData");
-const saveData = require("../utils/saveData");
-const updateData = require("../utils/updateData");
-const getCurrentUserData = require("../utils/getCurrentUserData");
-
-// Data
-let users = getData("../data/usersDB.json");
-
 // Services
-const { User } = require("../database/models");
 const userService = require("../services/userService");
 
 
@@ -79,12 +69,11 @@ const usersController = {
     // POST Register
     postRegister: async (req, res, next) => {
         let errors = validationResult(req);
-        
-        if (errors.isEmpty()) {
-            try {
+        try {
+            if (errors.isEmpty()) {
                 const avatar = req.file ? req.file.filename : "default-avatar.png";
             
-                await User.create({
+                let newUser = {
                     name: req.body.name,
                     userName: req.body.userName,
                     phone: req.body.selectNumber + req.body.phoneNumber,
@@ -99,17 +88,16 @@ const usersController = {
                     facebook: "",
                     instagram: "",
                     twitter: ""
-                });
+                };
                 
-                res.redirect("login");
-
-            } catch (error) {
-                res.status(400).send(error.message);
-            };
-            
-        } else {
-            res.render("users/register", { errors: errors.errors });
-        }
+                await userService.create(newUser);
+                res.redirect("/users/login");
+            } else {
+                res.render("users/register", { errors: errors.errors });
+            }
+        } catch (error) {
+            res.status(400).send(error.message);
+        };
     },
 
     // DELETE session logout
@@ -141,7 +129,7 @@ const usersController = {
             res.render("users/profile", {
                 comments: data.comments,
                 products: data.orders,
-                currentUser
+                current_user: currentUser,
             });
         } catch (error) {
             res.status(400).send(error.message);
@@ -149,117 +137,89 @@ const usersController = {
     },
 
     // PUT user profile data form
-    putUserData: function (req, res, next) {
+    putUserData: async (req, res, next) => {
         let errors = validationResult(req);
-        let current_user = req.session.current_user;
-        
-        if (errors.isEmpty()) {
-
-            let findIndex = users.findIndex((user) => {
-                return user.id == current_user.id;
-            });
-            let filename = req.file
-                ? req.file.filename
-                : users[findIndex].avatar;
+        try { 
+            let id = req.session.loggedUserId;
+            let currentUser = await userService.findOne(id);
+            let userData = await userService.getCurrentUserData(currentUser);
             
-            let userToEdit = {
-                id: current_user.id,
-                name: req.body.name,
-                userName: req.body.userName,
-                phone: req.body.phone,
-                email: req.body.email,
-                password: current_user.password,
-                avatar: filename,
-                admin: current_user.admin,
-                status: "active",
-                shopId: current_user.shopId,
-                bio: req.body.bio,
-                facebook: req.body.facebook,
-                instagram: req.body.instagram,
-                twitter: req.body.twitter
-            };
+            if (errors.isEmpty()) {
 
-            // Actualizamos datos del user
-            users.splice(findIndex, 1, userToEdit);
+                let filename = req.file
+                    ? req.file.filename
+                    : currentUser.avatar;
+                
+                let userToEdit = {
+                    name: req.body.name,
+                    userName: req.body.userName,
+                    phone: req.body.phone,
+                    email: req.body.email,
+                    avatar: filename,
+                    bio: req.body.bio,
+                    facebook: req.body.facebook,
+                    instagram: req.body.instagram,
+                    twitter: req.body.twitter
+                };
 
-            updateData(users, "../data/usersDB.json");
-            res.redirect("/users/profile");
+                await userService.update(id, userToEdit)
+                res.redirect("/users/profile");
 
-        } else {
-            let current_user = req.session.current_user;
-            let userData = getCurrentUserData(current_user);
-            let userComments = userData.userComments;
-            let userProducts = userData.userProducts;
-            
-            res.render("users/profile", { 
-                errors: errors.errors,
-                current_user,
-                comments: userComments,
-                products: userProducts, 
-            });
+            } else {
+                res.render("users/profile", { 
+                    errors: errors.errors,
+                    current_user: currentUser,
+                    comments: userData.comments,
+                    orders: userData.orders, 
+                });
+            }
+        } catch (error) {
+            res.status(400).send(error.message);
         }
     },
 
     // PUT user profile password form
-    putUserPassword: function (req, res, next) {
+    putUserPassword: async (req, res, next) => {
         let errors = validationResult(req);
-        let current_user = req.session.current_user;
-        let userData = getCurrentUserData(current_user);
-        let userComments = userData.userComments;
-        let userProducts = userData.userProducts;
-        let change_password = "";
-        
-        if (errors.isEmpty()) {
-
-            let findIndex = users.findIndex((user) => {
-                return user.id == current_user.id;
-            });
+        try {
+            let id = req.session.loggedUserId;
+            let currentUser = await userService.findOne(id);
+            let userData = await userService.getCurrentUserData(currentUser);
+            let change_password = "";
             
-            if (!bcrypt.compareSync(req.body.password, current_user.password)) {
+            if (errors.isEmpty()) {
+                
+                if (!bcrypt.compareSync(req.body.password, currentUser.password)) {
                     return res.render("users/profile", {
                         errors: [{msg:"La contraseña actual ingresada es incorrecta"}],
-                        current_user,
-                        comments: userComments,
-                        products: userProducts, 
+                        current_user: currentUser,
+                        comments: userData.comments,
+                        orders: userData.orders, 
                     });
                 }
 
-            if (req.body.confirmation == req.body.new_password) {
-                change_password = bcrypt.hashSync(req.body.new_password,10);
+                if (req.body.confirmation == req.body.new_password) {
+                    change_password = bcrypt.hashSync(req.body.new_password,10);
+                } else {
+                    change_password = currentUser.password;
+                }
+
+                let userToEdit = {
+                    password: change_password,   
+                };
+
+                await userService.update(id, userToEdit)
+                res.redirect("/users/profile");
             } else {
-                change_password = current_user.password;
+                res.render("users/profile", { 
+                    errors: errors.errors,
+                    current_user: currentUser,
+                    comments: userData.comments,
+                    orders: userData.orders, 
+                });
             }
-
-            let userToEdit = {
-                id: current_user.id,
-                name: current_user.name,
-                userName: current_user.userName,
-                phone: current_user.phone,
-                email: current_user.email,
-                password: change_password,
-                avatar: current_user.avatar,
-                admin: false,
-                status: "active",
-                bio: current_user.bio,
-                facebook: current_user.facebook,
-                instagram: current_user.instagram,
-                twitter: current_user.twitter
-            };
-
-            // Actualizamos datos del user
-            users.splice(findIndex, 1, userToEdit);
-
-            updateData(users, "../data/usersDB.json");
-            res.redirect("/users/profile");
-
-        } else {
-
-            res.render("users/profile", { 
-                errors: errors.errors,
-                current_user,
-                comments: userComments,
-                products: userProducts, 
-            });
+        } catch (error) {
+            res.status(400).send(error.message);
         }
     },
 };

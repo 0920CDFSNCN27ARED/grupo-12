@@ -37,7 +37,7 @@ module.exports = (sequelize, DataTypes) => {
     bio: DataTypes.STRING,
     facebook: DataTypes.STRING,
     instagram: DataTypes.STRING,
-    twiter: DataTypes.STRING,
+    twitter: DataTypes.STRING,
     shopId: DataTypes.INTEGER,
     orderId: DataTypes.INTEGER
   }, {

@@ -38,7 +38,7 @@ module.exports = {
       instagram: {
         type: Sequelize.STRING
       },
-      twiter: {
+      twitter: {
         type: Sequelize.STRING
       },
       createdAt: {

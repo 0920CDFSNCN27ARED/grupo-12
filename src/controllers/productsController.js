@@ -14,106 +14,113 @@ const comments = getData("../data/commentsDB.json");
 const categories = getData("../data/categoriesDB.json");
 const types = getData("../data/typesDB.json");
 
-const { Category } = require("../database/models");
+// Services
+const productService = require("../services/productService");
+const userService = require("../services/userService");
 
 // Controller
 const productsController = {
     //GET Product Details
-    getDetails: function (req, res, next) {
+    getDetails: async (req, res, next) => {
         let errors = validationResult(req);
+        try {
+            if (errors.isEmpty()) {
+                let product = await productService.findOne(req.params.id);
+                let comments = await productService.productComments(req.params.id);
+                let gallery = [product.gallery01, product.gallery02, product.gallery03 ]
 
-        if (errors.isEmpty()) {
-            let product = products.find((product) => {
-                return product.id == req.params.id;
-            });
-
-            let productComments = [];
-            comments.forEach((comment) => {
-                if (comment.productId == product.id) {
-                    productComments.push(comment);
-                }
-            });
-
-            res.render("products/productDetails", {
-                product: product,
-                comments: productComments,
-                avatar: product.avatar,
-                gallery: product.gallery,
-            });
-        } else {
-            res.render(`/products/productDetails`, {
-                errors: errors.errors,
-            });
+                res.render("products/productDetails", {
+                    product: product,
+                    comments: comments,
+                    avatar: product.avatar,
+                    gallery: gallery,
+                });
+            } else {
+                res.render(`/products/productDetails`, {
+                    errors: errors.errors,
+                });
+            }
+        } catch (error) {
+            
         }
+        
     },
 
     // GET Create Product Form
     getCreate: async (req, res, next) => {
-        //let categories = await Category.findAll();
-        res.render("products/productCreateForm", { categories, types });
+        try {
+            const categories = await productService.allCategories();
+            const types = await productService.allTypes();
+            res.render("products/productCreateForm", { 
+                categories, 
+                types 
+            });
+        } catch (error) {
+            res.status(400).send(error.message);
+        }
     },
 
     // POST Create Product Form
-    postCreate: function (req, res, next) {
-        let current_user = req.session.current_user;
+    postCreate: async (req, res, next) => {
         let errors = validationResult(req);
+        try {
+            let loggedUserId = req.session.loggedUserId;
+            let currentUser = await userService.findOne(loggedUserId);
 
-        let avatar = req.files.avatar;
-        if (req.files.avatar != null) {
-            avatar = req.files.avatar[0].filename;
-        } else {
-            avatar = "without-image.png";
-        }
-
-        let gallery = [];
-        if (req.files.gallery != null) {
-            let array = req.files.gallery;
-            for (let i = 0; i < array.length; i++) {
-                const image = array[i].filename;
-                gallery.push(image);
+            let avatar = req.files.avatar;
+            if (req.files.avatar != null) {
+                avatar = req.files.avatar[0].filename;
+            } else {
+                avatar = "without-image.png";
             }
-        } else {
-            gallery = [
-                "without-image.png",
-                "without-image.png",
-                "without-image.png",
-            ];
-        }
 
-        if (errors.isEmpty()) {
-            let newProduct = {
-                id: 0,
-                shopId: current_user.shopId,
-                name: req.body.name,
-                description: req.body.description,
-                details: req.body.details,
-                brewery: req.body.brewery,
-                price: parseInt(req.body.price),
-                discount: parseInt(req.body.discount),
-                stock: req.body.stock || 0,
-                category: req.body.category,
-                type: req.body.type,
-                ibu: req.body.ibu,
-                abv: req.body.abv,
-                og: req.body.og,
-                avatar: avatar,
-                gallery: gallery,
-            };
-
-            //Asignamos un id correlativo
-            products.forEach((product) => {
-                if (product.id >= newProduct.id) {
-                    newProduct.id = product.id;
+            let gallery = [];
+            if (req.files.gallery != null) {
+                let array = req.files.gallery;
+                for (let i = 0; i < array.length; i++) {
+                    const image = array[i].filename;
+                    gallery.push(image);
                 }
-            });
-            newProduct.id = newProduct.id + 1;
+            } else {
+                gallery = [
+                    "without-image.png",
+                    "without-image.png",
+                    "without-image.png",
+                ];
+            }
 
-            //Guardar producto
-            saveData(products, newProduct, "../data/productsDB.json");
-            res.redirect(`/products/${newProduct.id}/productDetails`);
-        } else {
-            res.render("products/productCreateForm", { errors: errors.errors });
+            if (errors.isEmpty()) {
+                let newProduct = {
+                    shopId: currentUser.shopId,
+                    categoryId: req.body.categoryId,
+                    typeId: req.body.typeId,
+                    name: req.body.name,
+                    description: req.body.description,
+                    details: req.body.details,
+                    brewery: req.body.brewery,
+                    price: parseFloat(req.body.price),
+                    discount: parseFloat(req.body.discount),
+                    stock: req.body.stock || 0,
+                    category: req.body.category,
+                    type: req.body.type,
+                    ibu: req.body.ibu,
+                    abv: req.body.abv,
+                    og: req.body.og,
+                    avatar: avatar,
+                    gallery01: gallery[0] ? gallery[0] : "without-image.png",
+                    gallery02: gallery[1] ? gallery[1] : "without-image.png",
+                    gallery03: gallery[2] ? gallery[2] : "without-image.png",
+                };
+
+                await productService.create(newProduct);
+                res.redirect(`/shops`);
+            } else {
+                res.render("products/productCreateForm", { errors: errors.errors });
+            }
+        } catch (error) {
+            res.status(400).send(error.message);    
         }
+        
     },
 
     // Update - Form to edit

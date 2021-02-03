@@ -44,7 +44,7 @@ module.exports = {
       instagram: {
         type: Sequelize.STRING
       },
-      twiter: {
+      twitter: {
         type: Sequelize.STRING
       },
       shopId: {

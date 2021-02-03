@@ -27,6 +27,10 @@ module.exports = (sequelize, DataTypes) => {
           as: "shippingMethods",
           foreignKey:"shippingMethodId"
         });
+        Order.belongsTo(models.Shop, {
+          as: "shops",
+          foreignKey:"shopId"
+        });
         Order.belongsToMany(models.Product, {
           as: "products",
           foreignKey:"orderId",
@@ -49,12 +53,12 @@ module.exports = (sequelize, DataTypes) => {
       total: DataTypes.INTEGER,
       status: DataTypes.STRING,
       userId:DataTypes.INTEGER,
-    cartItemsId:DataTypes.INTEGER,
-    paymentId:DataTypes.INTEGER,
-    couponId:DataTypes.INTEGER,
-    shippingMethodId:DataTypes.INTEGER,
-    billAddressId:DataTypes.INTEGER,
-    shippingAddressId:DataTypes.INTEGER
+      shopId:DataTypes.INTEGER,
+      paymentId:DataTypes.INTEGER,
+      couponId:DataTypes.INTEGER,
+      shippingMethodId:DataTypes.INTEGER,
+      billAddressId:DataTypes.INTEGER,
+      shippingAddressId:DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'Order',

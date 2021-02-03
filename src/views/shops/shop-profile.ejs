@@ -130,8 +130,8 @@
 																	<td><%= product.id %></td>
 																	<td><%= product.name %></td>
 																	<td><%= product.stock %></td>
-																	<td><%= product.category %></td>
-																	<td><%= product.type %></td>
+																	<td><%= product.categories.name %></td>
+																	<td><%= product.types.name %></td>
 																	<td class="text-center">
 																		<span><a href="/products/<%= product.id %>/productDetails"><i class="icon-eye"></i>&nbsp;</a></span>
 																		<span><a href="/products/<%= product.id %>/edit"><i class="icon-pencil2"></i>&nbsp;</a></span>

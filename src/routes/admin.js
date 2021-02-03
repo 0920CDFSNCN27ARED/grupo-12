@@ -10,6 +10,7 @@ const multerProducts = require("../utils/multer/multerProducts");
 
 // Middlewares
 const assertIsAdmin = require('../middlewares/assert-is-admin');
+const assertSignedIn = require('../middlewares/assert-signed-in');
 
 // Multer
 const uploadUser = multerOneImage('users');
@@ -20,18 +21,18 @@ const productImages = multerProducts('products', 'avatar', 'gallery');
 //******************* Admin Routes *******************//
 
 // GET Admin Profile
-router.get('/', assertIsAdmin, adminController.getAdminProfile);
+router.get('/', assertSignedIn, assertIsAdmin, adminController.getAdminProfile);
 
 //******************* Users Routes *******************//
 
 // GET user profile
-router.get('/:id/user-profile', assertIsAdmin, adminController.getUserProfile);
+router.get('/:id/user-profile', assertSignedIn, assertIsAdmin, adminController.getUserProfile);
 
 // GET edit user data form
-router.get('/:id/edit-user', assertIsAdmin, adminController.getEditUserForm);
+router.get('/:id/edit-user', assertSignedIn, assertIsAdmin, adminController.getEditUserForm);
 
 // GET create user form 
-router.get('/create-user', assertIsAdmin, adminController.getCreateUserForm);
+router.get('/create-user', assertSignedIn, assertIsAdmin, adminController.getCreateUserForm);
 
 // POST create user form 
 router.post(
@@ -109,7 +110,7 @@ router.post(
 //******************* Shops Routes *******************//
 
 // GET shop profile
-router.get('/:id/shop-profile', assertIsAdmin, adminController.getShopProfile);
+router.get('/:id/shop-profile', assertSignedIn, assertIsAdmin, adminController.getShopProfile);
 
 // POST create product modal 
 router.post(
@@ -137,7 +138,8 @@ router.post(
 
 // PUT edit category
 router.put(
-  '/:id/edit-category', 
+  '/:id/edit-category',
+  assertSignedIn, 
   assertIsAdmin, 
   [
     check("name", "El nombre de la categoría es requerido.").notEmpty(),

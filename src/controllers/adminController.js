@@ -6,16 +6,21 @@ const bcrypt = require("bcrypt");
 const { User, Category, Type, Shop, Product, Payment, Order, CartItem, ShippingMethod} = require("../database/models");
 const getCurrentUserData = require("../utils/getCurrentUserData");
 
+// Services
+const userService = require("../services/userService");
+
 // Controller
 const adminController = {
     
     //GET admin Profile
     getAdminProfile: async (req, res, next) => {
         let errors = validationResult(req);
-        let current_user = req.session.current_user;
+        const id = req.session.loggedUserId;
         
         if (errors.isEmpty()) {
             try {
+                let currentUser = await userService.findOne(id);
+
                 let users = await User.findAll({
                     include: [{association: "shops"}]
                 });
@@ -59,7 +64,7 @@ const adminController = {
                     ]
                 });
                 res.render("admin/admin-profile", {
-                    admin: current_user,
+                    admin: currentUser,
                     users: users, 
                     categories: categories,
                     types: types,

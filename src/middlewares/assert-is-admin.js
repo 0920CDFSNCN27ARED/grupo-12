@@ -1,12 +1,17 @@
-function assertIsAdmin(req, res, next) {
-    if (res.locals.current_user) {
-        if (!res.locals.current_user.admin || !req.session.current_user.admin) {
-            res.redirect("/");
-        } else {
+const userService = require("../services/userService");
+
+const assertIsAdmin = async (req, res, next) => {
+    try {
+        const id = req.session.loggedUserId;
+        let currentUser = await userService.findOne(id);
+        
+        if (currentUser.admin) {
             next();
+        } else {
+            res.redirect("/users/login");
         }
-    } else {
-        res.redirect("/users/login");
+    } catch (error) {
+        res.status(400).send(error.message);
     }
 }
 

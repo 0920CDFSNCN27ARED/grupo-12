@@ -1,23 +1,17 @@
 const express = require('express');
-const usersController = require('../controllers/usersController');
 const router = express.Router();
+const usersController = require('../controllers/usersController');
 const {check,validationResult, body}= require("express-validator");
-const multer = require('multer');
+
+// Utils
+const multerOneImage = require("../utils/multer/multerOneImage");
+const uploadUser = multerOneImage('users');
+
+// Middlewares
+const assertSignedIn = require('../middlewares/assert-signed-in');
 const confirmPassword = require('../middlewares/confirmPassword');
 const checkUserDB = require('../middlewares/checkUser');
-const assertSignedIn = require('../middlewares/assert-signed-in')
-const path = require('path');
 
-var storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-      cb(null, 'public/images/users')
-    },
-    filename: function (req, file, cb) {
-      cb(null,file.fieldname + "-" + Date.now() + path.extname(file.originalname))
-    }
-  });
-   
-  var upload = multer({ storage: storage });
 
 // GET Login page
 router.get('/login',usersController.getLogin);
@@ -37,7 +31,7 @@ router.get('/register', usersController.getRegister);
 // POST Register Page
 router.post(
   '/register',
-  upload.single("avatar"),
+  uploadUser.single("avatar"),
   [
     check("name").isLength({min:4,max:50}).withMessage("El nombre debe tener entre 4 y 50 caracteres de largo"),
     check("userName").isLength({min:4,max:15}).withMessage("El nombre de usuario debe tener entre 4 y 15 caracteres de largo"),
@@ -55,7 +49,7 @@ router.get('/profile',assertSignedIn, usersController.getProfile);
 // PUT Profile user data
 router.put(
   '/edit-data',
-  upload.single("avatar"),
+  uploadUser.single("avatar"),
   [
     check("name").isLength({min:4,max:30}).withMessage("El nombre debe tener entre 4 y 30 caracteres de largo"),
     check("userName").isLength({min:4,max:15}).withMessage("El nombre de usuario debe tener entre 4 y 15 caracteres de largo"),

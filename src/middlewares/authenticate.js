@@ -1,15 +1,11 @@
-// Data
-const getData = require("../utils/getData");
-let users = getData("../data/usersDB.json");
+const userService = require("../services/userService");
 
-function authenticate(req, res, next) {
+const authenticate = async (req, res, next) => {
     const id = req.session.loggedUserId;
 
     if (!id) return next();
 
-    const loggedUser = users.find((user) => {
-        return user.id == id;
-    });
+    let loggedUser = await userService.findOne(id);
 
     if (!loggedUser) {
         delete req.session.loggedUserId;
@@ -17,7 +13,6 @@ function authenticate(req, res, next) {
     };
 
     res.locals.current_user = loggedUser;
-    req.session.current_user = loggedUser;
 
     next();
 }

@@ -1,22 +1,15 @@
+const userService = require("../services/userService");
 
-// Data
-const getData = require("../utils/getData");
-let users = getData("../data/usersDB.json");
-
-function rememberMe (req,res,next){
-    if(req.cookies.remember && !req.session.loggedUserId){
-        let loggedUser;
-        for (let i = 0; i < users.length; i++) {
-            const user = users[i];
-            if (user.email==req.cookies.remember) {
-                loggedUser = user;
-                break;
-            }
+const rememberMe = async (req,res,next) => {
+    try {
+        if(req.cookies.remember && !req.session.loggedUserId){
+            let loggedUser = await userService.findOne(req.cookies.remember)
+            req.session.loggedUserId = loggedUser.id;
         }
-        req.session.loggedUserId = loggedUser.id;
-        req.session.current_user.id = loggedUser.id;
-    }
     next();
+    } catch (error) {
+        res.status(400).send(error.message);
+    }
 };
 
 module.exports = rememberMe;

@@ -11,50 +11,64 @@ const getCurrentUserData = require("../utils/getCurrentUserData");
 // Data
 let users = getData("../data/usersDB.json");
 
+// Services
+const { User } = require("../database/models");
+const userService = require("../services/userService");
+
+
 // Controller
 const usersController = {
+
     // GET Login
     getLogin: function (req, res, next) {
         res.render("users/login");
     },
 
     // POST Login
-    postLogin: function (req, res) {
-        let errors = validationResult(req);
-        let userLogin;
+    postLogin: async (req, res) => {
+        try {
+            let errors = validationResult(req);
+            let loggedUser;
         
-        if (errors.isEmpty()) {
-            for (let i = 0; i < users.length; i++) {
-                const user = users[i];
-                if (user.email == req.body.email) {
-                    if (bcrypt.compareSync(req.body.password, user.password)) {
-                        userLogin = user;
-                        break;
-                    }
-                }
-            }
-            if (!userLogin) {
-                return res.render("users/login", {
-                    errors: [{ msg: "Email o contraseña incorrectos" }],
-                });
-            }
-            req.session.loggedUserId = userLogin.id;
-            req.session.current_user = userLogin;
-            if (req.body.remember) {
-                res.cookie("remember", userLogin.id, {
-                    maxAge: 60000,
-                });
-            }
-            
-            if(req.session.current_user.admin){
-                res.redirect("/admin");
+            if (errors.isEmpty()) {
+                let users = await userService.findAll();
+
+                for (let i = 0; i < users.length; i++) {
+                    const user = users[i];
+                    if (user.email == req.body.email) {
+                        if (bcrypt.compareSync(req.body.password, user.password)) {
+                            loggedUser = user;
+                            break;
+                        };
+                    };
+                };
+
+                if (!loggedUser) {
+                    return res.render("users/login", {
+                        errors: [{ msg: "Email o contraseña incorrectos" }],
+                    });
+                };
+
+                req.session.loggedUserId = loggedUser.id;
+
+                if (req.body.remember) {
+                    res.cookie("remember", loggedUser.id, {
+                        maxAge: 60000,
+                    });
+                };
+                
+                if(loggedUser.admin){
+                    res.redirect("/admin");
+                } else {
+                    res.redirect("/");
+                };
+
             } else {
-                res.redirect("/");
-            };
-            
-        } else {
-            return res.render("users/login", { errors: errors.errors });
-        }
+                return res.render("users/login", { errors: errors.errors });
+            }
+        } catch (error) {
+            res.status(400).send(error.message);
+        };
     },
 
     // GET Register
@@ -63,33 +77,36 @@ const usersController = {
     },
 
     // POST Register
-    postRegister: function (req, res, next) {
+    postRegister: async (req, res, next) => {
         let errors = validationResult(req);
         
         if (errors.isEmpty()) {
-            const newId = users.length != 0 ? users[users.length - 1].id + 1 : 1;
-            const avatar = req.file ? req.file.filename : "default-avatar.png";
+            try {
+                const avatar = req.file ? req.file.filename : "default-avatar.png";
             
-            let newUser = {
-                id: newId,
-                name: req.body.name,
-                userName: req.body.userName,
-                phone: req.body.selectNumber + req.body.phoneNumber,
-                email: req.body.email,
-                password: bcrypt.hashSync(req.body.password, 10),
-                avatar: avatar,
-                admin: false,
-                status: "active",
-                shopId: null,
-                role:"buyer",
-                bio: "",
-                facebook: "",
-                instagram: "",
-                twitter: ""
+                await User.create({
+                    name: req.body.name,
+                    userName: req.body.userName,
+                    phone: req.body.selectNumber + req.body.phoneNumber,
+                    email: req.body.email,
+                    password: bcrypt.hashSync(req.body.password, 10),
+                    avatar: avatar,
+                    admin: false,
+                    status: "active",
+                    shopId: null,
+                    role:"buyer",
+                    bio: "",
+                    facebook: "",
+                    instagram: "",
+                    twitter: ""
+                });
+                
+                res.redirect("login");
+
+            } catch (error) {
+                res.status(400).send(error.message);
             };
             
-            saveData(users, newUser, "../data/usersDB.json");
-            res.redirect("login");
         } else {
             res.render("users/register", { errors: errors.errors });
         }
@@ -115,16 +132,20 @@ const usersController = {
     },
 
     // GET user profile
-    getProfile: function (req, res, next) {
-        let current_user = req.session.current_user;
-        let userData = getCurrentUserData(current_user);
-        let userComments = userData.userComments;
-        let userProducts = userData.userProducts;
+    getProfile: async (req, res, next) => {
+        try {
+            let loggedUserId = req.session.loggedUserId;
+            let currentUser = await userService.findOne(loggedUserId);
+            let data = await userService.getCurrentUserData(currentUser)
 
-        res.render("users/profile", {
-            comments: userComments,
-            products: userProducts,
-        });
+            res.render("users/profile", {
+                comments: data.comments,
+                products: data.orders,
+                currentUser
+            });
+        } catch (error) {
+            res.status(400).send(error.message);
+        }
     },
 
     // PUT user profile data form

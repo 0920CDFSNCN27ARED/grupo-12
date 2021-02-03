@@ -1,32 +1,23 @@
 // require
 const express = require('express');
+const router = express.Router();
 const shopsController = require('../controllers/shopsController');
 const {check,validationResult, body}= require("express-validator");
-const multer = require('multer');
-const path = require('path');
-const router = express.Router();
 
-// Multer Config
-var storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-      cb(null, 'public/images/shops')
-    },
-    filename: function (req, file, cb) {
-      cb(null,file.fieldname + "-" + Date.now() + path.extname(file.originalname))
-    }
-  });
-   
-var upload = multer({ storage: storage });
+// Utils
+const multerOneImage = require("../utils/multer/multerOneImage");
+const uploadShop = multerOneImage('shops');
 
-// Routes
+// Middlewares
+const assertSignedIn = require('../middlewares/assert-signed-in');
 
 // GET shop profile
-router.get('/', shopsController.getShop);
+router.get('/', assertSignedIn, shopsController.getShop);
 
 // PUT Profile user data
 router.put(
   '/edit-data',
-  upload.single("avatar"),
+  uploadShop.single("avatar"),
   [
     check("name").isLength({min:4,max:30}).withMessage("El nombre debe tener entre 4 y 30 caracteres de largo"),
     check("email").isEmail().withMessage("Email inválido"),

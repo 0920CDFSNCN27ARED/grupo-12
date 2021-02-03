@@ -19,7 +19,18 @@ DB_PORT=3306
 3. Correr sequelize db:migrate
 4. Correr sequelize db:seed:all
 5. Inicializar proyecto npm test
+6. Ingresar con 
+    user: admin@artiskraken.com.ar 
+    pass: 12345678
 
+
+// Generando seeders --------------------------------------------------
+
+sequelize seed:generate
+
+sequelize seed:generate --name admin-user
+sequelize seed:generate --name types
+sequelize seed:generate --name categories
 
 // Util Commands--------------------------------------------------------
 

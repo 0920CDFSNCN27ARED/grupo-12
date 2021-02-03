@@ -9,29 +9,36 @@ const deleteData = require("../utils/deleteData");
 const getShopData = require("../utils/getShopData");
 
 // Data
-const products = getData("../data/productsDB.json");
-const comments = getData("../data/commentsDB.json");
 const shops = getData("../data/shopsDB.json");
+
+// Services
+const { Shop } = require("../database/models");
+const shopService = require("../services/shopService");
+const userService = require("../services/userService");
 
 // Controller
 const shopsController = {
     
     //GET shop profile
-    getShop: function (req, res, next) {
+    getShop: async (req, res, next) => {
         let errors = validationResult(req);
-        let current_user = req.session.current_user;
-        let shop = shops.find(shop =>{
-            return shop.id == current_user.shopId;
-        });
-        let shopData = getShopData(shop, current_user);
-
+        let id = req.session.loggedUserId;
+        
         if (errors.isEmpty()) {
+            try {
+                let currentUser = await userService.findOne(id);
+                let shop = await shopService.findOne(currentUser.shopId)
+                let shopData = await shopService.getShopData(currentUser);
 
-            res.render("shops/shop-profile", {
-                products: shopData.shopProducts,
-                comments: shopData.shopComments,
-                shop,
-            });
+                res.render("shops/shop-profile", {
+                    products: shopData.products,
+                    comments: shopData.comments,
+                    shop,
+                });
+
+            } catch (error) {
+                res.status(400).send(error.message);
+            };
 
         } else {
             res.render("shops/shop-profile", {
@@ -41,52 +48,44 @@ const shopsController = {
     },
 
     // PUT shop profile data form
-    putShopData: function (req, res, next) {
-        let errors = validationResult(req);
-        let current_user = req.session.current_user;
-        let shop = shops.find(shop => {
-            return shop.id == current_user.shopId;
-        });
-        let shopData = getShopData(shop, current_user);
-        
-        if (errors.isEmpty()) {
+    putShopData: async (req, res, next) => {
+        try {
+            let errors = validationResult(req);
+            let id = req.session.loggedUserId;
+            let currentUser = await userService.findOne(id);
+            let shop = await shopService.findOne(currentUser.shopId)
+            let shopData = await shopService.getShopData(currentUser);
 
-            let findIndex = shops.findIndex((shop) => {
-                return shop.id == current_user.shopId;
-            });
-            let filename = req.file
-                ? req.file.filename
-                : shops[findIndex].avatar;
-            
-            let shopToEdit = {
-                id: parseInt(shop.id),
-                userId: current_user.id,  
-                name: req.body.name,
-                phone: req.body.phone,
-                email: req.body.email,
-                avatar: filename,
-                ranking: shop.ranking,
-                status: shop.status,
-                sales: shop.sales,
-                bio: req.body.bio,
-                facebook: req.body.facebook,
-                instagram: req.body.instagram,
-                twitter: req.body.twitter
-            };
+            if (errors.isEmpty()) {
+                
+                let filename = req.file
+                    ? req.file.filename
+                    : shop.avatar;
+                
+                let updateShop = { 
+                    name: req.body.name,
+                    phone: req.body.phone,
+                    email: req.body.email,
+                    avatar: filename,
+                    bio: req.body.bio,
+                    facebook: req.body.facebook,
+                    instagram: req.body.instagram,
+                    twitter: req.body.twitter
+                };
 
-            // Actualizamos datos del user
-            shops.splice(findIndex, 1, shopToEdit);
+                await shopService.update(shop.id, updateShop);
+                res.redirect("/shops");
 
-            updateData(shops, "../data/shopsDB.json");
-            res.redirect("/shops");
-
-        } else {
-            res.render("shops/shop-profile", { 
-                errors: errors.errors,
-                products: shopData.shopProducts,
-                comments: shopData.shopComments,
-                shop, 
-            });
+            } else {
+                res.render("shops/shop-profile", { 
+                    errors: errors.errors,
+                    products: shopData.products,
+                    comments: shopData.comments,
+                    shop, 
+                });
+            }
+        } catch (error) {
+            res.status(400).send(error.message);
         }
     },
 };

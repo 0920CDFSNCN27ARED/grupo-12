@@ -15,7 +15,7 @@ module.exports = {
         bio: 'Usuario administrador de sitio',
         facebook: '',
         instagram: '',
-        twiter: '',
+        twitter: '',
         shopId: null,
         orderId: null,
         createdAt: '2021-01-23 20:52:27',

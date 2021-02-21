@@ -161,7 +161,7 @@
 																<td><small><%= index +1 %></small></td>
 																<td><small><%= shop.id %></small></td>
 																<td><small><%= shop.name %></small></td>
-																<td><small><%= shop.users.name %></small></td>
+																<td><small><%= shop.users? shop.users.name: "" %></small></td>
 																<td><small><%= shop.email %></small></td>
 																<td><small><%= shop.phone %></small></td>
 																<td><small><%= shop.ranking %></small></td>
@@ -212,12 +212,12 @@
 																<td><small><%= index +1 %></small></td>
 																<td><small><%= product.id %></small></td>
 																<td><small><%= product.name %></small></td>
-																<td><small><%= product.shops.name %></small></td>
+																<td><small><%= product.shops? product.shops.name: ""%></small></td>
 																<td><small><%= product.brewery %></small></td>
 																<td><small><%= product.stock %></small></td>
 																<td><small><%= product.price %></small></td>
 																<td><small><%= product.categories.name %></small></td>
-																<td><small><%= product.types.name %></small></td>
+																<td><small><%= product.types ? product.types.name : "" %></small></td>
 																<td><small><%= product.abv %></small></td>
 																<td><small><%= product.ibu %></small></td>
 																<td><small><%= product.og %></small></td>
@@ -372,9 +372,9 @@
 																<td><small><%= order.tax %></small></td>
 																<td><small><%= order.total %></small></td>
 																<td><small><%= order.status %></small></td>
-																<td><small>bla</small></td>
-																<td><small>bla</small></td>
-																<td><small>bla</small></td>
+																<td><small><%= order.users ? order.users.name : "" %></small></td>
+																<td><small><%= order.payments ? order.payments.name : ""%></small></td>
+																<td><small><%= order.shippingMethods ? order.shippingMethods.name : "" %></small></td>
 																<td class="d-flex justify-content-center">
 																	<button class="btn btn-outline btn-sm p-0" data-toggle="modal" data-target="#<%= `editOrderModal${order.id}` %>">
 																		<i class="m-0 i-rounded i-small icon-pencil2"></i></button>

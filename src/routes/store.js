@@ -12,16 +12,16 @@ router.get('/productCart', storeController.cart);
 /* GET checkout page. */
 router.get('/checkout', storeController.getCheckout);
 
-router.post('/checkout', [
-    check('first_name','El campo "nombre" no puede estar vacío').isEmpty(),
-    check('last_name','El campo "apellido" no puede estar vacío').isEmpty(),
-    check('dni','El campo "DNI/CUIT" no puede estar vacío').isEmpty(),
-    check('pais','El campo "país" no puede estar vacío').isEmpty(),
-    check('province','El campo "provincia" no puede estar vacío').isEmpty(),
-    check('city','El campo "ciudad" no puede estar vacío').isEmpty(),
-    check('postal_code','El campo "código postal" debe ser un número').isInt(),
-    check('adress','El campo "dirección" no puede estar vacío').isEmpty(),
-    check('email','El email ingresado es inválido').isEmail(),
-],storeController.postCheckout);
+ router.post('/checkout', //[
+//     check('name').isEmpty().withMessage('El campo "nombre" no puede estar vacío'),
+//     check('dni').isEmpty().withMessage('El campo "DNI/CUIT" no puede estar vacío'),
+//     check('billingCountry').isEmpty().withMessage('El campo "país" no puede estar vacío'),
+//     check('billingProvince').isEmpty().withMessage('El campo "provincia" no puede estar vacío'),
+//     check('billingCity').isEmpty().withMessage('El campo "ciudad" no puede estar vacío'),
+//     check('billingPostalCode').isInt().withMessage('El campo "código postal" debe ser un número'),
+//     check('billingAddress').isEmpty().withMessage('El campo "dirección" no puede estar vacío'),
+//     check('email').isEmail().withMessage('El email ingresado es inválido'),
+//     check('phone').isMobilePhone().withMessage('El teléfono ingresado es inválido'),]
+storeController.postCheckout);
 
 module.exports = router;

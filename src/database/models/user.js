@@ -22,6 +22,10 @@ module.exports = (sequelize, DataTypes) => {
           as: "comments",
           foreignKey: "userId"
       });
+      User.hasMany(models.Address,{
+          as:"addresses",
+          foreignKey:"userId"
+      })
     }
   };
   User.init({
@@ -29,6 +33,7 @@ module.exports = (sequelize, DataTypes) => {
     userName: DataTypes.STRING,
     phone: DataTypes.STRING,
     email: DataTypes.STRING,
+    dni: DataTypes.INTEGER,
     password: DataTypes.STRING,
     avatar: DataTypes.STRING,
     admin: DataTypes.BOOLEAN,
@@ -39,7 +44,8 @@ module.exports = (sequelize, DataTypes) => {
     instagram: DataTypes.STRING,
     twitter: DataTypes.STRING,
     shopId: DataTypes.INTEGER,
-    orderId: DataTypes.INTEGER
+    orderId: DataTypes.INTEGER,
+    addressId: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'User',

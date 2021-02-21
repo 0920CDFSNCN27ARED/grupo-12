@@ -31,7 +31,10 @@ const adminController = {
                     include: [{association: "categories"}]
                 });
                 let shops = await Shop.findAll({
-                    include: [{association: "users"}]
+                    include: [
+                        {association: "users"},
+                        {association: "products"},
+                ]
                 });
                 let products = await Product.findAll({
                     include: [

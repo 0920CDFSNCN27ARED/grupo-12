@@ -17,7 +17,7 @@ module.exports = {
       totalShipping: {
         type: Sequelize.INTEGER
       },
-      discountCoupon: {
+      message:{
         type: Sequelize.STRING
       },
       tax: {
@@ -33,6 +33,9 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       shopId: {
+        type: Sequelize.INTEGER
+      },
+      statusId: {
         type: Sequelize.INTEGER
       },
       paymentId: {

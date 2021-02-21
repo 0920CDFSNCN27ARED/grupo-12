@@ -35,25 +35,28 @@ module.exports = (sequelize, DataTypes) => {
           as: "products",
           foreignKey:"orderId",
           through:"CartItem"
-        });
-        /** 
-        Order.belongsTo(models.Coupon, {
-          as: "coupons",
-          foreignKey: "couponId"
-        });
-          */
+        }); 
+        Order.hasMany(models.Address, {
+          as: "addresses",
+          foreignKey: "billAddressId"
+        })
+        Order.belongsTo(models.Coupon,{
+          as:"coupons",
+          foreignKey:"couponId"
+        })
         }
     };
     Order.init({
       email: DataTypes.STRING,
       totalProducts: DataTypes.STRING,
       totalShipping: DataTypes.INTEGER,
-      discountCoupon: DataTypes.STRING,
+      message: DataTypes.STRING,
       tax: DataTypes.INTEGER,
       total: DataTypes.INTEGER,
       status: DataTypes.STRING,
       userId:DataTypes.INTEGER,
       shopId:DataTypes.INTEGER,
+      statusId:DataTypes.INTEGER,
       paymentId:DataTypes.INTEGER,
       couponId:DataTypes.INTEGER,
       shippingMethodId:DataTypes.INTEGER,

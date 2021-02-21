@@ -36,8 +36,8 @@
 									<select class="selectpicker form-control customjs" title="Seleccione Categoría"  
 										data-size="10" data-live-search="true" multiple data-live-search="true" style="width:100%;">
 										<optgroup label="Todas las Categorías">
-											<% categories.map( category => { %>
-												<option class="text-capitalize" value="<%= category %>"><%= category %></option>
+											<% categories.forEach( category => { %>
+												<option class="text-capitalize" value="<%= category.name %>"><%= category.name %></option>
 											<% }) %>
 										</optgroup>
 									</select>
@@ -61,7 +61,7 @@
 						============================================= -->
 						<ul class="grid-filter style-3 w-100" data-container="#portfolio">
 							<% categories.forEach( category => { %>
-								<li><a href="#" data-filter=".<%= category %>" class="link-grid"><i class="icon-beer"></i><span class="ml-1 text-uppercase"><%= category %></span></a></li>
+								<li><a href="#" data-filter=".<%= category.id %>" class="link-grid"><i class="icon-beer"></i><span class="ml-1 text-uppercase"><%= category.name %></span></a></li>
 							<% }) %> 
 
 							<!-- Show All Button -->
@@ -72,7 +72,7 @@
 						============================================= -->
 						<div id="portfolio" class="portfolio row gutter-30 grid-container" data-layout="fitRows">
 							<% products.forEach( product => { %>
-								<%- include('./productStore', { product: product }) %>
+								<%- include('./productStore', { product: product, categories:categories }) %>
 							<% }) %> 
 						</div>
 					</div>

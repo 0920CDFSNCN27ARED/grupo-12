@@ -43,9 +43,7 @@ module.exports = (sequelize, DataTypes) => {
     facebook: DataTypes.STRING,
     instagram: DataTypes.STRING,
     twitter: DataTypes.STRING,
-    shopId: DataTypes.INTEGER,
-    orderId: DataTypes.INTEGER,
-    addressId: DataTypes.INTEGER
+    shopId: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'User',

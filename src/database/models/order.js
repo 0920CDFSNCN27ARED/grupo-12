@@ -53,7 +53,6 @@ module.exports = (sequelize, DataTypes) => {
       message: DataTypes.STRING,
       tax: DataTypes.INTEGER,
       total: DataTypes.INTEGER,
-      status: DataTypes.STRING,
       userId:DataTypes.INTEGER,
       shopId:DataTypes.INTEGER,
       statusId:DataTypes.INTEGER,

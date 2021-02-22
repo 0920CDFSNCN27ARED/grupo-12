@@ -4,6 +4,7 @@ module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface.bulkInsert('Orders', [{
         id:1,
+        date: '2021-01-23',
         email: 'admin@artiskraken.com.ar',
         totalProducts: 900.00,
         totalShipping: 300.20,

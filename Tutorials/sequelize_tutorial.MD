@@ -100,6 +100,9 @@ sequelize model:generate --name Address --attributes fullName:string,address1:st
 Coupons
 sequelize model:generate --name Coupon --attributes name:string,description:string,discount:integer,couponCode:string
 
+orderStatus
+sequelize model:generate --name OrderStatus --attributes name:string,description:string
+
 // Seeders create --------------------------------------------------------
 
 sequelize seed:generate --name admin-user

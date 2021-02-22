@@ -14,7 +14,6 @@ const shopsController = {
         let id = req.session.loggedUserId;
         try {
             if (errors.isEmpty()) {
-
                 let currentUser = await userService.findOne(id);
                 let shop = await shopService.findOne(currentUser.shopId)
                 let shopData = await shopService.getShopData(currentUser);
@@ -38,9 +37,9 @@ const shopsController = {
 
     // PUT shop profile data form
     putShopData: async (req, res, next) => {
+        let errors = validationResult(req);
+        let id = req.session.loggedUserId;
         try {
-            let errors = validationResult(req);
-            let id = req.session.loggedUserId;
             let currentUser = await userService.findOne(id);
             let shop = await shopService.findOne(currentUser.shopId)
             let shopData = await shopService.getShopData(currentUser);

@@ -8,14 +8,14 @@
                     <div class="comment-meta">
                         <div class="comment-author vcard">
                             <span class="comment-avatar clearfix">
-                                <img alt='Image' src='/images/users/<%= comment.avatar%>'
+                                <img alt='Image' src='/images/users/<%= comment.users.avatar%>'
                                     class='avatar avatar-60 photo avatar-default' height='60' width='60' /></span>
                         </div>
                     </div>
                     <div class="comment-content clearfix">
-                        <div class="comment-author"><%= comment.author%><span><a href="#" title="Permalink to this comment"><%= comment.datetime%></a></span></div>
+                        <div class="comment-author"><%= comment.users.name%><span><a href="#" title="Permalink to this comment"><%= comment.date%></a></span></div>
                         <p><%= comment.comment%></p>
-                        <a class='comment-reply-link' href='#'><i class="icon-reply"></i></a>
+                        <!-- <a class='comment-reply-link' href='#'><i class="icon-reply"></i></a> -->
                     </div>
                     <div class="clear"></div>
                 </div>

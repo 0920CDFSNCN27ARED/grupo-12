@@ -35,10 +35,10 @@
 								<div class="fslider flex-thumb-grid grid-6" data-animation="fade" data-speed="900" data-pagi="true" data-thumbs="true">
 									<div class="flexslider">
 										<div class="slider-wrap">
-											<%- include('productGallery', {image: avatar, category: product.category}) %>
+											<%- include('productGallery', {image: product.avatar, category: product.categories.name}) %>
 											<% if(gallery){ %>
 												<% gallery.forEach((galleryItem, index) => { %>
-													<%- include('productGallery', {image: galleryItem, category: product.category}) %>
+													<%- include('productGallery', {image: galleryItem, category: product.categories.name}) %>
 												<% }); %> 
 											<% } else { null} %> 
 											

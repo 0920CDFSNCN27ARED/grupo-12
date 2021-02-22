@@ -33,21 +33,7 @@ module.exports = {
             ],
         });
     },
-    productComments: async (id) => {
-        let allComments = await Comment.findAll({
-            include:[
-                {association: "products"},
-                {association: "users"}
-            ],
-        });
-        let comments = [];
-        allComments.forEach(comment => {
-            if(comment.productId == id){
-                comments.push(comment);
-            };            
-        });
-        return comments;
-    },
+    
     create: async (attributes) => {
         return await Product.create(
             attributes
@@ -63,6 +49,39 @@ module.exports = {
             attributes,
             { where: {id: id} }
         );
+    },
+    findOneComment: async (id) => {
+        return await Comment.findByPk(id, {
+            include:[
+                {association: "users"},
+                {association: "products"}
+            ],
+        });
+    },
+    productComments: async (id) => {
+        let allComments = await Comment.findAll({
+            include:[
+                {association: "products"},
+                {association: "users"}
+            ],
+        });
+        let comments = [];
+        allComments.forEach(comment => {
+            if(comment.productId == id){
+                comments.push(comment);
+            };            
+        });
+        return comments;
+    },
+    createComment: async (attributes) => {
+        return await Comment.create(
+            attributes
+        );
+    },
+    destroyComment: async (id) => {
+        return await Comment.destroy({
+            where: {id: id}
+        });
     },
 };
 

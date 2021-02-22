@@ -1,31 +1,34 @@
+// Services
+const productService = require("../services/productService");
+
+// Index controller
 const indexController = {
-    home: function(req, res) {
-        res.render('index', { products: allProducts, types: types });
+
+    // GET home
+    home: async (req, res) => {
+        try {
+            const products = await productService.findAll();
+            const types = await productService.allTypes();
+
+            res.render('index', { 
+                products: products, 
+                types: types 
+            });
+        } catch (error) {
+            res.status(400).send(error.message);
+        }
+        
     },
+
+    // GET story
     story: function(req, res) {
         res.render('story');
     },
+
+    // GET contact
     contact: function(req, res) {
         res.render('contact');
     }
 }
-
-function getProducts() {
-  const fs = require('fs');
-  const dbJson = fs.readFileSync('data/productsDB.json', {encoding: "utf-8"});
-  return JSON.parse(dbJson)
-};
-const allProducts = getProducts();
-
-function getTypes() {
-    let types = [];
-    allProducts.map( product => {
-        if( !types.includes(product.type) ){
-            types.push(product.type);
-        }
-    })
-    return types;
-}
-const types = getTypes();
 
 module.exports = indexController;

@@ -36,17 +36,26 @@ module.exports = (sequelize, DataTypes) => {
           foreignKey:"orderId",
           through:"CartItem"
         }); 
-        Order.hasMany(models.Address, {
-          as: "addresses",
+        Order.belongsTo(models.Address, {
+          as: "billAddresses",
           foreignKey: "billAddressId"
-        })
+        });
+        Order.belongsTo(models.Address, {
+          as: "shippingAddresses",
+          foreignKey: "shippingAddressId"
+        });
         Order.belongsTo(models.Coupon,{
           as:"coupons",
           foreignKey:"couponId"
+        });
+        Order.belongsTo(models.OrderStatus,{
+          as:"status",
+          foreignKey:"statusId"
         })
         }
     };
     Order.init({
+      date: DataTypes.DATEONLY,
       email: DataTypes.STRING,
       totalProducts: DataTypes.FLOAT(10,2),
       totalShipping: DataTypes.FLOAT(10,2),

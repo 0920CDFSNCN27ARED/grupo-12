@@ -5,9 +5,13 @@ const {
 module.exports = (sequelize, DataTypes) => {
   class Address extends Model {
     static associate(models) {
-      Address.belongsTo(models.Order,{
-        as:'orders',
-        foreignKey:"billAddressId"
+      Address.hasMany(models.Order, {
+        as: "billAddresses",
+        foreignKey: "billAddressId"
+      });
+      Address.hasMany(models.Order, {
+        as: "shippingAddresses",
+        foreignKey: "shippingAddressId"
       });
       Address.belongsTo(models.User,{
         as:'users',

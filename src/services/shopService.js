@@ -48,7 +48,11 @@ module.exports = {
             }
         });
             
-        let allComments = await Comment.findAll();
+        let allComments = await Comment.findAll({ 
+            include:[
+                {association: "users"},
+                {association: "products"}
+            ]});
         let comments = [];
         products.forEach(product => {
             allComments.forEach(comment => {
@@ -58,7 +62,22 @@ module.exports = {
             });
         });
 
-        let orders = await Order.findAll({ where: {shopId: currentUser.shopId} });
+        let allOrders = await Order.findAll({ 
+            include:[
+                {association: "users"},
+                {association: "shops"},
+                {association: "payments"},
+                {association: "billAddresses"},
+                {association: "shippingAddresses"},
+                {association: "coupons"},
+                {association: "status"}
+            ]});
+        let orders = [];
+        allOrders.forEach(order => {
+            if (order.shopId == currentUser.shopId) {
+                orders.push(order);
+            }
+        });
 
         return (data = { products, comments, orders });
     },

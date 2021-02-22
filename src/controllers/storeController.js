@@ -39,7 +39,6 @@ const storeController = {
                 let id = addresses.length != 0 ? addreses[addresses.length -1].id +1 : 1; 
                 
                 await addressService.create({
-                    id: id,
                     fullName: req.body.name,
                     address: req.body.billingAddress,
                     city: req.body.billingCity,
@@ -51,7 +50,6 @@ const storeController = {
                 });
                 if(req.body.shippingAddress){
                     await addressService.create({
-                        id: id +1,
                         fullName: req.body.name,
                         address: req.body.shippingAddress,
                         city: req.body.shippingCity,

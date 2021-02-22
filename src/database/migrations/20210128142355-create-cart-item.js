@@ -9,16 +9,16 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       subtotal: {
-        type: Sequelize.INTEGER
+        type: Sequelize.FLOAT(10,2)
       },
       quantity: {
         type: Sequelize.INTEGER
       },
       price: {
-        type: Sequelize.INTEGER
+        type: Sequelize.FLOAT(10,2)
       },
       discount: {
-        type: Sequelize.INTEGER
+        type: Sequelize.FLOAT(10,2)
       },
       expireTime: {
         type: Sequelize.DATE

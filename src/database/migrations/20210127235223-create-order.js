@@ -12,19 +12,19 @@ module.exports = {
         type: Sequelize.STRING
       },
       totalProducts: {
-        type: Sequelize.STRING
+        type: Sequelize.FLOAT(10,2)
       },
       totalShipping: {
-        type: Sequelize.INTEGER
+        type: Sequelize.FLOAT(10,2)
       },
       message:{
         type: Sequelize.STRING
       },
       tax: {
-        type: Sequelize.INTEGER
+        type: Sequelize.FLOAT(10,2)
       },
       total: {
-        type: Sequelize.INTEGER
+        type: Sequelize.FLOAT(10,2)
       },
       status: {
         type: Sequelize.STRING

@@ -14,7 +14,7 @@ DB_PORT=3306
 
 // Generando DB, models y seeders --------------------------------------
 
-1. Borrar DB si es que existe
+1. Borrar DB si es que existe >> sequelize db:drop
 2. Correr sequelize db:create
 3. Correr sequelize db:migrate
 4. Correr sequelize db:seed:all

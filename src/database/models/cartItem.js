@@ -21,10 +21,10 @@ module.exports = (sequelize, DataTypes) => {
     }
   };
   CartItem.init({
-    subtotal: DataTypes.INTEGER,
+    subtotal: DataTypes.FLOAT(10,2),
     quantity: DataTypes.INTEGER,
-    price: DataTypes.INTEGER,
-    discount: DataTypes.INTEGER,
+    price: DataTypes.FLOAT(10,2),
+    discount: DataTypes.FLOAT(10,2),
     expireTime: DataTypes.DATE,
     productId: DataTypes.INTEGER,
     orderId: DataTypes.INTEGER

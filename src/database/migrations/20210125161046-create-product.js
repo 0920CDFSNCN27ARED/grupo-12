@@ -21,22 +21,22 @@ module.exports = {
         type: Sequelize.STRING
       },
       price: {
-        type: Sequelize.FLOAT
+        type: Sequelize.FLOAT(10,2)
       },
       discount: {
-        type: Sequelize.FLOAT
+        type: Sequelize.FLOAT(10,2)
       },
       stock: {
         type: Sequelize.INTEGER
       },
       ibu: {
-        type: Sequelize.FLOAT
+        type: Sequelize.FLOAT(10,2)
       },
       og: {
-        type: Sequelize.FLOAT
+        type: Sequelize.FLOAT(10,2)
       },
       abv: {
-        type: Sequelize.FLOAT
+        type: Sequelize.FLOAT(10,2)
       },
       avatar: {
         type: Sequelize.STRING

@@ -21,7 +21,7 @@ module.exports = {
         type: Sequelize.STRING
       },
       ranking: {
-        type: Sequelize.INTEGER
+        type: Sequelize.FLOAT(10,2)
       },
       status: {
         type: Sequelize.STRING

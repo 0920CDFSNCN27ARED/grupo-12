@@ -48,11 +48,11 @@ module.exports = (sequelize, DataTypes) => {
     };
     Order.init({
       email: DataTypes.STRING,
-      totalProducts: DataTypes.STRING,
-      totalShipping: DataTypes.INTEGER,
+      totalProducts: DataTypes.FLOAT(10,2),
+      totalShipping: DataTypes.FLOAT(10,2),
       message: DataTypes.STRING,
-      tax: DataTypes.INTEGER,
-      total: DataTypes.INTEGER,
+      tax: DataTypes.FLOAT(10,2),
+      total: DataTypes.FLOAT(10,2),
       userId:DataTypes.INTEGER,
       shopId:DataTypes.INTEGER,
       statusId:DataTypes.INTEGER,

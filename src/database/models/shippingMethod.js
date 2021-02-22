@@ -18,7 +18,7 @@ module.exports = (sequelize, DataTypes) => {
   };
   ShippingMethod.init({
     name: DataTypes.STRING,
-    amount: DataTypes.INTEGER,
+    amount: DataTypes.FLOAT(10,2),
     description: DataTypes.STRING,
     location: DataTypes.STRING
   }, {

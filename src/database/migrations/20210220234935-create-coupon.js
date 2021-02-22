@@ -15,7 +15,7 @@ module.exports = {
         type: Sequelize.STRING
       },
       discount: {
-        type: Sequelize.INTEGER
+        type: Sequelize.FLOAT(10,2)
       },
       couponCode: {
         type: Sequelize.STRING

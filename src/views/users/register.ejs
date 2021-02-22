@@ -84,17 +84,12 @@
 								</div>
 								<input class="form-control" name="confirmPassword"placeholder="Repetí tu contraseña" type="password">
 							</div> <!-- form-group// -->
-							<div class="form-group input-group">
+							<p style="margin-bottom: 4px;margin-left: 2px;color: #5a5a5a;font-size: 16px;text-align: center;">Elegí tu foto de perfil:</p>
+							<div class="form-group input-group d-flex">
 								<div class="input-group-prepend-s w-14">
 									<span class="input-group-text"> <i class="fas fa-id-badge"></i> </span>
 								</div>
-								<div class="select-avatar">
-								<p id="p-avatar"class="ml-1 mr-1">Seleccioná tu foto de perfil:</p>
-								<label for="avatar"class="w-avatar">
-									<input type="file" name="avatar" id="avatar"style="display:none;" />
-									<img class="w-avatar mt-14"src="/images/register/avatar.png"/>
-								 </label>
-								 </div>
+								<input id="input-8" name="avatar" style="width:80%"type="file" accept="image/*" class="file-loading" data-allowed-file-extensions='[]' data-show-preview="false">
 							</div> <!-- form-group// -->
 							<div class="form-group">
 								<button type="submit" class="btn btn-primary btn-block ">Crear Cuenta </button>
@@ -128,6 +123,69 @@
 
 	<!-- Footer -->
 	<%- include('../layout/footer') %>
+	<script >
+		$(document).ready(function() {
+			$("#input-5").fileinput({showCaption: false});
+
+			$("#input-6").fileinput({
+				showUpload: false,
+				maxFileCount: 10,
+				mainClass: "input-group-lg",
+				showCaption: true
+			});
+
+			$("#input-8").fileinput({
+				mainClass: "input-group-md",
+				showUpload: false,
+				previewFileType: "image",
+				browseClass: "btn btn-success",
+				browseLabel: "Pick Image",
+				browseIcon: "<i class=\"icon-picture\"></i> ",
+				removeClass: "btn btn-danger",
+				removeLabel: "Delete",
+				removeIcon: "<i class=\"icon-trash\"></i> ",
+				uploadClass: "btn btn-info",
+				uploadLabel: "Upload",
+				uploadIcon: "<i class=\"icon-upload\"></i> "
+			});
+
+			$("#input-9").fileinput({
+				previewFileType: "text",
+				allowedFileExtensions: ["txt", "md", "ini", "text"],
+				previewClass: "bg-warning",
+				browseClass: "btn btn-primary",
+				removeClass: "btn btn-secondary",
+				uploadClass: "btn btn-secondary",
+			});
+
+			$("#input-10").fileinput({
+				showUpload: false,
+				layoutTemplates: {
+					main1: "{preview}\n" +
+					"<div class=\'input-group {class}\'>\n" +
+					"   <div class=\'input-group-append\'>\n" +
+					"       {browse}\n" +
+					"       {upload}\n" +
+					"       {remove}\n" +
+					"   </div>\n" +
+					"   {caption}\n" +
+					"</div>"
+				}
+			});
+
+			$("#input-11").fileinput({
+				maxFileCount: 10,
+				allowedFileTypes: ["image", "video"]
+			});
+
+			$("#input-12").fileinput({
+				showPreview: false,
+				allowedFileExtensions: ["zip", "rar", "gz", "tgz"],
+				elErrorContainer: "#errorBlock"
+			});
+		});
+
+	</script>
 </body>
 	
 </html>

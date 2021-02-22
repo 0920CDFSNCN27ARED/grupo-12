@@ -1,4 +1,4 @@
-<article class="portfolio-item col-12 col-sm-6 col-md-3 <%= product.category %>">
+<article class="portfolio-item col-12 col-sm-6 col-md-3 <%= product.categoryId %>">
     <div class="grid-inner">
         <div class="portfolio-image br-5">
             <a href="#">
@@ -30,7 +30,11 @@
                 <del class="mr-2">$<%= product.price %></del> 
                 <h3 class="color">$<%= product.price - product.discount %></h3>
             </div>
-            <span class="text-center text-uppercase p-1">Categoria: <%= product.category %></span>
+            <% categories.forEach(category => { %>
+                <% if (category.id == product.categoryId) { %>
+                    <span class="text-center text-uppercase p-1">Categoria: <%= category.name %></span>
+                <% } %>
+            <% }) %>
             <div class="d-flex mt-2 justify-content-center">
                 <span class="white-color mr-2">ABV: <%= product.abv %>%</span>
                 <span class="white-color mr-2">IBU: <%= product.ibu %></span>

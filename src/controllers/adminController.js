@@ -31,7 +31,10 @@ const adminController = {
                     include: [{association: "categories"}]
                 });
                 let shops = await Shop.findAll({
-                    include: [{association: "users"}]
+                    include: [
+                        {association: "users"},
+                        {association: "products"},
+                ]
                 });
                 let products = await Product.findAll({
                     include: [
@@ -792,6 +795,341 @@ const adminController = {
     destroyPayment: async (req, res, next) => {
         try {
             await Payment.destroy({
+                where: {
+                    id: req.params.id
+                }
+            });
+            res.redirect(`/admin`);
+        } catch (error) {
+            res.status(400).send(error.message);
+        }
+    },
+        //******************* Order Controllers *******************//
+
+    //POST create order
+    postCreateOrder: async (req, res, next) => {
+        let errors = validationResult(req);
+        if(errors.isEmpty()){
+            try{
+                await Order.create({
+                    email: req.body.email,
+                    count:req.body.count,
+                    totalShipping: req.body.totalShipping,
+                    tax:req.body.tax,
+                    total:req.body.total,
+                    status:req.body.status,
+                    userId:req.body.userId,
+                    paymentId:req.body.paymentId,
+                    shippingMethodId:req.body.shippingMethodId
+                })
+            console.log(req.body)
+            res.redirect("/admin")
+            }catch(error){
+                res.status(400).send(error.message);
+                console.log(error)
+            }
+        }else{
+            let id= req.session.loggedUserId;
+            let currentUser = await userService.findOne(id);
+            let users = await User.findAll();
+            let categories = await Category.findAll({
+                include: [{association: "types"}]
+            });
+            let types = await Type.findAll();
+            let shops = await Shop.findAll({
+                include: [{association: "users"}]
+            });
+            let products = await Product.findAll({
+                include: [
+                    {association: "shops"},
+                    {association: "categories"},
+                    {association: "types"}
+                ]
+            });
+            let payments = await Payment.findAll({
+                include:[
+                    {association: "orders"},
+                ]
+            });
+            let orders = await Order.findAll({
+                include:[
+                    {association: "payments"},
+                    {association: "users"},
+                    {association: "cartItems"},
+                    {association: "shippingMethods"},
+                ]
+            });
+            let cartItems = await CartItem.findAll({
+                include:[
+                    {association: "orders"},
+                ]
+            });
+            let shippingMethods = await ShippingMethod.findAll({
+                include:[
+                    {association: "orders"},
+                ]
+            });
+            res.render("admin/admin-profile", {
+                errors: errors.errors,
+                admin: currentUser,
+                users: users, 
+                categories: categories,
+                types: types,
+                shops: shops,
+                products: products,
+                payments:payments,
+                orders:orders,
+                cartItems:cartItems,
+                shippingMethods:shippingMethods
+            }); 
+        }
+    },
+
+    //PUT Edit Order
+    putEditOrder: async (req, res, next) => {
+        let errors = validationResult(req);
+        let current_user = req.session.current_user;
+
+        if (errors.isEmpty()) {
+            try {
+                await Order.update({
+                    email: req.body.email,
+                    count:req.body.count,
+                    totalShipping: req.body.totalShipping,
+                    tax:req.body.tax,
+                    total:req.body.total,
+                    userId:req.body.userId,
+                    paymentId:req.body.paymentId,
+                    shippingMethodId:req.body.shippingMethodId
+                }, {
+                    where: { id: req.params.id }
+                });
+                res.redirect(`/admin`);
+            } catch (error) {
+                res.status(400).send(error.message);
+            }
+        } else {
+            let id= req.session.loggedUserId;
+            let currentUser = await userService.findOne(id);
+            let users = await User.findAll();
+            let categories = await Category.findAll({
+                include: [{association: "types"}]
+            });
+            let types = await Type.findAll();
+            let shops = await Shop.findAll({
+                include: [{association: "users"}]
+            });
+            let products = await Product.findAll({
+                include: [
+                    {association: "shops"},
+                    {association: "categories"},
+                    {association: "types"}
+                ]
+            });
+            let payments = await Payment.findAll({
+                include:[
+                    {association: "orders"},
+                ]
+            });
+            let orders = await Order.findAll({
+                include:[
+                    {association: "payments"},
+                    {association: "users"},
+                    {association: "cartItems"},
+                    {association: "shippingMethods"},
+                ]
+            });
+            let cartItems = await CartItem.findAll({
+                include:[
+                    {association: "orders"},
+                ]
+            });
+            let shippingMethods = await ShippingMethod.findAll({
+                include:[
+                    {association: "orders"},
+                ]
+            });
+            res.render("admin/admin-profile", {
+                errors: errors.errors,
+                admin: currentUser,
+                users: users, 
+                categories: categories,
+                types: types,
+                shops: shops,
+                products: products,
+                payments:payments,
+                orders:orders,
+                cartItems:cartItems,
+                shippingMethods:shippingMethods
+            }); 
+        }
+    },
+    // DELETE Order
+    destroyOrder: async (req, res, next) => {
+        try {
+            await Order.destroy({
+                where: {
+                    id: req.params.id
+                }
+            });
+            res.redirect(`/admin`);
+        } catch (error) {
+            res.status(400).send(error.message);
+        }
+    },
+    //POST create Shipping Method
+    postCreateShippingMethod: async (req, res, next) => {
+        let errors = validationResult(req);
+        if(errors.isEmpty()){
+            try{
+                await ShippingMethod.create({
+                    name:req.body.name,
+                    amount: req.body.amount,
+                    description: req.body.description,
+                    location: req.body.location 
+            })
+            res.redirect("/admin")
+            }catch(error){
+                res.status(400).send(error.message);
+                console.log(error)
+            }
+        }else{
+            let id= req.session.loggedUserId;
+            let currentUser = await userService.findOne(id);
+            let users = await User.findAll();
+            let categories = await Category.findAll({
+                include: [{association: "types"}]
+            });
+            let types = await Type.findAll();
+            let shops = await Shop.findAll({
+                include: [{association: "users"}]
+            });
+            let products = await Product.findAll({
+                include: [
+                    {association: "shops"},
+                    {association: "categories"},
+                    {association: "types"}
+                ]
+            });
+            let payments = await Payment.findAll({
+                include:[
+                    {association: "orders"},
+                ]
+            });
+            let orders = await Order.findAll({
+                include:[
+                    {association: "payments"},
+                    {association: "users"},
+                    {association: "cartItems"},
+                    {association: "shippingMethods"},
+                ]
+            });
+            let cartItems = await CartItem.findAll({
+                include:[
+                    {association: "orders"},
+                ]
+            });
+            let shippingMethods = await ShippingMethod.findAll({
+                include:[
+                    {association: "orders"},
+                ]
+            });
+            res.render("admin/admin-profile", {
+                errors: errors.errors,
+                admin: currentUser,
+                users: users, 
+                categories: categories,
+                types: types,
+                shops: shops,
+                products: products,
+                payments:payments,
+                orders:orders,
+                cartItems:cartItems,
+                shippingMethods:shippingMethods
+            }); 
+        }
+    },
+
+    //PUT Edit Shipping Method
+
+    putEditShippingMethod: async (req, res, next) => {
+        let errors = validationResult(req);
+        let current_user = req.session.current_user;
+
+        if (errors.isEmpty()) {
+            try {
+                await Order.update({
+                    name:req.body.name,
+                    amount: req.body.amount,
+                    description: req.body.description,
+                    location: req.body.location
+                }, {
+                    where: { id: req.params.id }
+                });
+                res.redirect(`/admin`);
+            } catch (error) {
+                res.status(400).send(error.message);
+            }
+        } else {
+            let id= req.session.loggedUserId;
+            let currentUser = await userService.findOne(id);
+            let users = await User.findAll();
+            let categories = await Category.findAll({
+                include: [{association: "types"}]
+            });
+            let types = await Type.findAll();
+            let shops = await Shop.findAll({
+                include: [{association: "users"}]
+            });
+            let products = await Product.findAll({
+                include: [
+                    {association: "shops"},
+                    {association: "categories"},
+                    {association: "types"}
+                ]
+            });
+            let payments = await Payment.findAll({
+                include:[
+                    {association: "orders"},
+                ]
+            });
+            let orders = await Order.findAll({
+                include:[
+                    {association: "payments"},
+                    {association: "users"},
+                    {association: "cartItems"},
+                    {association: "shippingMethods"},
+                ]
+            });
+            let cartItems = await CartItem.findAll({
+                include:[
+                    {association: "orders"},
+                ]
+            });
+            let shippingMethods = await ShippingMethod.findAll({
+                include:[
+                    {association: "orders"},
+                ]
+            });
+            res.render("admin/admin-profile", {
+                errors: errors.errors,
+                admin: currentUser,
+                users: users, 
+                categories: categories,
+                types: types,
+                shops: shops,
+                products: products,
+                payments:payments,
+                orders:orders,
+                cartItems:cartItems,
+                shippingMethods:shippingMethods
+            }); 
+        }
+    },
+    // DELETE ShippingMethod
+    destroyShippingMethod: async (req, res, next) => {
+        try {
+            await ShippingMethod.destroy({
                 where: {
                     id: req.params.id
                 }

@@ -184,13 +184,9 @@ const productsController = {
                     const image = array[i].filename;
                     gallery.push(image);
                 }
-
-                //Delete old gallery
-                let oldGallery = products[findIndex].gallery;
-                oldGallery.map((file) => fs.unlinkSync(file));
-            } else {
-                gallery = products[findIndex].gallery;
-            }
+                } else {
+                    gallery = products[findIndex].gallery;
+                }
 
             let ibu = req.body.ibu == "0" ? product.ibu : req.body.ibu;
             let abv = req.body.abv == "0" ? product.abv : req.body.abv;

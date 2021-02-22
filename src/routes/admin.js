@@ -200,4 +200,57 @@ router.post(
 // DELETE Payment 
 router.delete('/:id/payment-destroy', assertIsAdmin, adminController.destroyPayment);
 
+// POST create order
+router.post(
+  '/create-order', 
+  assertIsAdmin, 
+  [
+    check("email", "El campo 'email' debe ser un email válido.").isEmail(),
+    check("count", "La cantidad de productos es requerida.").notEmpty(),
+    check("totalShipping", "El envío total es requerido.").notEmpty(),
+    check("tax", "El impuesto es requerido.").notEmpty(),
+    check("total", "El total es requerido.").notEmpty(),
+  ],
+  adminController.postCreateOrder);
+
+// PUT edit order
+  router.put(
+    '/:id/edit-order', 
+    assertIsAdmin, 
+    [
+      check("name", "El nombre del método de pago es requerido.").notEmpty(),
+      check("description", "La descripción del método de pago es requerida.").notEmpty(),
+    ],
+    adminController.putEditOrder);
+
+// DELETE Order 
+router.delete('/:id/order-destroy', assertIsAdmin, adminController.destroyOrder);
+
+// POST create Shipping Method
+router.post(
+  '/create-shippingMethod', 
+  assertIsAdmin, 
+  [
+    check("name", "El nombre del método de envío es requerido.").notEmpty(),
+    check("amount", "El el monto del envío es requerido.").notEmpty(),
+    check("description", "La descripción del método de envío es requerido.").notEmpty(),
+    check("location", "La ubicación del método de envío es requerido.").notEmpty(),
+  ],
+  adminController.postCreateShippingMethod);
+
+// PUT edit Shipping Method
+  router.put(
+    '/:id/edit-shippingMethod', 
+    assertIsAdmin, 
+    [
+      check("name", "El nombre del método de envío es requerido.").notEmpty(),
+      check("amount", "El el monto del envío es requerido.").notEmpty(),
+      check("description", "La descripción del método de envío es requerido.").notEmpty(),
+      check("location", "La ubicación del método de envío es requerido.").notEmpty(),
+    ],
+    adminController.putEditShippingMethod);
+
+// DELETE Shipping Method 
+router.delete('/:id/shippingMethod-destroy', assertIsAdmin, adminController.destroyShippingMethod);
+
 module.exports = router;

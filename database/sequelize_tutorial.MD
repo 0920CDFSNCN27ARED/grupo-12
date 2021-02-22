@@ -94,6 +94,12 @@ sequelize model:generate --name CartItem --attributes subtotal:integer,quantity:
 ShippingMethod
 sequelize model:generate --name ShippingMethod --attributes name:string,amount:integer,description:string,location:string
 
+Addresses
+sequelize model:generate --name Address --attributes fullName:string,address1:string,address2:string,city:string,state:string,postalCode:string,country:string,userId:integer
+
+Coupons
+sequelize model:generate --name Coupon --attributes name:string,description:string,discount:integer,couponCode:string
+
 // Seeders create --------------------------------------------------------
 
 sequelize seed:generate --name admin-user

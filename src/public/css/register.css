@@ -127,8 +127,7 @@ p{
 }
 
 .w-14{
-  width:14%;
-  margin-top:13px;
+  width:14%
 }
 
 .select-avatar{
@@ -163,6 +162,10 @@ p{
   border-radius: 5px;
   color:rgb(0, 0, 0);
   margin-bottom: -20px;
+}
+
+div.file-input{
+  width:84%;
 }
 @media (max-width:1072px){
 	.card.form.b{

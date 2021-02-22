@@ -78,16 +78,18 @@ const usersController = {
                     userName: req.body.userName,
                     phone: req.body.selectNumber + req.body.phoneNumber,
                     email: req.body.email,
+                    dni: "",
                     password: bcrypt.hashSync(req.body.password, 10),
                     avatar: avatar,
                     admin: false,
                     status: "active",
-                    shopId: null,
                     role:"buyer",
                     bio: "",
                     facebook: "",
                     instagram: "",
-                    twitter: ""
+                    twitter: "",
+                    shopId: null,
+                    addressId: null
                 };
                 
                 await userService.create(newUser);

@@ -18,31 +18,32 @@ USE `artis_db`;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `Types`
+-- Table structure for table `Coupons`
 --
 
-DROP TABLE IF EXISTS `Types`;
+DROP TABLE IF EXISTS `Coupons`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `Types` (
+CREATE TABLE `Coupons` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) DEFAULT NULL,
   `description` varchar(255) DEFAULT NULL,
-  `count` int(11) DEFAULT NULL,
+  `discount` float(10,2) DEFAULT NULL,
+  `couponCode` varchar(255) DEFAULT NULL,
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `Types`
+-- Dumping data for table `Coupons`
 --
 
-LOCK TABLES `Types` WRITE;
-/*!40000 ALTER TABLE `Types` DISABLE KEYS */;
-INSERT INTO `Types` VALUES (1,'Lager','Super fermentada',0,'2021-01-01 20:52:27','2021-01-01 20:52:27'),(2,'Ale','Menor fermentación',0,'2021-01-01 20:52:27','2021-01-01 20:52:27');
-/*!40000 ALTER TABLE `Types` ENABLE KEYS */;
+LOCK TABLES `Coupons` WRITE;
+/*!40000 ALTER TABLE `Coupons` DISABLE KEYS */;
+INSERT INTO `Coupons` VALUES (1,'Artis Kraken Coupon','Cupón de ejemplo',50.00,'ArtisCoupon','2021-01-23 20:52:27','2021-01-23 20:52:27');
+/*!40000 ALTER TABLE `Coupons` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -54,4 +55,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-02-22 17:38:49
+-- Dump completed on 2021-02-22 17:51:39

@@ -18,32 +18,32 @@ USE `artis_db`;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `Coupons`
+-- Table structure for table `Categories`
 --
 
-DROP TABLE IF EXISTS `Coupons`;
+DROP TABLE IF EXISTS `Categories`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `Coupons` (
+CREATE TABLE `Categories` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) DEFAULT NULL,
   `description` varchar(255) DEFAULT NULL,
-  `discount` float(10,2) DEFAULT NULL,
-  `couponCode` varchar(255) DEFAULT NULL,
+  `count` int(11) DEFAULT NULL,
+  `typeId` int(11) DEFAULT NULL,
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `Coupons`
+-- Dumping data for table `Categories`
 --
 
-LOCK TABLES `Coupons` WRITE;
-/*!40000 ALTER TABLE `Coupons` DISABLE KEYS */;
-INSERT INTO `Coupons` VALUES (1,'Artis Kraken Coupon','Cupón de ejemplo',50.00,'ArtisCoupon','2021-01-23 20:52:27','2021-01-23 20:52:27');
-/*!40000 ALTER TABLE `Coupons` ENABLE KEYS */;
+LOCK TABLES `Categories` WRITE;
+/*!40000 ALTER TABLE `Categories` DISABLE KEYS */;
+INSERT INTO `Categories` VALUES (1,'Stout','Cerveza negra, espesa, con un gusto fuerte',0,1,'2021-01-01 20:52:27','2021-01-01 20:52:27'),(2,'Pilsen','Cerveza rubia, ligera',0,1,'2021-01-01 20:52:27','2021-01-01 20:52:27'),(3,'Porter','Cerveza negra, con un sabor moderado, complejo y equilibrado ',0,1,'2021-01-01 20:52:27','2021-01-01 20:52:27'),(4,'Pale Ale','Cerveza rubia, amarga, caracterizada por tener un alto porcentaje de alcohol',0,2,'2021-01-01 20:52:27','2021-01-01 20:52:27'),(5,'German Bock','Cerveza fuerte, de color oscuro',0,1,'2021-01-01 20:52:27','2021-01-01 20:52:27'),(6,'Apa','Cerveza de cuerpo ligero, refrescante, muy equilibrada',0,2,'2021-01-01 20:52:27','2021-01-01 20:52:27'),(7,'Ipa','Cerveza rubia, con amargor y aroma intenso',0,2,'2021-01-01 20:52:27','2021-01-01 20:52:27'),(8,'Dunkel','Ceveza oscura',0,1,'2021-01-01 20:52:27','2021-01-01 20:52:27');
+/*!40000 ALTER TABLE `Categories` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -55,4 +55,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-02-22 17:38:46
+-- Dump completed on 2021-02-22 17:51:41

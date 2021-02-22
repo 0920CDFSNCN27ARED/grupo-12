@@ -18,18 +18,25 @@ USE `artis_db`;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `Comments`
+-- Table structure for table `Shops`
 --
 
-DROP TABLE IF EXISTS `Comments`;
+DROP TABLE IF EXISTS `Shops`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `Comments` (
+CREATE TABLE `Shops` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `comment` varchar(255) DEFAULT NULL,
-  `date` date DEFAULT NULL,
-  `userId` int(11) DEFAULT NULL,
-  `productId` int(11) DEFAULT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `phone` varchar(255) DEFAULT NULL,
+  `email` varchar(255) DEFAULT NULL,
+  `avatar` varchar(255) DEFAULT NULL,
+  `ranking` float(10,2) DEFAULT NULL,
+  `status` varchar(255) DEFAULT NULL,
+  `sales` int(11) DEFAULT NULL,
+  `bio` varchar(255) DEFAULT NULL,
+  `facebook` varchar(255) DEFAULT NULL,
+  `instagram` varchar(255) DEFAULT NULL,
+  `twitter` varchar(255) DEFAULT NULL,
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime NOT NULL,
   PRIMARY KEY (`id`)
@@ -37,13 +44,13 @@ CREATE TABLE `Comments` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `Comments`
+-- Dumping data for table `Shops`
 --
 
-LOCK TABLES `Comments` WRITE;
-/*!40000 ALTER TABLE `Comments` DISABLE KEYS */;
-INSERT INTO `Comments` VALUES (1,'Esto es un comentario de ejemplo','2021-01-23',1,1,'2021-01-23 20:52:27','2021-01-23 20:52:27');
-/*!40000 ALTER TABLE `Comments` ENABLE KEYS */;
+LOCK TABLES `Shops` WRITE;
+/*!40000 ALTER TABLE `Shops` DISABLE KEYS */;
+INSERT INTO `Shops` VALUES (1,'Artis Kraken','+541126790610','info@artiskraken.com.ar','default-shop.jpg',10.00,'active',0,'Tienda administradora de sitio','https://www.facebook.com/','https://www.instagram.com/','https://www.twitter.com/','2021-01-23 20:52:27','2021-01-23 20:52:27');
+/*!40000 ALTER TABLE `Shops` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -55,4 +62,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-02-22 17:38:47
+-- Dump completed on 2021-02-22 17:51:41

@@ -18,30 +18,32 @@ USE `artis_db`;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `OrderStatuses`
+-- Table structure for table `Comments`
 --
 
-DROP TABLE IF EXISTS `OrderStatuses`;
+DROP TABLE IF EXISTS `Comments`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `OrderStatuses` (
+CREATE TABLE `Comments` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) DEFAULT NULL,
-  `description` varchar(255) DEFAULT NULL,
+  `comment` varchar(255) DEFAULT NULL,
+  `date` date DEFAULT NULL,
+  `userId` int(11) DEFAULT NULL,
+  `productId` int(11) DEFAULT NULL,
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `OrderStatuses`
+-- Dumping data for table `Comments`
 --
 
-LOCK TABLES `OrderStatuses` WRITE;
-/*!40000 ALTER TABLE `OrderStatuses` DISABLE KEYS */;
-INSERT INTO `OrderStatuses` VALUES (1,'Pendiente de Pago','Pendiente de Pago','2021-01-01 20:52:27','2021-01-01 20:52:27'),(2,'Procesando','Procesando','2021-01-01 20:52:27','2021-01-01 20:52:27'),(3,'En Espera','En Espera','2021-01-01 20:52:27','2021-01-01 20:52:27'),(4,'Completado','Completado','2021-01-01 20:52:27','2021-01-01 20:52:27'),(5,'Cancelado','Cancelado','2021-01-01 20:52:27','2021-01-01 20:52:27'),(6,'Reembolsado','Reembolsado','2021-01-01 20:52:27','2021-01-01 20:52:27'),(7,'Fallido','Fallido','2021-01-01 20:52:27','2021-01-01 20:52:27');
-/*!40000 ALTER TABLE `OrderStatuses` ENABLE KEYS */;
+LOCK TABLES `Comments` WRITE;
+/*!40000 ALTER TABLE `Comments` DISABLE KEYS */;
+INSERT INTO `Comments` VALUES (1,'Esto es un comentario de ejemplo','2021-01-23',1,1,'2021-01-23 20:52:27','2021-01-23 20:52:27');
+/*!40000 ALTER TABLE `Comments` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -53,4 +55,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-02-22 17:38:46
+-- Dump completed on 2021-02-22 17:51:40

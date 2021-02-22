@@ -18,32 +18,30 @@ USE `artis_db`;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `Categories`
+-- Table structure for table `OrderStatuses`
 --
 
-DROP TABLE IF EXISTS `Categories`;
+DROP TABLE IF EXISTS `OrderStatuses`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `Categories` (
+CREATE TABLE `OrderStatuses` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) DEFAULT NULL,
   `description` varchar(255) DEFAULT NULL,
-  `count` int(11) DEFAULT NULL,
-  `typeId` int(11) DEFAULT NULL,
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `Categories`
+-- Dumping data for table `OrderStatuses`
 --
 
-LOCK TABLES `Categories` WRITE;
-/*!40000 ALTER TABLE `Categories` DISABLE KEYS */;
-INSERT INTO `Categories` VALUES (1,'Stout','Cerveza negra, espesa, con un gusto fuerte',0,1,'2021-01-01 20:52:27','2021-01-01 20:52:27'),(2,'Pilsen','Cerveza rubia, ligera',0,1,'2021-01-01 20:52:27','2021-01-01 20:52:27'),(3,'Porter','Cerveza negra, con un sabor moderado, complejo y equilibrado ',0,1,'2021-01-01 20:52:27','2021-01-01 20:52:27'),(4,'Pale Ale','Cerveza rubia, amarga, caracterizada por tener un alto porcentaje de alcohol',0,2,'2021-01-01 20:52:27','2021-01-01 20:52:27'),(5,'German Bock','Cerveza fuerte, de color oscuro',0,1,'2021-01-01 20:52:27','2021-01-01 20:52:27'),(6,'Apa','Cerveza de cuerpo ligero, refrescante, muy equilibrada',0,2,'2021-01-01 20:52:27','2021-01-01 20:52:27'),(7,'Ipa','Cerveza rubia, con amargor y aroma intenso',0,2,'2021-01-01 20:52:27','2021-01-01 20:52:27'),(8,'Dunkel','Ceveza oscura',0,1,'2021-01-01 20:52:27','2021-01-01 20:52:27');
-/*!40000 ALTER TABLE `Categories` ENABLE KEYS */;
+LOCK TABLES `OrderStatuses` WRITE;
+/*!40000 ALTER TABLE `OrderStatuses` DISABLE KEYS */;
+INSERT INTO `OrderStatuses` VALUES (1,'Pendiente de Pago','Pendiente de Pago','2021-01-01 20:52:27','2021-01-01 20:52:27'),(2,'Procesando','Procesando','2021-01-01 20:52:27','2021-01-01 20:52:27'),(3,'En Espera','En Espera','2021-01-01 20:52:27','2021-01-01 20:52:27'),(4,'Completado','Completado','2021-01-01 20:52:27','2021-01-01 20:52:27'),(5,'Cancelado','Cancelado','2021-01-01 20:52:27','2021-01-01 20:52:27'),(6,'Reembolsado','Reembolsado','2021-01-01 20:52:27','2021-01-01 20:52:27'),(7,'Fallido','Fallido','2021-01-01 20:52:27','2021-01-01 20:52:27');
+/*!40000 ALTER TABLE `OrderStatuses` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -55,4 +53,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-02-22 17:38:48
+-- Dump completed on 2021-02-22 17:51:39

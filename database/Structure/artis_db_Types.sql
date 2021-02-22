@@ -18,22 +18,17 @@ USE `artis_db`;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `Addresses`
+-- Table structure for table `Types`
 --
 
-DROP TABLE IF EXISTS `Addresses`;
+DROP TABLE IF EXISTS `Types`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `Addresses` (
+CREATE TABLE `Types` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `fullName` varchar(255) DEFAULT NULL,
-  `address` varchar(255) DEFAULT NULL,
-  `city` varchar(255) DEFAULT NULL,
-  `province` varchar(255) DEFAULT NULL,
-  `postalCode` varchar(255) DEFAULT NULL,
-  `country` varchar(255) DEFAULT NULL,
-  `message` varchar(255) DEFAULT NULL,
-  `userId` int(11) DEFAULT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `description` varchar(255) DEFAULT NULL,
+  `count` int(11) DEFAULT NULL,
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime NOT NULL,
   PRIMARY KEY (`id`)
@@ -41,13 +36,13 @@ CREATE TABLE `Addresses` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `Addresses`
+-- Dumping data for table `Types`
 --
 
-LOCK TABLES `Addresses` WRITE;
-/*!40000 ALTER TABLE `Addresses` DISABLE KEYS */;
-INSERT INTO `Addresses` VALUES (1,'Casa','Av Gaona 1234','Caballito','CABA','1405','Argentina','Tocar el timbre 1111 del 1A',1,'2021-01-23 20:52:27','2021-01-23 20:52:27'),(2,'Oficina','Av Belgrano 2345','Belgrano','CABA','1405','Argentina','Piso 1A',1,'2021-01-23 20:52:27','2021-01-23 20:52:27');
-/*!40000 ALTER TABLE `Addresses` ENABLE KEYS */;
+LOCK TABLES `Types` WRITE;
+/*!40000 ALTER TABLE `Types` DISABLE KEYS */;
+INSERT INTO `Types` VALUES (1,'Lager','Super fermentada',0,'2021-01-01 20:52:27','2021-01-01 20:52:27'),(2,'Ale','Menor fermentación',0,'2021-01-01 20:52:27','2021-01-01 20:52:27');
+/*!40000 ALTER TABLE `Types` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -59,4 +54,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-02-22 12:41:12
+-- Dump completed on 2021-02-22 17:51:42

@@ -18,21 +18,29 @@ USE `artis_db`;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `CartItems`
+-- Table structure for table `Users`
 --
 
-DROP TABLE IF EXISTS `CartItems`;
+DROP TABLE IF EXISTS `Users`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `CartItems` (
+CREATE TABLE `Users` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `subtotal` float(10,2) DEFAULT NULL,
-  `quantity` int(11) DEFAULT NULL,
-  `price` float(10,2) DEFAULT NULL,
-  `discount` float(10,2) DEFAULT NULL,
-  `expireTime` datetime DEFAULT NULL,
-  `productId` int(11) DEFAULT NULL,
-  `orderId` int(11) DEFAULT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `userName` varchar(255) DEFAULT NULL,
+  `phone` varchar(255) DEFAULT NULL,
+  `email` varchar(255) DEFAULT NULL,
+  `dni` int(11) DEFAULT NULL,
+  `password` varchar(255) DEFAULT NULL,
+  `avatar` varchar(255) DEFAULT NULL,
+  `admin` tinyint(1) DEFAULT NULL,
+  `status` varchar(255) DEFAULT NULL,
+  `role` varchar(255) DEFAULT NULL,
+  `bio` varchar(255) DEFAULT NULL,
+  `facebook` varchar(255) DEFAULT NULL,
+  `instagram` varchar(255) DEFAULT NULL,
+  `twitter` varchar(255) DEFAULT NULL,
+  `shopId` int(11) DEFAULT NULL,
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime NOT NULL,
   PRIMARY KEY (`id`)
@@ -40,13 +48,13 @@ CREATE TABLE `CartItems` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `CartItems`
+-- Dumping data for table `Users`
 --
 
-LOCK TABLES `CartItems` WRITE;
-/*!40000 ALTER TABLE `CartItems` DISABLE KEYS */;
-INSERT INTO `CartItems` VALUES (1,500.00,2,250.00,0.00,'2021-03-23 20:52:27',1,1,'2021-01-23 20:52:27','2021-01-23 20:52:27'),(2,400.00,1,450.00,50.00,'2021-03-23 20:52:27',2,1,'2021-01-23 20:52:27','2021-01-23 20:52:27');
-/*!40000 ALTER TABLE `CartItems` ENABLE KEYS */;
+LOCK TABLES `Users` WRITE;
+/*!40000 ALTER TABLE `Users` DISABLE KEYS */;
+INSERT INTO `Users` VALUES (1,'Artis Kraken','artis.kraken','+541126790610','admin@artiskraken.com.ar',NULL,'$2b$10$iVndD6XNtV89tpz.nRx6SuZna8My/PZMPbiXEO9mQ.HZoCmN92BSK','default-avatar.png',1,'active','seller','Usuario administrador de sitio','https://www.facebook.com/','https://www.instagram.com/','https://www.twitter.com/',1,'2021-01-23 20:52:27','2021-01-23 20:52:27'),(2,'Test User','test.user','+541126790610','user@artiskraken.com.ar',NULL,'$2b$10$iVndD6XNtV89tpz.nRx6SuZna8My/PZMPbiXEO9mQ.HZoCmN92BSK','default-avatar.png',0,'active','buyer','Usuario de prueba','https://www.facebook.com/','https://www.instagram.com/','https://www.twitter.com/',NULL,'2021-01-23 20:52:27','2021-01-23 20:52:27');
+/*!40000 ALTER TABLE `Users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -58,4 +66,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-02-22 12:41:14
+-- Dump completed on 2021-02-22 17:51:42

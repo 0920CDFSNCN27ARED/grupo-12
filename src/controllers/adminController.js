@@ -87,29 +87,6 @@ const adminController = {
 
     //******************* Users Controllers *******************//
 
-    //GET edit user form
-    getEditUserForm: async (req, res, next) => {
-        let errors = validationResult(req);
-        let current_user = req.session.current_user;
-        
-        if (errors.isEmpty()) {
-            try {
-                let user = await User.findByPk(req.params.id);
-                
-                res.render("admin/users/admin-edit-user-form", {
-                    admin: current_user,
-                    user: user,
-                });
-            } catch (error) {
-                res.status(400).send(error.message);
-            }
-        } else {
-            res.render("admin/users/admin-edit-user-form", {
-                errors: errors.errors,
-            });
-        }
-    },
-
     //GET user profile
     getUserProfile: async (req, res, next) => {
         let errors = validationResult(req);
@@ -141,44 +118,66 @@ const adminController = {
     //GET create user form
     getCreateUserForm: async (req, res, next) => {
         let errors = validationResult(req);
-        let current_user = req.session.current_user;
-        
-        if (errors.isEmpty()) {
-            try {
+        let loggedUserId = req.session.loggedUserId;
+        try {
+            let currentUser = await userService.findOne(loggedUserId);
+            if (errors.isEmpty()) {
                 res.render("admin/users/admin-create-user-form", {
-                    admin: current_user,
+                    admin: currentUser,
                 });
-            } catch (error) {
-                res.status(400).send(error.message);
+            } else {
+                res.render("admin/users/admin-create-user-form", {
+                    admin: currentUser,
+                    errors: errors.errors,
+                });
             }
-        } else {
-            res.render("admin/users/admin-create-user-form", {
-                errors: errors.errors,
-            });
+        } catch (error) {
+            res.status(400).send(error.message);
         }
     },
 
     //POST create user form
     postCreateUserForm: async (req, res, next) => {
         let errors = validationResult(req);
-        let current_user = req.session.current_user;
+        let loggedUserId = req.session.loggedUserId;
+        
+        try {
+            let currentUser = await userService.findOne(loggedUserId);
+            let users = await userService.findAll();
+            
+            if (errors.isEmpty()) {
 
-        if (errors.isEmpty()) {
-            try {
+                for (let i = 0; i < users.length; i++) {
+                    const user = users[i];
+                    if(req.body.email == user.email && req.body.userName == user.userName){
+                        return res.render("admin/users/admin-create-user-form", {
+                            admin: currentUser,
+                            errors:[
+                            {msg:"El email y usuario ingresado ya se encuentran en uso"}
+                        ]});
+                    }else if(req.body.email == user.email){
+                        return res.render("admin/users/admin-create-user-form", {
+                            admin: currentUser,
+                            errors:[
+                            {msg:"El email ingresado ya está en uso"}
+                        ]});
+                    }else if(req.body.userName == user.userName){
+                        return res.render("admin/users/admin-create-user-form", {
+                            admin: currentUser,
+                            errors:[
+                            {msg:"El nombre de usuario ingresado ya está en uso"}
+                        ]});
+                    }
+                };
+
                 let avatar = req.file ? req.file.filename : "default-avatar.png";
                 
-                let password = "";
-                if (req.body.confirmation == req.body.new_password) {
-                    password = bcrypt.hashSync(req.body.new_password,10);
-                } else {
-                    password = current_user.password;
-                }
                 await User.create({
                     name: req.body.name,
                     userName: req.body.userName,
                     phone: req.body.phone,
                     email: req.body.email,
-                    password: password,
+                    password: req.body.password,
                     avatar: avatar,
                     admin: req.body.admin,
                     status: req.body.status,
@@ -191,14 +190,15 @@ const adminController = {
                 });
 
                 res.redirect(`/admin`);
-            } catch (error) {
-                res.status(400).send(error.message);
+                
+            } else {
+                res.render("admin/users/admin-create-user-form", {
+                    errors: errors.errors,
+                    admin: currentUser,
+                });
             }
-        } else {
-            res.render("admin/users/admin-create-user-form", {
-                errors: errors.errors,
-                admin: current_user,
-            });
+        } catch (error) {
+            res.status(400).send(error.message);
         }
     },
 
@@ -216,14 +216,42 @@ const adminController = {
         }
     },
 
+    //GET edit user form
+    getEditUserForm: async (req, res, next) => {
+        let errors = validationResult(req);
+        let loggedUserId = req.session.loggedUserId;
+        let currentUser = await userService.findOne(loggedUserId);
+        let user = await userService.findOne(req.params.id);
+        
+        if (errors.isEmpty()) {
+            try {
+                res.render("admin/users/admin-edit-user-form", {
+                    admin: currentUser,
+                    user: user,
+                });
+            } catch (error) {
+                res.status(400).send(error.message);
+            }
+        } else {
+            res.render("admin/users/admin-edit-user-form", {
+                errors: errors.errors,
+                admin: currentUser,
+                user: user
+            });
+        }
+    },
+
     //PUT edit data user form
     putEditDataUserForm: async (req, res, next) => {
         let errors = validationResult(req);
-        let current_user = req.session.current_user;
-        let user = await User.findByPk(req.params.id);
+        let loggedUserId = req.session.loggedUserId;
+        try {
+            let currentUser = await userService.findOne(loggedUserId);
+            let user = await userService.findOne(req.params.id);
+            let users = await userService.findAll();
 
-        if (errors.isEmpty()) {
-            try {
+            if (errors.isEmpty()) {
+                
                 let avatar = req.file ? req.file.filename : user.avatar;
 
                 if(user.role == "seller"){
@@ -233,6 +261,32 @@ const adminController = {
                 if(req.body.role == "buyer" || user.role == "buyer"){
                     user.shopId = null;
                 }
+
+                for (let i = 0; i < users.length; i++) {
+                    const user = users[i];
+                    if(req.body.email == user.email && req.body.userName == user.userName){
+                        return res.render("admin/users/admin-edit-user-form", {
+                            admin: currentUser,
+                            user: user,
+                            errors:[
+                            {msg:"El email y usuario ingresado ya se encuentran en uso"}
+                        ]});
+                    }else if(req.body.email == user.email){
+                        return res.render("admin/users/admin-edit-user-form", {
+                            admin: currentUser,
+                            user: user,
+                            errors:[
+                            {msg:"El email ingresado ya está en uso"}
+                        ]});
+                    }else if(req.body.userName == user.userName){
+                        return res.render("admin/users/admin-edit-user-form", {
+                            admin: currentUser,
+                            user: user,
+                            errors:[
+                            {msg:"El nombre de usuario ingresado ya está en uso"}
+                        ]});
+                    }
+                };
                 
                 await User.update({
                     name: req.body.name,
@@ -249,22 +303,20 @@ const adminController = {
                     instagram: req.body.instagram,
                     twitter: req.body.twitter
                 },
-                {
-                    where: {
-                        id: req.params.id
-                    }
+                { where: { id: req.params.id }
                 });
 
                 res.redirect(`/admin/${req.params.id}/user-profile`);
-            } catch (error) {
-                res.status(400).send(error.message);
+                
+            } else {
+                res.render("admin/users/admin-edit-user-form", {
+                    errors: errors.errors,
+                    admin: currentUser,
+                    user: user
+                });
             }
-        } else {
-            res.render("admin/users/admin-edit-user-form", {
-                errors: errors.errors,
-                admin: current_user,
-                user: user
-            });
+        } catch (error) {
+            res.status(400).send(error.message);
         }
     },
 

@@ -34,12 +34,19 @@ module.exports = {
         });
     },
     productComments: async (id) => {
-        return await Comment.findAll(
-            { where: {productId: id} },
-            { include:[
-                    {association: "products"},
-                ],
+        let allComments = await Comment.findAll({
+            include:[
+                {association: "products"},
+                {association: "users"}
+            ],
         });
+        let comments = [];
+        allComments.forEach(comment => {
+            if(comment.productId == id){
+                comments.push(comment);
+            };            
+        });
+        return comments;
     },
     create: async (attributes) => {
         return await Product.create(

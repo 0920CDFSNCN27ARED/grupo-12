@@ -8,6 +8,7 @@ const multerProducts = require("../utils/multer/multerProducts");
 
 // Middlewares
 const assertIsSeller = require('../middlewares/assert-is-seller');
+const assertSignedIn = require('../middlewares/assert-signed-in');
 
 // Multer
 const productImages = multerProducts('products', 'avatar', 'gallery');
@@ -21,6 +22,7 @@ router.get('/:id/productDetails', productsController.getDetails);
 router.get(
     '/create', 
     assertIsSeller,
+    assertSignedIn,
     productsController.getCreate);
 
 // POST Create product page    
@@ -34,8 +36,8 @@ router.post(
         check("price", "El precio debe ser un numero").isNumeric(),
         check("discount", "El descuento no puede estar vacio").notEmpty(),
         check("discount", "El descuento debe ser un numero").isNumeric(),
-        check("category", "Seleccione una categoría").notEmpty(),
-        check("type", "Seleccione un tipo de cerveza").notEmpty(),
+        check("categoryId", "Seleccione una categoría").notEmpty(),
+        check("typeId", "Seleccione un tipo de cerveza").notEmpty(),
         check("brewery", "La cervecería no debe estar vacia").notEmpty(),
         check(
             "description",
@@ -48,7 +50,8 @@ router.post(
 // GET Edit product page
 router.get(
     '/:id/edit', 
-    assertIsSeller, 
+    assertIsSeller,
+    assertSignedIn, 
     productsController.getEdit);
 
 // PUT Edit product page

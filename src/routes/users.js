@@ -10,7 +10,7 @@ const uploadUser = multerOneImage('users');
 // Middlewares
 const assertSignedIn = require('../middlewares/assert-signed-in');
 const confirmPassword = require('../middlewares/confirmPassword');
-const checkUserDB = require('../middlewares/checkUser');
+const checkUser = require('../middlewares/checkUser');
 
 
 // GET Login page
@@ -40,7 +40,7 @@ router.post(
     check("password").isLength({min:8, max:undefined}).isAlphanumeric().withMessage("Contraseña inválida: minimo 8 caracteres,letras(a-zA-Z) y números"), 
   ],
   confirmPassword,
-  checkUserDB,
+  checkUser,
   usersController.postRegister);
 
 // GET Profile page
@@ -55,6 +55,7 @@ router.put(
     check("userName").isLength({min:4,max:15}).withMessage("El nombre de usuario debe tener entre 4 y 15 caracteres de largo"),
     check("email").isEmail().withMessage("Email inválido"),
   ],
+  checkUser,
   usersController.putUserData);
 
 // PUT Profile user data

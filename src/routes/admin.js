@@ -63,7 +63,8 @@ router.put(
     check("name", "El nombre no puede estar vacio").notEmpty(),
     check("userName", "El nombre de usuario no puede estar vacio").notEmpty(),
     check("email", "Email inválido").isEmail(),
-  ],adminController.putEditDataUserForm);
+  ],
+  adminController.putEditDataUserForm);
 
 // PUT edit user password form
 router.put(

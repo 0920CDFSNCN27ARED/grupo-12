@@ -67,28 +67,21 @@
 									<input type="text" name="description" class="form-control required" value="<%= product.description %>" placeholder="Describa brevemente el producto...">
 								</div>
 								<div class="col-6 form-group">
-									<label for="type">Tipo:</label>
-									<select class="form-control" name="type" id="type">
-										<option value="lager" <%= product.type == 'lager' ? "selected" : null %>>Lager</option>
-										<option value="ale" <%= product.type == 'ale' ? "selected" : null %>>Ale</option>
+									<label for="typeId">Tipo:</label>
+									<select class="form-control" name="typeId" id="typeId">
+										<% types.forEach((type)=> {%>
+											<option <%= type.id == product.typeId ? 'selected' : null %>  value="<%=type.id %>"><%=type.name %></option>
+											<% });%>
 									</select>
 								</div>
 								<div class="col-6 form-group">
-									<label for="category">Categoría:</label>
-									<select class="form-control" name="category" id="category">
-										<option value="stout" <%= product.category == 'stout' ? "selected" : null %>>Stout</option>
-										<option value="pilsen" <%= product.category == 'pilsen' ? "selected" : null %>>Pilsen</option>
-										<option value="porter" <%= product.category == 'porter' ? "selected" : null %>>Porter</option>
-										<option value="pale-ale" <%= product.category == 'pale-ale' ? "selected" : null %>>Pale Ale</option>
-										<option value="german-bock" <%= product.category == 'german-bock' ? "selected" : null %>>German Bock</option>
-										<option value="apa" <%= product.category == 'apa' ? "selected" : null %>>Apa</option>
-										<option value="ipa" <%= product.category == 'ipa' ? "selected" : null %>>Ipa</option>
-										<option value="bunkel" <%= product.category == 'bunkel' ? "selected" : null %>>Bunkel</option>
-										<option value="american-lager" <%= product.category == 'american-lager' ? "selected" : null %>>American Lager</option>
+									<label for="categoryId">Categoría:</label>
+									<select class="form-control" name="categoryId" id="categoryId">
+										<% categories.forEach((category) => {%>
+											<option <%= category.id == product.categoryId ? 'selected' : null %> value="<%=category.id %> "><%=category.name %></option>
+										<% }); %> 
 									</select>
 								</div>
-								
-								
 								<div class="col-4 form-group">
 									<label for="abv" class="mb-3">ABV (% DE ALCOHOL):</label>
 									<small>Valor Actual: <%= product.abv %></small> 
@@ -133,7 +126,7 @@
 								</div>
 								<div class="col-12">
 									<button type="submit" class="btn btn-secondary">Editar Producto</button>
-									<a href="/products/<%= product.id %>/productDetails" class="btn btn-outline-secondary">Cancelar</a>
+									<a href="/shops" class="btn btn-outline-secondary">Cancelar</a>
 								</div>
 							</div>
 						</form>

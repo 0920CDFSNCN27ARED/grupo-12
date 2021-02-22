@@ -66,6 +66,8 @@ const productsController = {
         try {
             let loggedUserId = req.session.loggedUserId;
             let currentUser = await userService.findOne(loggedUserId);
+            const categories = await productService.allCategories();
+            const types = await productService.allTypes();
 
             let avatar = req.files.avatar;
             if (req.files.avatar != null) {
@@ -115,7 +117,11 @@ const productsController = {
                 await productService.create(newProduct);
                 res.redirect(`/shops`);
             } else {
-                res.render("products/productCreateForm", { errors: errors.errors });
+                res.render("products/productCreateForm", { 
+                    errors: errors.errors,
+                    categories, 
+                    types  
+                });
             }
         } catch (error) {
             res.status(400).send(error.message);    
@@ -124,21 +130,22 @@ const productsController = {
     },
 
     // Update - Form to edit
-    getEdit: (req, res, next) => {
-        let productEdit = products.find((product) => {
-            return product.id == req.params.id;
-        });
-        if (productEdit) {
-            let errors = validationResult(req);
-
+    getEdit: async (req, res, next) => {
+        try {
+            const productToEdit = await productService.findOne(req.params.id)
+            const categories = await productService.allCategories();
+            const types = await productService.allTypes();
+            const gallery = [productToEdit.gallery01, productToEdit.gallery02, productToEdit.gallery03]
+            
             res.render("products/productEditForm", {
-                errors: errors.errors,
-                product: productEdit,
-                avatar: productEdit.avatar,
-                gallery: productEdit.gallery,
+                product: productToEdit,
+                avatar: productToEdit.avatar,
+                gallery: gallery,
+                categories, 
+                types 
             });
-        } else {
-            res.render("error");
+        } catch (error) {
+            res.status(400).send(error.message);
         }
     },
 

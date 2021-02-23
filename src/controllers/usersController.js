@@ -78,7 +78,7 @@ const usersController = {
                     userName: req.body.userName,
                     phone: req.body.selectNumber + req.body.phoneNumber,
                     email: req.body.email,
-                    dni: "",
+                    dni: null,
                     password: bcrypt.hashSync(req.body.password, 10),
                     avatar: avatar,
                     admin: false,
@@ -116,22 +116,19 @@ const usersController = {
         });
     },
 
-    // GET user confirmation
-    getConfirmation: function (req, res, next) {
-        res.render("users/confirmation");
-    },
+    /************************ USER PROFILE **************************/
 
     // GET user profile
     getProfile: async (req, res, next) => {
+        let loggedUserId = req.session.loggedUserId;
         try {
-            let loggedUserId = req.session.loggedUserId;
             let currentUser = await userService.findOne(loggedUserId);
-            let data = await userService.getCurrentUserData(currentUser)
+            let userData = await userService.getCurrentUserData(currentUser);
 
             res.render("users/profile", {
-                comments: data.comments,
-                products: data.orders,
-                current_user: currentUser,
+                comments: userData.comments,
+                orders: userData.orders,
+                currentUser,
             });
         } catch (error) {
             res.status(400).send(error.message);
@@ -141,9 +138,9 @@ const usersController = {
     // PUT user profile data form
     putUserData: async (req, res, next) => {
         let errors = validationResult(req);
-        try { 
-            let id = req.session.loggedUserId;
-            let currentUser = await userService.findOne(id);
+        let loggedUserId = req.session.loggedUserId;
+        try {
+            let currentUser = await userService.findOne(loggedUserId);
             let userData = await userService.getCurrentUserData(currentUser);
             
             if (errors.isEmpty()) {
@@ -164,13 +161,13 @@ const usersController = {
                     twitter: req.body.twitter
                 };
 
-                await userService.update(id, userToEdit)
+                await userService.update(currentUser.id, userToEdit)
                 res.redirect("/users/profile");
 
             } else {
                 res.render("users/profile", { 
                     errors: errors.errors,
-                    current_user: currentUser,
+                    currentUser: currentUser,
                     comments: userData.comments,
                     orders: userData.orders, 
                 });
@@ -194,7 +191,7 @@ const usersController = {
                 if (!bcrypt.compareSync(req.body.password, currentUser.password)) {
                     return res.render("users/profile", {
                         errors: [{msg:"La contraseña actual ingresada es incorrecta"}],
-                        current_user: currentUser,
+                        currentUser: currentUser,
                         comments: userData.comments,
                         orders: userData.orders, 
                     });
@@ -215,7 +212,7 @@ const usersController = {
             } else {
                 res.render("users/profile", { 
                     errors: errors.errors,
-                    current_user: currentUser,
+                    currentUser: currentUser,
                     comments: userData.comments,
                     orders: userData.orders, 
                 });
@@ -223,6 +220,11 @@ const usersController = {
         } catch (error) {
             res.status(400).send(error.message);
         }
+    },
+
+    // GET user confirmation
+    getConfirmation: function (req, res, next) {
+        res.render("users/confirmation");
     },
 };
 

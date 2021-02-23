@@ -349,15 +349,14 @@
 														<tr>
 															<th>#</th>
 															<th>ID</th>
-															<th>Email</th>
-															<th>Cantidad de productos</th>
-															<th>Envío total</th>
-															<th>Impuesto</th>
+															<th>Envío</th>
+															<th>Subtotal</th>
+															<th>Impuestos</th>
 															<th>Total</th>
-															<th>Status</th>
+															<th>Estado</th>
 															<th>Usuario</th>
-															<th>Método de pago</th>
-															<th>Método de envío</th>
+															<th>Método de Pago</th>
+															<th>Método de Envío</th>
 															<th class="text-center">Opciones</th>
 														</tr>
 													</thead>
@@ -366,12 +365,11 @@
 															<tr>
 																<td><small><%= index +1 %></small></td>
 																<td><small><%= order.id %></small></td>
-																<td><small><%= order.email %></small></td>
-																<td><small><%= order.count %></small></td>
 																<td><small><%= order.totalShipping %></small></td>
+																<td><small><%= order.totalProducts %></small></td>
 																<td><small><%= order.tax %></small></td>
 																<td><small><%= order.total %></small></td>
-																<td><small><%= order.status %></small></td>
+																<td><small><%= order.status ? order.status.name : "" %></small></td>
 																<td><small><%= order.users ? order.users.name : "" %></small></td>
 																<td><small><%= order.payments ? order.payments.name : ""%></small></td>
 																<td><small><%= order.shippingMethods ? order.shippingMethods.name : "" %></small></td>

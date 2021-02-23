@@ -1,4 +1,4 @@
-const { User, Shop, Comment, Order } = require("../database/models");
+const { User, Comment, Order } = require("../database/models");
 
 module.exports = {
     findOne: async (id) => {
@@ -36,10 +36,45 @@ module.exports = {
         );
     },
     getCurrentUserData: async (currentUser) => {
-        let shop = await Shop.findAll({ where: { id: currentUser.shopId } });
-        let comments = await Comment.findAll({ where: { userId: currentUser.id } });
-        let orders = await Order.findAll({ where: { userId: currentUser.id } });
-        return (data = { comments, orders, shop });
+
+        //user comments
+        let allComments = await Comment.findAll({
+            include: [
+                { association: "users" },
+                { association: "products" },
+            ],
+        });
+        let comments = [];
+        for (const comment of allComments) {
+            if(comment.userId == currentUser.id){
+                comments.push(comment);
+            }
+        };
+
+        //user order
+        let allOrders = await Order.findAll({
+            include: [
+                { association: "payments" },
+                { association: "users" },
+                { association: "cartItems" },
+                { association: "shippingMethods" },
+                { association: "shops" },
+                { association: "products" },
+                { association: "billAddresses" },
+                { association: "shippingAddresses" },
+                { association: "coupons" },
+                { association: "status" },
+            ],
+        });
+        let orders = [];
+        for (const order of allOrders) {
+            if(order.userId == currentUser.id){
+                orders.push(order);
+            }
+        };
+
+        //user data
+        return (data = { comments, orders });
     },
 };
 

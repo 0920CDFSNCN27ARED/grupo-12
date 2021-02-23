@@ -6,7 +6,10 @@ module.exports = {
             include:[
                 {association: "shops"},
                 {association: "categories"},
-                {association: "types"}
+                {association: "types"},
+                {association: "orders"},
+                {association: "cartItems"},
+                {association: "comments"},
             ],
         });
     },
@@ -15,7 +18,10 @@ module.exports = {
             include:[
                 {association: "shops"},
                 {association: "categories"},
-                {association: "types"}
+                {association: "types"},
+                {association: "orders"},
+                {association: "cartItems"},
+                {association: "comments"},
             ],
         });
     },

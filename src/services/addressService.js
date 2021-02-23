@@ -1,10 +1,11 @@
-const {Address } = require("../database/models");
+const { Address } = require("../database/models");
 
 module.exports = {
     findOne: async (id) => {
         return await Address.findByPk(id, {
             include: [
-                { association: "orders" },
+                { association: "billAddresses" },
+                { association: "shippingAddresses" },
                 { association: "users" }
             ],
         });
@@ -12,7 +13,8 @@ module.exports = {
     findAll: async () => {
         return await Address.findAll({
             include: [
-                { association: "orders" },
+                { association: "billAddresses" },
+                { association: "shippingAddresses" },
                 { association: "users" }
             ],
         });

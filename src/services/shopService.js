@@ -5,6 +5,7 @@ module.exports = {
         return await Shop.findByPk(id, {
             include:[
                 {association: "products"},
+                {association: "users"},
                 {association: "orders"},
             ],
         });
@@ -13,7 +14,8 @@ module.exports = {
         return await Shop.findAll({
             include:[
                 {association: "products"},
-                {association: "ordes"},
+                {association: "users"},
+                {association: "orders"},
             ],
         });
     },

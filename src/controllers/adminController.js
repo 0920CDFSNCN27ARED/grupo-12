@@ -4,10 +4,19 @@ const bcrypt = require("bcrypt");
 
 // Data
 const { User, Category, Type, Shop, Product, Payment, Order, CartItem, ShippingMethod} = require("../database/models");
-const getCurrentUserData = require("../utils/getCurrentUserData");
 
 // Services
 const userService = require("../services/userService");
+const productService = require("../services/productService");
+const shopService = require("../services/shopService");
+const categoryService = require("../services/categoryService");
+const typeService = require("../services/typeService");
+const paymentService = require("../services/paymentService");
+const orderService = require("../services/orderService");
+const cartItemService = require("../services/cartItemService");
+const commentService = require("../services/commentService");
+const couponService = require("../services/couponService");
+const shippingMethodService = require("../services/shippingMethodService");
 
 // Controller
 const adminController = {
@@ -16,56 +25,21 @@ const adminController = {
     getAdminProfile: async (req, res, next) => {
         let errors = validationResult(req);
         const id = req.session.loggedUserId;
-        
-        if (errors.isEmpty()) {
-            try {
-                let currentUser = await userService.findOne(id);
+        try {
+            let currentUser = await userService.findOne(id);
+            let users = await userService.findAll();
+            let categories = await categoryService.findAll();
+            let types = await typeService.findAll();
+            let shops = await shopService.findAll();
+            let products = await productService.findAll();
+            let payments = await paymentService.findAll();
+            let orders = await orderService.findAll();
+            let cartItems = await cartItemService.findAll();
+            let shippingMethods = await shippingMethodService.findAll();
+            let comments = await commentService.findAll();
+            let coupons = await couponService.findAll();
 
-                let users = await User.findAll({
-                    include: [{association: "shops"}]
-                });
-                let categories = await Category.findAll({
-                    include: [{association: "types"}]
-                });
-                let types = await Type.findAll({
-                    include: [{association: "categories"}]
-                });
-                let shops = await Shop.findAll({
-                    include: [
-                        {association: "users"},
-                        {association: "products"},
-                ]
-                });
-                let products = await Product.findAll({
-                    include: [
-                        {association: "shops"},
-                        {association: "categories"},
-                        {association: "types"}
-                    ]
-                });
-                let payments = await Payment.findAll({
-                    include:[
-                        {association: "orders"},
-                    ]
-                });
-                let orders = await Order.findAll({
-                    include:[
-                        {association: "payments"},
-                        {association: "users"},
-                        {association: "cartItems"},
-                        {association: "shippingMethods"},
-                    ]
-                });
-                let cartItems = await CartItem.findAll({
-                    include:[
-                        {association: "orders"},
-                    ]
-                });
-                let shippingMethods = await ShippingMethod.findAll({
-                    include:[
-                        {association: "orders"},
-                    ]
-                });
+            if (errors.isEmpty()) {  
                 res.render("admin/admin-profile", {
                     admin: currentUser,
                     users: users, 
@@ -76,15 +50,30 @@ const adminController = {
                     payments:payments,
                     orders:orders,
                     cartItems:cartItems,
-                    shippingMethods:shippingMethods
+                    shippingMethods:shippingMethods,
+                    comments: comments,
+                    coupons: coupons
                 });
-            } catch (error) {
-                res.status(400).send(error.message);
+
+            } else {
+                res.render("admin/admin-profile", {
+                    errors: errors.errors,
+                    admin: currentUser,
+                    users: users, 
+                    categories: categories,
+                    types: types,
+                    shops: shops,
+                    products: products,
+                    payments:payments,
+                    orders:orders,
+                    cartItems:cartItems,
+                    shippingMethods:shippingMethods,
+                    comments: comments,
+                    coupons: coupons
+                });
             }
-        } else {
-            res.render("admin/admin-profile", {
-                errors: errors.errors,
-            });
+        } catch (error) {
+            res.status(400).send(error.message);
         }
     },
 
@@ -93,28 +82,26 @@ const adminController = {
     //GET user profile
     getUserProfile: async (req, res, next) => {
         let errors = validationResult(req);
-        let current_user = req.session.current_user;
-        
-        if (errors.isEmpty()) {
-            try {
-                let user = await User.findByPk(req.params.id);
-                
-                // Temporal
-                let userData = getCurrentUserData(user);
-                let userComments = userData.userComments;
-                
+        const id = req.session.loggedUserId;
+        try {
+            let currentUser = await userService.findOne(id);
+            let user = await userService.findOne(req.params.id);
+            let userData = await userService.getCurrentUserData(user);
+            
+            if (errors.isEmpty()) {            
                 res.render("admin/users/admin-user-profile", {
-                    admin: current_user,
+                    admin: currentUser,
                     user: user,
-                    comments: userComments
+                    comments: userData.comments,
+                    orders: userData.orders
+                }); 
+            } else {
+                res.render("admin/users/admin-user-profile", {
+                    errors: errors.errors,
                 });
-            } catch (error) {
-                res.status(400).send(error.message);
             }
-        } else {
-            res.render("admin/users/admin-user-profile", {
-                errors: errors.errors,
-            });
+        } catch (error) {
+            res.status(400).send(error.message);
         }
     },
 
@@ -175,7 +162,7 @@ const adminController = {
 
                 let avatar = req.file ? req.file.filename : "default-avatar.png";
                 
-                await User.create({
+                await userService.create({
                     name: req.body.name,
                     userName: req.body.userName,
                     phone: req.body.phone,
@@ -191,7 +178,6 @@ const adminController = {
                     instagram: req.body.instagram,
                     twitter: req.body.twitter
                 });
-
                 res.redirect(`/admin`);
                 
             } else {
@@ -208,11 +194,7 @@ const adminController = {
     //DELETE user
     destroyUser: async (req, res, next) => {
         try {
-            await User.destroy({
-                where: {
-                    id: req.params.id
-                }
-            });
+            await userService.destroy(req.params.id);
             res.redirect(`/admin`);
         } catch (error) {
             res.status(400).send(error.message);
@@ -291,7 +273,7 @@ const adminController = {
                     }
                 };
                 
-                await User.update({
+                let userToEdit = {
                     name: req.body.name,
                     userName: req.body.userName,
                     phone: req.body.phone,
@@ -305,10 +287,9 @@ const adminController = {
                     facebook: req.body.facebook,
                     instagram: req.body.instagram,
                     twitter: req.body.twitter
-                },
-                { where: { id: req.params.id }
-                });
+                };
 
+                await userService(req.params.id, userToEdit)
                 res.redirect(`/admin/${req.params.id}/user-profile`);
                 
             } else {
@@ -326,11 +307,12 @@ const adminController = {
     //PUT edit pass user form
     putEditPassUserForm: async (req, res, next) => {
         let errors = validationResult(req);
-        let current_user = req.session.current_user;
-        let user = await User.findByPk(req.params.id);
-
-        if (errors.isEmpty()) {
-            try {
+        let loggedUserId = req.session.loggedUserId;
+        try {
+            let currentUser = await userService.findOne(loggedUserId);
+            let user = await userService.findOne(req.params.id);
+            if (errors.isEmpty()) {
+            
                 let change_password = "";
                 if (req.body.confirmation == req.body.new_password) {
                     change_password = bcrypt.hashSync(req.body.new_password,10);
@@ -338,25 +320,21 @@ const adminController = {
                     change_password = user.password;
                 };
                 
-                await User.update({
+                await userService.update(req.params.id,{
                     password: change_password
-                },
-                {
-                    where: {
-                        id: req.params.id
-                    }
                 });
 
                 res.redirect(`/admin/${req.params.id}/user-profile`);
-            } catch (error) {
-                res.status(400).send(error.message);
+           
+            } else {
+                res.render("admin/users/admin-edit-user-form", {
+                    errors: errors.errors,
+                    admin: currentUser,
+                    user: user
+                });
             }
-        } else {
-            res.render("admin/users/admin-edit-user-form", {
-                errors: errors.errors,
-                admin: current_user,
-                user: user
-            });
+         } catch (error) {
+            res.status(400).send(error.message);
         }
     },
 

@@ -29,9 +29,6 @@ module.exports = {
       total: {
         type: Sequelize.FLOAT(10,2)
       },
-      status: {
-        type: Sequelize.STRING
-      },
       userId: {
         type: Sequelize.INTEGER
       },

@@ -26,34 +26,28 @@
 	<!-- Content -->
 	<section id="dark-content" class="dark noborder parallax pt-3">
 		<div class="content-wrap">
-			<div class="container clearfix">
-	
-				<div class="row clearfix">
-	
-					<div class="col-md-9">
-						
-							<img src= "/images/users/<%= current_user.avatar%>" class="alignleft img-circle img-thumbnail my-0" alt="Avatar"
-							style="max-width: 84px;">
-	
+			<div class="container clearfix">	
+				<div class="row clearfix">	
+					<div class="col-md-9">					
+						<img src= "/images/users/<%= currentUser.avatar%>" class="alignleft img-circle img-thumbnail my-0" alt="Avatar"
+							style="max-width: 84px;">	
 						<div class="heading-block border-0">
-							<h3><%= current_user.name %></h3>
-							<small><span class="m-0"><%= current_user.email %></span></small><br>
+							<h3><%= currentUser.name %></h3>
+							<small><span class="m-0"><%= currentUser.email %></span></small><br>
 							<small class="m-0"><span class="badge badge-pill badge-warning">Perfil Público</span></small>
 						</div>
 						
 						<div class="clear"></div>
 	
-						<div class="row clearfix">
-	
-							<div class="col-lg-12">
-	
+						<div class="row clearfix">	
+							<div class="col-lg-12">	
 								<div class="tabs tabs-alt clearfix" id="tabs-profile">
 	
 									<ul class="tab-nav clearfix">
 										<li><a href="#tab-orders"><i class="icon-credit-cards"></i> Compras </a></li>
+										<li><a href="#tab-comments"><i class="icon-reply"></i> Comentarios</a></li>
 										<li><a href="#tab-data"><i class="icon-pencil2"></i> Editar Datos</a></li>
 										<li><a href="#tab-pass"><i class="icon-shield"></i> Seguridad</a></li>
-										<li><a href="#tab-comments"><i class="icon-reply"></i> Comentarios</a></li>
 									</ul>
 	
 									<div class="tab-container">
@@ -73,31 +67,86 @@
 										<div class="tab-content clearfix" id="tab-orders">
 											<p>Administre todas sus compras</p>
 											<div class="table-responsive">
-												<div class="table-responsive">
-													<table id="datatable1" class="table table-striped table-bordered" cellspacing="0" width="100%">
+												
+													<table id="datatable1" class="table table-striped table-bordered">
 														<thead>
 															<tr>
-																<th>Orden #</th>
-																<th>Fecha</th>
-																<th>Detalle</th>
-																<th>Vendedor</th>
-																<th>Opciones</th>
+																<th>#</th>
+																<th>ID</th>
+																<th>Envío</th>
+																<th>Subtotal</th>
+																<th>Impuestos</th>
+																<th>Total</th>
+																<th>Estado</th>
+																<th>Usuario</th>
+																<th>Método de Pago</th>
+																<th>Método de Envío</th>
+																<th class="text-center">Opciones</th>
 															</tr>
 														</thead>
 														<tbody>
+															<% orders.forEach((order, index) => { %>
 															<tr>
-																<td>123</td>
-																<td>5/23/2021</td>
-																<td>Compra de Cerveza Tradicional x 3 unidades.</td>
-																<td><a href="#">Miguel Mateos</a></td>
-																<td class="text-center">
-																	<span><a href="#"><i class="icon-eye"></i></a></span>
+																<td><small><%= index +1 %></small></td>
+																<td><small><%= order.id %></small></td>
+																<td><small><%= order.totalShipping %></small></td>
+																<td><small><%= order.totalProducts %></small></td>
+																<td><small><%= order.tax %></small></td>
+																<td><small><%= order.total %></small></td>
+																<td><small><%= order.status ? order.status.name : "" %></small></td>
+																<td><small><%= order.users ? order.users.name : "" %></small></td>
+																<td><small><%= order.payments ? order.payments.name : ""%></small></td>
+																<td><small><%= order.shippingMethods ? order.shippingMethods.name : "" %></small></td>
+																<td class="d-flex justify-content-center">
+																	<button class="btn btn-outline btn-sm p-0" data-toggle="modal" data-target="#<%= `viewOrderModal${order.id}` %>">
+																		<i class="m-0 i-rounded i-small icon-line-eye"></i></button>
 																</td>
 															</tr>
+														<% });%>
 														</tbody>
 													</table>
-												</div>
+												
 											</div>
+										</div>
+
+										<div class="tab-content clearfix" id="tab-comments">
+											<div class="clear topmargin-sm"></div>
+											<h3 id="comments-title"><span>
+													<%= comments.length%>
+												</span> Comentarios</h3>
+											<!-- Comments List -->
+											<ol class="commentlist clearfix">
+												<% comments.forEach( comment=> { %>
+													<li class="comment even thread-even depth-1" id="li-comment-<%= comment.id%>">
+														<div id="comment-<%= comment.id%>" class="comment-wrap clearfix">
+															<div class="comment-meta">
+																<div class="comment-author vcard">
+																	<span class="comment-avatar clearfix">
+																		<img alt='Image' src='/images/users/<%= comment.users.avatar%>'
+																			class='avatar avatar-60 photo avatar-default' height='60' width='60' /></span>
+																</div>
+															</div>
+															<div class="comment-content clearfix">
+																<div class="comment-author">
+																	<%= comment.users.name%><span>Fecha: <%= comment.date%></span>
+																</div>
+																<p><%= comment.comment%></p>
+																<small>
+																	comentaste en el producto: <a href="/products/<%= comment.productId %>/productDetails"><%= comment.products.name %></a>
+																</small>
+																<form action="/products/deleteComment/<%= comment.id %>?_method=DELETE" method="POST">
+																	<button class="btn btn-danger btn-sm comment-delete-link" type="submit"><i
+																			class="icon-line-trash-2"></i></button>
+																</form>
+																<a href="/products/<%= comment.productId %>/productDetails"
+																	class="btn btn-primary btn-sm comment-delete-link mr-5"><i class="icon-line-eye"></i></a>
+										
+															</div>
+															<div class="clear"></div>
+														</div>
+													</li>
+													<%} ) %>
+											</ol><!-- .commentlist end -->
 										</div>
 
 										<div class="tab-content clearfix" id="tab-data">
@@ -106,28 +155,28 @@
 												<div class="row mt-5 mb-3">
 													<div class="col-lg-6 col-md-6 form-group">
 														<label for="name">* Nombre Completo:</label>
-														<input type="text" name="name" value="<%= current_user.name %>" class="form-control" />
+														<input type="text" name="name" value="<%= currentUser.name %>" class="form-control" />
 													</div>
 													<div class="col-lg-6 col-md-6 form-group">
 														<label for="userName">* Nombre de Usuario:</label>
-														<input type="text" name="userName" value="<%= current_user.userName %>" class="form-control" />
+														<input type="text" name="userName" value="<%= currentUser.userName %>" class="form-control" />
 													</div>
 													<div class="w-100"></div>
 													<div class="col-lg-6 col-md-6 form-group">
-														<label for="avatar">Avatar: <small><%= current_user.avatar %></small></label>
+														<label for="avatar">Avatar: <small><%= currentUser.avatar %></small></label>
 														<input type="file" name="avatar" value="" class="form-control" />
 													</div>
 													<div class="col-lg-6 col-md-6 form-group">
 														<label for="email">* Email:</label>
-														<input type="email" name="email" value="<%= current_user.email %>" class="form-control" />
+														<input type="email" name="email" value="<%= currentUser.email %>" class="form-control" />
 													</div>
 													<div class="col-lg-6 col-md-6 form-group">
 														<label for="phone">Teléfono:</label>
-														<input type="tel" name="phone" value="<%= current_user.phone %>" class="form-control" />
+														<input type="tel" name="phone" value="<%= currentUser.phone %>" class="form-control" />
 													</div>
 													<div class="col-lg-6 col-md-6 form-group">
 														<label for="bio">Sobre Mí:</label>
-														<input type="text" name="bio" value="<%= current_user.bio %>" placeholder="Escribe algo sobre ti..." class="form-control" />
+														<input type="text" name="bio" value="<%= currentUser.bio %>" placeholder="Escribe algo sobre ti..." class="form-control" />
 													</div>
 													<div class="col-lg-6 col-md-6 form-group">
 														<label for="twitter">Twitter</label>
@@ -137,7 +186,7 @@
 																	<i class="icon-twitter" class="font-medium-2"></i>
 																</span>
 															</div>
-															<input name="twitter" type="text" class="form-control" value="<%= current_user.twitter %>" placeholder="https://www.twitter.com/su-usuario" />
+															<input name="twitter" type="text" class="form-control" value="<%= currentUser.twitter %>" placeholder="https://www.twitter.com/su-usuario" />
 														</div>
 													</div>
 													<div class="col-lg-6 col-md-6 form-group">
@@ -148,7 +197,7 @@
 																	<i class="icon-facebook" class="font-medium-2"></i>
 																</span>
 															</div>
-															<input name="facebook" type="text" class="form-control" value="<%= current_user.facebook %>" placeholder="https://www.facebook.com/su-usuario" />
+															<input name="facebook" type="text" class="form-control" value="<%= currentUser.facebook %>" placeholder="https://www.facebook.com/su-usuario" />
 														</div>
 													</div>
 													<div class="col-lg-6 col-md-6 form-group">
@@ -159,7 +208,7 @@
 																	<i class="icon-instagram" class="font-medium-2"></i>
 																</span>
 															</div>
-															<input name="instagram" type="text" class="form-control" value="<%= current_user.instagram %>" placeholder="https://www.instagram.com/su-usuario" />
+															<input name="instagram" type="text" class="form-control" value="<%= currentUser.instagram %>" placeholder="https://www.instagram.com/su-usuario" />
 														</div>
 													</div>
 													<div class="w-100"></div>
@@ -174,7 +223,6 @@
 											<!-- Edit Form -->
 											<form action="/users/edit-password?_method=PUT" method="POST">
 												<div class="row mt-5 mb-3">
-													
 													<div class="col-md-12">
 														<div class="form-group">
 															<label for="password">Contraseña Actual</label>
@@ -192,7 +240,6 @@
 																<div class="input-group-append"><span class="input-group-text cursor-pointer"><i class="icon-eye"></i></span></div>
 															</div>
 														</div>
-												
 													</div>
 													<div class="col-md-6">
 														<div class="form-group">
@@ -210,41 +257,6 @@
 												</div>
 											</form>
 										</div>
-
-										<div class="tab-content clearfix" id="tab-comments">
-											<div class="clear topmargin-sm"></div>
-											<h3 id="comments-title"><span><%= comments.length%></span> Comentarios</h3>
-											<!-- Comments List -->
-											<ol class="commentlist clearfix">
-												<% comments.forEach( comment=> { %>
-													<li class="comment even thread-even depth-1" id="li-comment-<%= comment.id%>">
-														<div id="comment-<%= comment.id%>" class="comment-wrap clearfix">
-															<div class="comment-meta">
-																<div class="comment-author vcard">
-																	<span class="comment-avatar clearfix">
-																		<img alt='Image' src='/images/users/<%= comment.avatar%>'
-																			class='avatar avatar-60 photo avatar-default' height='60' width='60' /></span>
-																</div>
-															</div>
-															<div class="comment-content clearfix">
-																<div class="comment-author">
-																	<%= comment.author%>
-																		<span>Fecha: <%= comment.datetime%></span>
-																</div>
-																<p><%= comment.comment%></p>
-																
-																	<form action="/products/deleteComment/<%= comment.id %>?_method=DELETE" method="POST">
-																		<button class="btn btn-danger btn-sm comment-delete-link" type="submit"><i class="icon-line-trash-2"></i></button>
-																	</form>
-																	<a href="/products/<%= comment.productId %>/productDetails" class="btn btn-primary btn-sm comment-delete-link mr-5"><i class="icon-line-eye"></i></a>
-																
-															</div>
-															<div class="clear"></div>
-														</div>
-													</li>
-													<%} ) %>
-											</ol><!-- .commentlist end -->
-										</div>
 									</div>
 								</div>
 							</div>
@@ -259,37 +271,37 @@
 							<h4>Información</h4>
 						</div>
 						<p>
-							Nombre: <%= current_user.name %></br>
-							Usuario: <%= current_user.userName %></br>
-							Email: <%= current_user.email %></br>
-							Teléfono: <%= current_user.phone %>
+							Nombre: <%= currentUser.name %></br>
+							Usuario: <%= currentUser.userName %></br>
+							Email: <%= currentUser.email %></br>
+							Teléfono: <%= currentUser.phone %>
 						</p>
 
-						<% if(current_user.bio != "") {%> 
+						<% if(currentUser.bio != "") {%> 
 							<div class="fancy-title topmargin title-border">
 								<h4>Sobre Mí</h4>
 							</div>
-							<p><%= current_user.bio %></p>
+							<p><%= currentUser.bio %></p>
 						<% } %>
 
 						<div class="fancy-title topmargin title-border">
 							<h4>Perfiles Conectados</h4>
 						</div>
 						
-						<% if(current_user.facebook !="" ) {%>
-							<a href="<%= current_user.facebook %>" target="_blank" class="social-icon si-facebook si-small si-rounded si-light" title="Facebook">
+						<% if(currentUser.facebook !="" ) {%>
+							<a href="<%= currentUser.facebook %>" target="_blank" class="social-icon si-facebook si-small si-rounded si-light" title="Facebook">
 								<i class="icon-facebook"></i>
 								<i class="icon-facebook"></i>
 							</a>
 						<% } %>
-						<% if(current_user.instagram !="" ) {%>
-							<a href="<%= current_user.instagram %>" target="_blank" class="social-icon si-instagram si-small si-rounded si-light" title="Instagram">
+						<% if(currentUser.instagram !="" ) {%>
+							<a href="<%= currentUser.instagram %>" target="_blank" class="social-icon si-instagram si-small si-rounded si-light" title="Instagram">
 								<i class="icon-instagram"></i>
 								<i class="icon-instagram"></i>
 							</a>
 						<% } %>
-						<% if(current_user.twitter !="" ) {%>
-							<a href="<%= current_user.twitter %>" target="_blank" class="social-icon si-twitter si-small si-rounded si-light" title="Twitter">
+						<% if(currentUser.twitter !="" ) {%>
+							<a href="<%= currentUser.twitter %>" target="_blank" class="social-icon si-twitter si-small si-rounded si-light" title="Twitter">
 								<i class="icon-twitter"></i>
 								<i class="icon-twitter"></i>
 							</a>

@@ -1,4 +1,4 @@
-const {Order } = require("../database/models");
+const { Order } = require("../database/models");
 
 module.exports = {
     findOne: async (id) => {
@@ -8,6 +8,12 @@ module.exports = {
                 { association: "users" },
                 { association: "cartItems" },
                 { association: "shippingMethods" },
+                { association: "shops" },
+                { association: "products" },
+                { association: "billAddresses" },
+                { association: "shippingAddresses" },
+                { association: "coupons" },
+                { association: "status" },
             ],
         });
     },
@@ -18,6 +24,12 @@ module.exports = {
                 { association: "users" },
                 { association: "cartItems" },
                 { association: "shippingMethods" },
+                { association: "shops" },
+                { association: "products" },
+                { association: "billAddresses" },
+                { association: "shippingAddresses" },
+                { association: "coupons" },
+                { association: "status" },
             ],
         });
     },
@@ -30,6 +42,8 @@ module.exports = {
         });
     },
     update: async (id, attributes) => {
-        return await Order.update(attributes, { where: { id: id } });
+        return await Order.update(attributes, { 
+            where: { id: id }, 
+        });
     }
 };

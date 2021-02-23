@@ -55,7 +55,7 @@ router.put(
     check("userName").isLength({min:4,max:15}).withMessage("El nombre de usuario debe tener entre 4 y 15 caracteres de largo"),
     check("email").isEmail().withMessage("Email inválido"),
   ],
-  checkUser,
+  //checkUser,
   usersController.putUserData);
 
 // PUT Profile user data

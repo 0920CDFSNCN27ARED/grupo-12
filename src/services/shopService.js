@@ -7,6 +7,7 @@ module.exports = {
                 {association: "products"},
                 {association: "users"},
                 {association: "orders"},
+                {association: "shopCoupons"},
             ],
         });
     },
@@ -16,6 +17,7 @@ module.exports = {
                 {association: "products"},
                 {association: "users"},
                 {association: "orders"},
+                {association: "shopCoupons"},
             ],
         });
     },

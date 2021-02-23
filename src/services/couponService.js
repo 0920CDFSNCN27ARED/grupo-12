@@ -4,7 +4,8 @@ module.exports = {
     findOne: async (id) => {
         return await Coupon.findByPk(id, {
             include: [
-                { association: "coupons" }
+                { association: "coupons" },
+                {association: "shopCoupons"},
             ],
         });
     },
@@ -12,6 +13,7 @@ module.exports = {
         return await Coupon.findAll({
             include: [
                 { association: "coupons" },
+                {association: "shopCoupons"},
             ],
         });
     },

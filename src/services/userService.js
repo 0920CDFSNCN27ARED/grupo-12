@@ -1,4 +1,4 @@
-const { User, Comment, Order } = require("../database/models");
+const { User, Comment, Order, Shop } = require("../database/models");
 
 module.exports = {
     findOne: async (id) => {
@@ -73,8 +73,17 @@ module.exports = {
             }
         };
 
+        // user Shop
+        let shop = await Shop.findByPk(currentUser.id, {
+            include:[
+                {association: "products"},
+                {association: "users"},
+                {association: "orders"},
+            ],
+        });
+
         //user data
-        return (data = { comments, orders });
+        return (data = { comments, orders, shop });
     },
 };
 

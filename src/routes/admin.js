@@ -177,6 +177,41 @@ router.put(
 // DELETE type 
 router.delete('/:id/type-destroy', assertIsAdmin, adminController.destroyType);
 
+//******************* Categories Routes *******************//
+
+// POST create category
+router.post(
+  '/create-coupon',
+  assertSignedIn,  
+  assertIsAdmin, 
+  [
+    check("name", "El nombre del cupón es requerido.").notEmpty(),
+    check("description", "La descripción del cupón es requerida.").notEmpty(),
+    check("discount", "El descuento del cupón es requerido.").notEmpty(),
+    check("couponCode", "El código del cupón es requerido.").notEmpty(),
+    check("shopId", "La tienda emisora del cupón es requerida.").notEmpty(),
+  ],
+  adminController.postCreateCoupon);
+
+// PUT edit category
+router.put(
+  '/:id/edit-coupon',
+  assertSignedIn, 
+  assertIsAdmin, 
+  [
+    check("name", "El nombre del cupón es requerido.").notEmpty(),
+    check("description", "La descripción del cupón es requerida.").notEmpty(),
+    check("discount", "El descuento del cupón es requerido.").notEmpty(),
+    check("couponCode", "El código del cupón es requerido.").notEmpty(),
+    check("shopId", "La tienda emisora del cupón es requerida.").notEmpty(),
+  ],
+  adminController.putEditCoupon);
+
+// DELETE category 
+router.delete('/:id/coupon-destroy', assertSignedIn, assertIsAdmin, adminController.destroyCoupon);
+
+
+
 // POST create payment
 router.post(
   '/create-payment', 

@@ -22,6 +22,10 @@ module.exports = (sequelize, DataTypes) => {
         as: "orders",
         foreignKey: "shopId",
       });
+      Shop.hasMany(models.Coupon, {
+        as: "shopCoupons",
+        foreignKey: "shopId",
+      });
     }
   };
   Shop.init({

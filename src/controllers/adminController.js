@@ -500,6 +500,86 @@ const adminController = {
         }
     },
 
+    //******************* Coupon Controllers *******************//
+
+    //POST create coupon
+    postCreateCoupon: async (req, res, next) => {
+        let errors = validationResult(req);
+        let loggedUserId = req.session.loggedUserId;
+        try {
+            if (errors.isEmpty()) {
+                let newCoupon = {
+                    name: req.body.name,
+                    description: req.body.description,
+                    discount: req.body.discount,
+                    couponCode: req.body.couponCode,
+                    shopId: req.body.typeId
+                };
+                await couponService.create(newCoupon);
+                res.redirect(`/admin`);
+               
+            } else {
+                let currentUser = await userService.findOne(loggedUserId);
+                let users = await userService.findAll();
+                let categories = await categoryService.findAll();
+                let types = await typeService.findAll();
+                res.render("admin/admin-profile", {
+                    errors: errors.errors,
+                    admin: currentUser,
+                    users: users, 
+                    categories: categories,
+                    types: types
+                });
+            }   
+        } catch (error) {
+            res.status(400).send(error.message);
+        }
+    },
+
+    //PUT edit category
+    putEditCoupon: async (req, res, next) => {
+        let errors = validationResult(req);
+        let loggedUserId = req.session.loggedUserId;
+        try { 
+            if (errors.isEmpty()) {
+            let editCoupon = {
+                    name: req.body.name,
+                    description: req.body.description,
+                    discount: req.body.discount,
+                    couponCode: req.body.couponCode,
+                    shopId: req.body.typeId
+                };
+                await couponService.update(req.params.id, editCoupon)
+                res.redirect(`/admin`);
+            
+            } else {
+                let currentUser = await userService.findOne(loggedUserId);
+                let users = await userService.findAll();
+                let categories = await categoryService.findAll();
+                let types = await typeService.findAll();
+                res.render("admin/admin-profile", {
+                    errors: errors.errors,
+                    admin: currentUser,
+                    users: users, 
+                    categories: categories,
+                    types: types
+                });
+            }
+         } catch (error) {
+            res.status(400).send(error.message);
+        }
+    },
+
+    //DELETE category
+    destroyCoupon: async (req, res, next) => {
+        try {
+            await couponService.destroy(req.params.id);
+            res.redirect(`/admin`);
+        } catch (error) {
+            res.status(400).send(error.message);
+        }
+    },
+
     //******************* Shops Controllers *******************//
 
     //GET shop profile
@@ -529,14 +609,13 @@ const adminController = {
                 });
 
                 // Temporal
-                let userData = getCurrentUserData(user);
-                let userComments = userData.userComments;
+                let userData = await userService.getCurrentUserData(user);
                 
                 res.render("admin/shops/shop-profile", {
                     admin: current_user,
                     shop: shop,
                     user: user,
-                    comments: userComments,
+                    comments: userData.comments,
                     products: products,
                     categories: categories,
                     types: types,

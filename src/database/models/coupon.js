@@ -14,13 +14,18 @@ module.exports = (sequelize, DataTypes) => {
         as:"coupons",
         foreignKey:"couponId"
       });
+      Coupon.belongsTo(models.Shop,{
+        as:"shopCoupons",
+        foreignKey:"shopId"
+      });
     }
   };
   Coupon.init({
     name: DataTypes.STRING,
     description: DataTypes.STRING,
     discount: DataTypes.FLOAT(10,2),
-    couponCode: DataTypes.STRING
+    couponCode: DataTypes.STRING,
+    shopId: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'Coupon',

@@ -145,9 +145,11 @@
 							<div class="col-lg-12 col-md-12">
 								<a href="/admin/<%= user.id %>/edit-user" class="btn btn-warning btn-block mb-2">Actualizar</a>
 							</div>
+							<% if(user.orders.length == 0 && !user.shop){ %>
 							<div class="col-lg-12 col-md-12">
 								<button class="btn btn-danger btn-block" data-toggle="modal" data-target="#destroyUser">Eliminar</button>
 							</div>
+							<% } %>
 						</div>
 
 						<div class="fancy-title topmargin title-border">

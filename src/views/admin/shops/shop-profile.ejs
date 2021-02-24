@@ -268,9 +268,11 @@
 							<div class="col-lg-12 col-md-12">
 								<button class="btn btn-warning btn-block mb-2" data-toggle="modal" data-target="#blockShop">Inhabilitar</button>
 							</div>
+							<% if(shop.products.length==0){ %>
 							<div class="col-lg-12 col-md-12">
 								<button class="btn btn-danger btn-block" data-toggle="modal" data-target="#destroyShop">Eliminar</button>
 							</div>
+							<% } %>
 						</div>
 						
 						<div class="fancy-title topmargin title-border">

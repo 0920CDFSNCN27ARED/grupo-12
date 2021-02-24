@@ -34,7 +34,6 @@ const adminController = {
             let products = await productService.findAll();
             let payments = await paymentService.findAll();
             let orders = await orderService.findAll();
-            let cartItems = await cartItemService.findAll();
             let shippingMethods = await shippingMethodService.findAll();
             let comments = await commentService.findAll();
             let coupons = await couponService.findAll();
@@ -47,10 +46,9 @@ const adminController = {
                     types: types,
                     shops: shops,
                     products: products,
-                    payments:payments,
-                    orders:orders,
-                    cartItems:cartItems,
-                    shippingMethods:shippingMethods,
+                    payments: payments,
+                    orders: orders,
+                    shippingMethods: shippingMethods,
                     comments: comments,
                     coupons: coupons
                 });
@@ -64,10 +62,9 @@ const adminController = {
                     types: types,
                     shops: shops,
                     products: products,
-                    payments:payments,
-                    orders:orders,
-                    cartItems:cartItems,
-                    shippingMethods:shippingMethods,
+                    payments: payments,
+                    orders: orders,
+                    shippingMethods: shippingMethods,
                     comments: comments,
                     coupons: coupons
                 });
@@ -129,39 +126,39 @@ const adminController = {
     //POST create user form
     postCreateUserForm: async (req, res, next) => {
         let errors = validationResult(req);
-        let loggedUserId = req.session.loggedUserId;
-        
+        let loggedUserId = req.session.loggedUserId; 
         try {
             let currentUser = await userService.findOne(loggedUserId);
             let users = await userService.findAll();
-            
             if (errors.isEmpty()) {
+                let avatar = req.file ? req.file.filename : "default-avatar.png";
 
                 for (let i = 0; i < users.length; i++) {
                     const user = users[i];
                     if(req.body.email == user.email && req.body.userName == user.userName){
                         return res.render("admin/users/admin-create-user-form", {
                             admin: currentUser,
+                            user: user,
                             errors:[
                             {msg:"El email y usuario ingresado ya se encuentran en uso"}
                         ]});
                     }else if(req.body.email == user.email){
                         return res.render("admin/users/admin-create-user-form", {
                             admin: currentUser,
+                            user: user,
                             errors:[
                             {msg:"El email ingresado ya está en uso"}
                         ]});
                     }else if(req.body.userName == user.userName){
                         return res.render("admin/users/admin-create-user-form", {
                             admin: currentUser,
+                            user: user,
                             errors:[
                             {msg:"El nombre de usuario ingresado ya está en uso"}
                         ]});
                     }
                 };
 
-                let avatar = req.file ? req.file.filename : "default-avatar.png";
-                
                 await userService.create({
                     name: req.body.name,
                     userName: req.body.userName,
@@ -171,6 +168,7 @@ const adminController = {
                     avatar: avatar,
                     admin: req.body.admin,
                     status: req.body.status,
+                    dni: null,
                     shopId: null,
                     role:"buyer",
                     bio: req.body.bio || "Escribe algo sobre tí",
@@ -205,24 +203,24 @@ const adminController = {
     getEditUserForm: async (req, res, next) => {
         let errors = validationResult(req);
         let loggedUserId = req.session.loggedUserId;
-        let currentUser = await userService.findOne(loggedUserId);
-        let user = await userService.findOne(req.params.id);
+        try {
+            let currentUser = await userService.findOne(loggedUserId);
+            let user = await userService.findOne(req.params.id);
         
-        if (errors.isEmpty()) {
-            try {
+            if (errors.isEmpty()) {
                 res.render("admin/users/admin-edit-user-form", {
                     admin: currentUser,
                     user: user,
                 });
-            } catch (error) {
-                res.status(400).send(error.message);
+            } else {
+                res.render("admin/users/admin-edit-user-form", {
+                    errors: errors.errors,
+                    admin: currentUser,
+                    user: user
+                });
             }
-        } else {
-            res.render("admin/users/admin-edit-user-form", {
-                errors: errors.errors,
-                admin: currentUser,
-                user: user
-            });
+        } catch (error) {
+            res.status(400).send(error.message);
         }
     },
 
@@ -247,31 +245,31 @@ const adminController = {
                     user.shopId = null;
                 }
 
-                for (let i = 0; i < users.length; i++) {
-                    const user = users[i];
-                    if(req.body.email == user.email && req.body.userName == user.userName){
-                        return res.render("admin/users/admin-edit-user-form", {
-                            admin: currentUser,
-                            user: user,
-                            errors:[
-                            {msg:"El email y usuario ingresado ya se encuentran en uso"}
-                        ]});
-                    }else if(req.body.email == user.email){
-                        return res.render("admin/users/admin-edit-user-form", {
-                            admin: currentUser,
-                            user: user,
-                            errors:[
-                            {msg:"El email ingresado ya está en uso"}
-                        ]});
-                    }else if(req.body.userName == user.userName){
-                        return res.render("admin/users/admin-edit-user-form", {
-                            admin: currentUser,
-                            user: user,
-                            errors:[
-                            {msg:"El nombre de usuario ingresado ya está en uso"}
-                        ]});
-                    }
-                };
+                // for (let i = 0; i < users.length; i++) {
+                //     const user = users[i];
+                //     if(req.body.email == user.email && req.body.userName == user.userName){
+                //         return res.render("admin/users/admin-edit-user-form", {
+                //             admin: currentUser,
+                //             user: user,
+                //             errors:[
+                //             {msg:"El email y usuario ingresado ya se encuentran en uso"}
+                //         ]});
+                //     }else if(req.body.email == user.email){
+                //         return res.render("admin/users/admin-edit-user-form", {
+                //             admin: currentUser,
+                //             user: user,
+                //             errors:[
+                //             {msg:"El email ingresado ya está en uso"}
+                //         ]});
+                //     }else if(req.body.userName == user.userName){
+                //         return res.render("admin/users/admin-edit-user-form", {
+                //             admin: currentUser,
+                //             user: user,
+                //             errors:[
+                //             {msg:"El nombre de usuario ingresado ya está en uso"}
+                //         ]});
+                //     }
+                // };
                 
                 let userToEdit = {
                     name: req.body.name,
@@ -289,7 +287,7 @@ const adminController = {
                     twitter: req.body.twitter
                 };
 
-                await userService(req.params.id, userToEdit)
+                await userService.update(req.params.id, userToEdit)
                 res.redirect(`/admin/${req.params.id}/user-profile`);
                 
             } else {
@@ -311,19 +309,17 @@ const adminController = {
         try {
             let currentUser = await userService.findOne(loggedUserId);
             let user = await userService.findOne(req.params.id);
+
             if (errors.isEmpty()) {
-            
                 let change_password = "";
                 if (req.body.confirmation == req.body.new_password) {
                     change_password = bcrypt.hashSync(req.body.new_password,10);
                 } else {
                     change_password = user.password;
                 };
-                
                 await userService.update(req.params.id,{
                     password: change_password
                 });
-
                 res.redirect(`/admin/${req.params.id}/user-profile`);
            
             } else {
@@ -338,281 +334,24 @@ const adminController = {
         }
     },
 
-    //******************* Categories Controllers *******************//
-
-    //POST create category
-    postCreateCategory: async (req, res, next) => {
-        let errors = validationResult(req);
-        let current_user = req.session.current_user;
-
-        if (errors.isEmpty()) {
-            try {
-                await Category.create({
-                    name: req.body.name,
-                    description: req.body.description,
-                    typeId: req.body.typeId
-                });
-                res.redirect(`/admin`);
-            } catch (error) {
-                res.status(400).send(error.message);
-            }
-        } else {
-            let users = await User.findAll();
-            let categories = await Category.findAll({
-                include: [{association: "types"}]
-            });
-            let types = await Type.findAll();
-            res.render("admin/admin-profile", {
-                errors: errors.errors,
-                admin: current_user,
-                users: users, 
-                categories: categories,
-                types: types
-            });
-        }
-    },
-
-    //PUT edit category
-    putEditCategory: async (req, res, next) => {
-        let errors = validationResult(req);
-        let current_user = req.session.current_user;
-
-        if (errors.isEmpty()) {
-            try {
-                await Category.update({
-                    name: req.body.name,
-                    description: req.body.description,
-                    typeId: req.body.typeId
-                }, {
-                    where: { id: req.params.id }
-                });
-                res.redirect(`/admin`);
-            } catch (error) {
-                res.status(400).send(error.message);
-            }
-        } else {
-            let users = await User.findAll();
-            let categories = await Category.findAll({
-                include: [{association: "types"}]
-            });
-            let types = await Type.findAll();
-            res.render("admin/admin-profile", {
-                errors: errors.errors,
-                admin: current_user,
-                users: users, 
-                categories: categories,
-                types: types
-            });
-        }
-    },
-
-    //DELETE category
-    destroyCategory: async (req, res, next) => {
-        try {
-            await Category.destroy({
-                where: {
-                    id: req.params.id
-                }
-            });
-            res.redirect(`/admin`);
-        } catch (error) {
-            res.status(400).send(error.message);
-        }
-    },
-
-    //******************* Types Controllers *******************//
-
-    //POST create type
-    postCreateType: async (req, res, next) => {
-        let errors = validationResult(req);
-        let current_user = req.session.current_user;
-
-        if (errors.isEmpty()) {
-            try {
-                await Type.create({
-                    name: req.body.name,
-                    description: req.body.description,
-                });
-                res.redirect(`/admin`);
-            } catch (error) {
-                res.status(400).send(error.message);
-            }
-        } else {
-            let users = await User.findAll();
-            let categories = await Category.findAll({
-                include: [{association: "types"}]
-            });
-            let types = await Type.findAll();
-            res.render("admin/admin-profile", {
-                errors: errors.errors,
-                admin: current_user,
-                users: users, 
-                categories: categories,
-                types: types
-            });
-        }
-    },
-
-    //PUT edit type
-    putEditType: async (req, res, next) => {
-        let errors = validationResult(req);
-        let current_user = req.session.current_user;
-
-        if (errors.isEmpty()) {
-            try {
-                await Type.update({
-                    name: req.body.name,
-                    description: req.body.description
-                }, {
-                    where: { id: req.params.id }
-                });
-                res.redirect(`/admin`);
-            } catch (error) {
-                res.status(400).send(error.message);
-            }
-        } else {
-            let users = await User.findAll();
-            let categories = await Category.findAll({
-                include: [{association: "types"}]
-            });
-            let types = await Type.findAll();
-            res.render("admin/admin-profile", {
-                errors: errors.errors,
-                admin: current_user,
-                users: users, 
-                categories: categories,
-                types: types
-            });
-        }
-    },
-
-    //DELETE type
-    destroyType: async (req, res, next) => {
-        try {
-            await Type.destroy({
-                where: {
-                    id: req.params.id
-                }
-            });
-            res.redirect(`/admin`);
-        } catch (error) {
-            res.status(400).send(error.message);
-        }
-    },
-
-    //******************* Coupon Controllers *******************//
-
-    //POST create coupon
-    postCreateCoupon: async (req, res, next) => {
-        let errors = validationResult(req);
-        let loggedUserId = req.session.loggedUserId;
-        try {
-            if (errors.isEmpty()) {
-                let newCoupon = {
-                    name: req.body.name,
-                    description: req.body.description,
-                    discount: req.body.discount,
-                    couponCode: req.body.couponCode,
-                    shopId: req.body.typeId
-                };
-                await couponService.create(newCoupon);
-                res.redirect(`/admin`);
-               
-            } else {
-                let currentUser = await userService.findOne(loggedUserId);
-                let users = await userService.findAll();
-                let categories = await categoryService.findAll();
-                let types = await typeService.findAll();
-                res.render("admin/admin-profile", {
-                    errors: errors.errors,
-                    admin: currentUser,
-                    users: users, 
-                    categories: categories,
-                    types: types
-                });
-            }   
-        } catch (error) {
-            res.status(400).send(error.message);
-        }
-    },
-
-    //PUT edit category
-    putEditCoupon: async (req, res, next) => {
-        let errors = validationResult(req);
-        let loggedUserId = req.session.loggedUserId;
-        try { 
-            if (errors.isEmpty()) {
-            let editCoupon = {
-                    name: req.body.name,
-                    description: req.body.description,
-                    discount: req.body.discount,
-                    couponCode: req.body.couponCode,
-                    shopId: req.body.typeId
-                };
-                await couponService.update(req.params.id, editCoupon)
-                res.redirect(`/admin`);
-            
-            } else {
-                let currentUser = await userService.findOne(loggedUserId);
-                let users = await userService.findAll();
-                let categories = await categoryService.findAll();
-                let types = await typeService.findAll();
-                res.render("admin/admin-profile", {
-                    errors: errors.errors,
-                    admin: currentUser,
-                    users: users, 
-                    categories: categories,
-                    types: types
-                });
-            }
-         } catch (error) {
-            res.status(400).send(error.message);
-        }
-    },
-
-    //DELETE category
-    destroyCoupon: async (req, res, next) => {
-        try {
-            await couponService.destroy(req.params.id);
-            res.redirect(`/admin`);
-        } catch (error) {
-            res.status(400).send(error.message);
-        }
-    },
-
     //******************* Shops Controllers *******************//
 
     //GET shop profile
     getShopProfile: async (req, res, next) => {
         let errors = validationResult(req);
-        let current_user = req.session.current_user;
-        console.log(req.url);
-        if (errors.isEmpty()) {
-            try {
-                let shop = await Shop.findByPk(req.params.id);
-                let user = await User.findByPk(req.params.id);
-                let products = await Product.findAll({
-                    where: {
-                        shopId: req.params.id
-                    },
-                    include: [
-                        {association: "shops"},
-                        {association: "categories"},
-                        {association: "types"}
-                    ]
-                });
-                let categories = await Category.findAll({
-                    include: [{association: "types"}]
-                });
-                let types = await Type.findAll({
-                    include: [{association: "categories"}]
-                });
-
-                // Temporal
-                let userData = await userService.getCurrentUserData(user);
-                
+        let loggedUserId = req.session.loggedUserId;
+        try {
+            let currentUser = await userService.findOne(loggedUserId);
+            let shop = await shopService.findOne(req.params.id);
+            let user = await userService.findOne(req.params.id);
+            let products = await productService.findAll();
+            let categories = await categoryService.findAll();
+            let types = await typeService.findAll();
+            let userData = await userService.getCurrentUserData(user);
+            
+            if (errors.isEmpty()) {
                 res.render("admin/shops/shop-profile", {
-                    admin: current_user,
+                    admin: currentUser,
                     shop: shop,
                     user: user,
                     comments: userData.comments,
@@ -620,13 +359,13 @@ const adminController = {
                     categories: categories,
                     types: types,
                 });
-            } catch (error) {
-                res.status(400).send(error.message);
+            } else {
+                res.render("admin/shops/shop-profile", {
+                    errors: errors.errors,
+                });
             }
-        } else {
-            res.render("admin/shops/shop-profile", {
-                errors: errors.errors,
-            });
+        } catch (error) {
+            res.status(400).send(error.message);
         }
     },
 
@@ -702,29 +441,41 @@ const adminController = {
     //POST create product
     postCreateProduct: async (req, res, next) => {
         let errors = validationResult(req);
-        let current_user = req.session.current_user;
+        let loggedUserId = req.session.loggedUserId;
+        try {
+            let currentUser = await userService.findOne(loggedUserId);
+            let users = await userService.findAll();
+            let categories = await categoryService.findAll();
+            let types = await typeService.findAll();
+            let shops = await shopService.findAll();
+            let products = await productService.findAll();
+            let payments = await paymentService.findAll();
+            let orders = await orderService.findAll();
+            let shippingMethods = await shippingMethodService.findAll();
+            let comments = await commentService.findAll();
+            let coupons = await couponService.findAll();
 
-        let avatar = req.files.avatar;
-        if (req.files.avatar != null) {
-            avatar = req.files.avatar[0].filename;
-        } else {
-            avatar = "without-image.png";
-        }
+            if (errors.isEmpty()) {
 
-        let gallery = [];
-        if (req.files.gallery != null) {
-            let array = req.files.gallery;
-            for (let i = 0; i < array.length; i++) {
-                const image = array[i].filename;
-                gallery.push(image);  
-            }
-        } else {
-            gallery = ["without-image.png","without-image.png","without-image.png"];
-        }
+                let avatar = req.files.avatar;
+                if (req.files.avatar != null) {
+                    avatar = req.files.avatar[0].filename;
+                } else {
+                    avatar = "without-image.png";
+                };
 
-        if (errors.isEmpty()) {
-            try {
-                await Product.create({ 
+                let gallery = [];
+                if (req.files.gallery != null) {
+                    let array = req.files.gallery;
+                    for (let i = 0; i < array.length; i++) {
+                        const image = array[i].filename;
+                        gallery.push(image);  
+                    }
+                } else {
+                    gallery = ["without-image.png","without-image.png","without-image.png"];
+                };
+        
+                await productService.create({ 
                     shopId: req.body.shopId,
                     name: req.body.name,
                     description: req.body.description,
@@ -749,119 +500,29 @@ const adminController = {
                 }else {
                     return res.redirect(`/admin`);
                 }
-                
-            } catch (error) {
-                res.status(400).send(error.message);
-            }
-        } else {
-            let users = await User.findAll({
-                include: [{association: "shops"}]
-            });
-            let categories = await Category.findAll({
-                include: [{association: "types"}]
-            });
-            let types = await Type.findAll({
-                include: [{association: "categories"}]
-            });
-            let shops = await Shop.findAll({
-                include: [{association: "users"}]
-            });
-            let products = await Product.findAll({
-                include: [
-                    {association: "shops"},
-                    {association: "categories"},
-                    {association: "types"}
-                ]
-            });
-            res.render("admin/admin-profile", {
-                errors: errors.errors,
-                admin: current_user,
-                users: users, 
-                categories: categories,
-                types: types,
-                shops: shops,
-                products: products
-            });
-        }
-    },
-    //******************* Payments Controllers *******************//
-
-    //POST create payment
-    postCreatePayment: async (req, res, next) => {
-        let errors = validationResult(req);
-        let current_user = req.session.current_user;
-
-        if (errors.isEmpty()) {
-            try {
-                await Payment.create({
-                    name: req.body.name,
-                    description: req.body.description,
+                  
+            } else {
+                res.render("admin/admin-profile", {
+                    errors: errors.errors,
+                    admin: currentUser,
+                    users: users, 
+                    categories: categories,
+                    types: types,
+                    shops: shops,
+                    products: products,
+                    payments: payments,
+                    orders: orders,
+                    shippingMethods: shippingMethods,
+                    comments: comments,
+                    coupons: coupons
                 });
-                res.redirect(`/admin`);
-            } catch (error) {
-                res.status(400).send(error.message);
             }
-        } else {
-            let users = await User.findAll();
-            let categories = await Category.findAll({
-                include: [{association: "types"}]
-            });
-            let types = await Type.findAll();
-            res.render("admin/admin-profile", {
-                errors: errors.errors,
-                admin: current_user,
-                users: users, 
-                categories: categories,
-                types: types
-            });
-        }
-    },
-    //PUT edit type
-    putEditPayment: async (req, res, next) => {
-        let errors = validationResult(req);
-        let current_user = req.session.current_user;
-
-        if (errors.isEmpty()) {
-            try {
-                await Payment.update({
-                    name: req.body.name,
-                    description: req.body.description
-                }, {
-                    where: { id: req.params.id }
-                });
-                res.redirect(`/admin`);
-            } catch (error) {
-                res.status(400).send(error.message);
-            }
-        } else {
-            let users = await User.findAll();
-            let categories = await Category.findAll({
-                include: [{association: "types"}]
-            });
-            let types = await Type.findAll();
-            res.render("admin/admin-profile", {
-                errors: errors.errors,
-                admin: current_user,
-                users: users, 
-                categories: categories,
-                types: types
-            });
-        }
-    },
-    // DELETE Payment
-    destroyPayment: async (req, res, next) => {
-        try {
-            await Payment.destroy({
-                where: {
-                    id: req.params.id
-                }
-            });
-            res.redirect(`/admin`);
         } catch (error) {
             res.status(400).send(error.message);
         }
     },
-        //******************* Order Controllers *******************//
+
+    //******************* Order Controllers *******************//
 
     //POST create order
     postCreateOrder: async (req, res, next) => {
@@ -1021,6 +682,7 @@ const adminController = {
             }); 
         }
     },
+
     // DELETE Order
     destroyOrder: async (req, res, next) => {
         try {
@@ -1034,164 +696,531 @@ const adminController = {
             res.status(400).send(error.message);
         }
     },
+
+    //******************* Comments Controllers *******************//
+
+    //DELETE comment
+    destroyComment: async (req, res, next) => {
+        try {
+            await commentService.destroy(req.params.id);
+            res.redirect("/admin#tab-comments");
+        } catch (error) {
+            res.status(400).send(error.message);
+        }
+    },
+
+    //******************* Categories Controllers *******************//
+
+    //POST create category
+    postCreateCategory: async (req, res, next) => {
+        let errors = validationResult(req);
+        let loggedUserId = req.session.loggedUserId;
+        try {
+            let currentUser = await userService.findOne(loggedUserId);
+            let users = await userService.findAll();
+            let categories = await categoryService.findAll();
+            let types = await typeService.findAll();
+            let shops = await shopService.findAll();
+            let products = await productService.findAll();
+            let payments = await paymentService.findAll();
+            let orders = await orderService.findAll();
+            let shippingMethods = await shippingMethodService.findAll();
+            let comments = await commentService.findAll();
+            let coupons = await couponService.findAll();
+
+            if (errors.isEmpty()) {
+
+                await categoryService.create({
+                    name: req.body.name,
+                    description: req.body.description,
+                    typeId: req.body.typeId
+                });
+                res.redirect("/admin#tab-categories");
+
+            } else {
+                res.render("admin/admin-profile", {
+                    errors: errors.errors,
+                    admin: currentUser,
+                    users: users, 
+                    categories: categories,
+                    types: types,
+                    shops: shops,
+                    products: products,
+                    payments: payments,
+                    orders: orders,
+                    shippingMethods: shippingMethods,
+                    comments: comments,
+                    coupons: coupons
+                });
+            }
+        } catch (error) {
+            res.status(400).send(error.message);
+        }
+    },
+
+    //PUT edit category
+    putEditCategory: async (req, res, next) => {
+        let errors = validationResult(req);
+        let loggedUserId = req.session.loggedUserId;
+        try {
+            let currentUser = await userService.findOne(loggedUserId);
+            let users = await userService.findAll();
+            let categories = await categoryService.findAll();
+            let types = await typeService.findAll();
+            let shops = await shopService.findAll();
+            let products = await productService.findAll();
+            let payments = await paymentService.findAll();
+            let orders = await orderService.findAll();
+            let shippingMethods = await shippingMethodService.findAll();
+            let comments = await commentService.findAll();
+            let coupons = await couponService.findAll();
+
+            if (errors.isEmpty()) {
+
+                await categoryService.update(req.params.id, {
+                    name: req.body.name,
+                    description: req.body.description,
+                    typeId: req.body.typeId
+                },);
+                res.redirect("/admin#tab-categories");
+                
+            } else {
+                res.render("admin/admin-profile", {
+                    errors: errors.errors,
+                    admin: currentUser,
+                    users: users, 
+                    categories: categories,
+                    types: types,
+                    shops: shops,
+                    products: products,
+                    payments: payments,
+                    orders: orders,
+                    shippingMethods: shippingMethods,
+                    comments: comments,
+                    coupons: coupons
+                });
+            }
+        } catch (error) {
+            res.status(400).send(error.message);
+        }
+    },
+
+    //DELETE category
+    destroyCategory: async (req, res, next) => {
+        try {
+            await categoryService.destroy(req.params.id);
+            res.redirect("/admin#tab-categories");
+        } catch (error) {
+            res.status(400).send(error.message);
+        }
+    },
+
+    //******************* Types Controllers *******************//
+
+    //POST create type
+    postCreateType: async (req, res, next) => {
+        let errors = validationResult(req);
+        let loggedUserId = req.session.loggedUserId;
+        try {
+            let currentUser = await userService.findOne(loggedUserId);
+            let users = await userService.findAll();
+            let categories = await categoryService.findAll();
+            let types = await typeService.findAll();
+            let shops = await shopService.findAll();
+            let products = await productService.findAll();
+            let payments = await paymentService.findAll();
+            let orders = await orderService.findAll();
+            let shippingMethods = await shippingMethodService.findAll();
+            let comments = await commentService.findAll();
+            let coupons = await couponService.findAll();
+
+            if (errors.isEmpty()) {
+                await typeService.create({
+                    name: req.body.name,
+                    description: req.body.description,
+                });
+                res.redirect("/admin#tab-types");
+            } else {
+                res.render("admin/admin-profile", {
+                    errors: errors.errors,
+                    admin: currentUser,
+                    users: users, 
+                    categories: categories,
+                    types: types,
+                    shops: shops,
+                    products: products,
+                    payments: payments,
+                    orders: orders,
+                    shippingMethods: shippingMethods,
+                    comments: comments,
+                    coupons: coupons
+                });
+            }
+        } catch (error) {
+            res.status(400).send(error.message);
+        }
+    },
+
+    //PUT edit type
+    putEditType: async (req, res, next) => {
+        let errors = validationResult(req);
+        let loggedUserId = req.session.loggedUserId;
+        try {
+            let currentUser = await userService.findOne(loggedUserId);
+            let users = await userService.findAll();
+            let categories = await categoryService.findAll();
+            let types = await typeService.findAll();
+            let shops = await shopService.findAll();
+            let products = await productService.findAll();
+            let payments = await paymentService.findAll();
+            let orders = await orderService.findAll();
+            let shippingMethods = await shippingMethodService.findAll();
+            let comments = await commentService.findAll();
+            let coupons = await couponService.findAll();
+
+            if (errors.isEmpty()) {
+                await typeService.update(req.params.id, {
+                    name: req.body.name,
+                    description: req.body.description
+                });
+                res.redirect("/admin#tab-types");
+            } else {
+                res.render("admin/admin-profile", {
+                    errors: errors.errors,
+                    admin: currentUser,
+                    users: users, 
+                    categories: categories,
+                    types: types,
+                    shops: shops,
+                    products: products,
+                    payments: payments,
+                    orders: orders,
+                    shippingMethods: shippingMethods,
+                    comments: comments,
+                    coupons: coupons
+                });
+            }
+        } catch (error) {
+            res.status(400).send(error.message);
+        }
+    },
+
+    //DELETE type
+    destroyType: async (req, res, next) => {
+        try {
+            await typeService.destroy(req.params.id);
+            res.redirect("/admin#tab-types");
+        } catch (error) {
+            res.status(400).send(error.message);
+        }
+    },
+
+    //******************* Coupon Controllers *******************//
+
+    //POST create coupon
+    postCreateCoupon: async (req, res, next) => {
+        let errors = validationResult(req);
+        let loggedUserId = req.session.loggedUserId;
+        try {
+            let currentUser = await userService.findOne(loggedUserId);
+            let users = await userService.findAll();
+            let categories = await categoryService.findAll();
+            let types = await typeService.findAll();
+            let shops = await shopService.findAll();
+            let products = await productService.findAll();
+            let payments = await paymentService.findAll();
+            let orders = await orderService.findAll();
+            let shippingMethods = await shippingMethodService.findAll();
+            let comments = await commentService.findAll();
+            let coupons = await couponService.findAll();
+
+            if (errors.isEmpty()) {
+                await couponService.create({
+                    name: req.body.name,
+                    description: req.body.description,
+                    discount: req.body.discount,
+                    couponCode: req.body.couponCode,
+                    shopId: req.body.typeId
+                });
+                res.redirect("/admin#tab-coupons");
+               
+            } else {
+                res.render("admin/admin-profile", {
+                    errors: errors.errors,
+                    admin: currentUser,
+                    users: users, 
+                    categories: categories,
+                    types: types,
+                    shops: shops,
+                    products: products,
+                    payments: payments,
+                    orders: orders,
+                    shippingMethods: shippingMethods,
+                    comments: comments,
+                    coupons: coupons
+                });
+            }   
+        } catch (error) {
+            res.status(400).send(error.message);
+        }
+    },
+
+    //PUT edit coupon
+    putEditCoupon: async (req, res, next) => {
+        let errors = validationResult(req);
+        let loggedUserId = req.session.loggedUserId;
+        try { 
+            let currentUser = await userService.findOne(loggedUserId);
+            let users = await userService.findAll();
+            let categories = await categoryService.findAll();
+            let types = await typeService.findAll();
+            let shops = await shopService.findAll();
+            let products = await productService.findAll();
+            let payments = await paymentService.findAll();
+            let orders = await orderService.findAll();
+            let shippingMethods = await shippingMethodService.findAll();
+            let comments = await commentService.findAll();
+            let coupons = await couponService.findAll();
+
+            if (errors.isEmpty()) {
+                await couponService.update(req.params.id, {
+                    name: req.body.name,
+                    description: req.body.description,
+                    discount: req.body.discount,
+                    couponCode: req.body.couponCode,
+                    shopId: req.body.typeId
+                });
+                res.redirect("/admin#tab-coupons");
+            
+            } else {
+                res.render("admin/admin-profile", {
+                    errors: errors.errors,
+                    admin: currentUser,
+                    users: users, 
+                    categories: categories,
+                    types: types,
+                    shops: shops,
+                    products: products,
+                    payments: payments,
+                    orders: orders,
+                    shippingMethods: shippingMethods,
+                    comments: comments,
+                    coupons: coupons
+                });
+            }
+         } catch (error) {
+            res.status(400).send(error.message);
+        }
+    },
+
+    //DELETE coupon
+    destroyCoupon: async (req, res, next) => {
+        try {
+            await couponService.destroy(req.params.id);
+            res.redirect("/admin#tab-coupons");
+        } catch (error) {
+            res.status(400).send(error.message);
+        }
+    },
+
+    //******************* Payments Controllers *******************//
+
+    //POST create payment
+    postCreatePayment: async (req, res, next) => {
+        let errors = validationResult(req);
+        let loggedUserId = req.session.loggedUserId;
+        try { 
+            let currentUser = await userService.findOne(loggedUserId);
+            let users = await userService.findAll();
+            let categories = await categoryService.findAll();
+            let types = await typeService.findAll();
+            let shops = await shopService.findAll();
+            let products = await productService.findAll();
+            let payments = await paymentService.findAll();
+            let orders = await orderService.findAll();
+            let shippingMethods = await shippingMethodService.findAll();
+            let comments = await commentService.findAll();
+            let coupons = await couponService.findAll();
+
+            if (errors.isEmpty()) {
+                await paymentService.create({
+                    name: req.body.name,
+                    description: req.body.description,
+                });
+                res.redirect("/admin#tab-payments");
+            } else {
+                res.render("admin/admin-profile", {
+                    errors: errors.errors,
+                    admin: currentUser,
+                    users: users, 
+                    categories: categories,
+                    types: types,
+                    shops: shops,
+                    products: products,
+                    payments: payments,
+                    orders: orders,
+                    shippingMethods: shippingMethods,
+                    comments: comments,
+                    coupons: coupons
+                });
+            };
+        } catch (error) {
+            res.status(400).send(error.message);
+        }
+    },
+
+    //PUT edit payment
+    putEditPayment: async (req, res, next) => {
+        let errors = validationResult(req);
+        try { 
+            let currentUser = await userService.findOne(loggedUserId);
+            let users = await userService.findAll();
+            let categories = await categoryService.findAll();
+            let types = await typeService.findAll();
+            let shops = await shopService.findAll();
+            let products = await productService.findAll();
+            let payments = await paymentService.findAll();
+            let orders = await orderService.findAll();
+            let shippingMethods = await shippingMethodService.findAll();
+            let comments = await commentService.findAll();
+            let coupons = await couponService.findAll();
+
+            if (errors.isEmpty()) {
+                await paymentService.update(req.params.id, {
+                    name: req.body.name,
+                    description: req.body.description
+                });
+                res.redirect("/admin#tab-payments");
+            } else {
+                res.render("admin/admin-profile", {
+                    errors: errors.errors,
+                    admin: currentUser,
+                    users: users, 
+                    categories: categories,
+                    types: types,
+                    shops: shops,
+                    products: products,
+                    payments: payments,
+                    orders: orders,
+                    shippingMethods: shippingMethods,
+                    comments: comments,
+                    coupons: coupons
+                });
+            }
+        } catch (error) {
+            res.status(400).send(error.message);
+        }
+    },
+
+    // DELETE Payment
+    destroyPayment: async (req, res, next) => {
+        try {
+            await paymentService.destroy(req.params.id);
+            res.redirect("/admin#tab-payments");
+        } catch (error) {
+            res.status(400).send(error.message);
+        }
+    },
+
+    //******************* Shipping Method Controllers *******************//
+
     //POST create Shipping Method
     postCreateShippingMethod: async (req, res, next) => {
         let errors = validationResult(req);
-        if(errors.isEmpty()){
-            try{
-                await ShippingMethod.create({
+        let loggedUserId = req.session.loggedUserId;
+        try { 
+            let currentUser = await userService.findOne(loggedUserId);
+            let users = await userService.findAll();
+            let categories = await categoryService.findAll();
+            let types = await typeService.findAll();
+            let shops = await shopService.findAll();
+            let products = await productService.findAll();
+            let payments = await paymentService.findAll();
+            let orders = await orderService.findAll();
+            let shippingMethods = await shippingMethodService.findAll();
+            let comments = await commentService.findAll();
+            let coupons = await couponService.findAll();
+
+            if (errors.isEmpty()) {
+                await shippingMethodService.create({
                     name:req.body.name,
                     amount: req.body.amount,
                     description: req.body.description,
                     location: req.body.location 
-            })
-            res.redirect("/admin")
-            }catch(error){
-                res.status(400).send(error.message);
-                console.log(error)
-            }
-        }else{
-            let id= req.session.loggedUserId;
-            let currentUser = await userService.findOne(id);
-            let users = await User.findAll();
-            let categories = await Category.findAll({
-                include: [{association: "types"}]
-            });
-            let types = await Type.findAll();
-            let shops = await Shop.findAll({
-                include: [{association: "users"}]
-            });
-            let products = await Product.findAll({
-                include: [
-                    {association: "shops"},
-                    {association: "categories"},
-                    {association: "types"}
-                ]
-            });
-            let payments = await Payment.findAll({
-                include:[
-                    {association: "orders"},
-                ]
-            });
-            let orders = await Order.findAll({
-                include:[
-                    {association: "payments"},
-                    {association: "users"},
-                    {association: "cartItems"},
-                    {association: "shippingMethods"},
-                ]
-            });
-            let cartItems = await CartItem.findAll({
-                include:[
-                    {association: "orders"},
-                ]
-            });
-            let shippingMethods = await ShippingMethod.findAll({
-                include:[
-                    {association: "orders"},
-                ]
-            });
-            res.render("admin/admin-profile", {
-                errors: errors.errors,
-                admin: currentUser,
-                users: users, 
-                categories: categories,
-                types: types,
-                shops: shops,
-                products: products,
-                payments:payments,
-                orders:orders,
-                cartItems:cartItems,
-                shippingMethods:shippingMethods
-            }); 
+                });
+                res.redirect("/admin#tab-shippingMethods");
+            } else {
+                res.render("admin/admin-profile", {
+                    errors: errors.errors,
+                    admin: currentUser,
+                    users: users, 
+                    categories: categories,
+                    types: types,
+                    shops: shops,
+                    products: products,
+                    payments: payments,
+                    orders: orders,
+                    shippingMethods: shippingMethods,
+                    comments: comments,
+                    coupons: coupons
+                });
+            };
+        } catch (error) {
+            res.status(400).send(error.message);
         }
     },
 
     //PUT Edit Shipping Method
-
     putEditShippingMethod: async (req, res, next) => {
         let errors = validationResult(req);
-        let current_user = req.session.current_user;
+        let loggedUserId = req.session.loggedUserId;
+        try { 
+            let currentUser = await userService.findOne(loggedUserId);
+            let users = await userService.findAll();
+            let categories = await categoryService.findAll();
+            let types = await typeService.findAll();
+            let shops = await shopService.findAll();
+            let products = await productService.findAll();
+            let payments = await paymentService.findAll();
+            let orders = await orderService.findAll();
+            let shippingMethods = await shippingMethodService.findAll();
+            let comments = await commentService.findAll();
+            let coupons = await couponService.findAll();
 
-        if (errors.isEmpty()) {
-            try {
-                await Order.update({
+            if (errors.isEmpty()) {
+                await shippingMethodService.update(req.params.id, {
                     name:req.body.name,
                     amount: req.body.amount,
                     description: req.body.description,
-                    location: req.body.location
-                }, {
-                    where: { id: req.params.id }
+                    location: req.body.location 
                 });
-                res.redirect(`/admin`);
-            } catch (error) {
-                res.status(400).send(error.message);
-            }
-        } else {
-            let id= req.session.loggedUserId;
-            let currentUser = await userService.findOne(id);
-            let users = await User.findAll();
-            let categories = await Category.findAll({
-                include: [{association: "types"}]
-            });
-            let types = await Type.findAll();
-            let shops = await Shop.findAll({
-                include: [{association: "users"}]
-            });
-            let products = await Product.findAll({
-                include: [
-                    {association: "shops"},
-                    {association: "categories"},
-                    {association: "types"}
-                ]
-            });
-            let payments = await Payment.findAll({
-                include:[
-                    {association: "orders"},
-                ]
-            });
-            let orders = await Order.findAll({
-                include:[
-                    {association: "payments"},
-                    {association: "users"},
-                    {association: "cartItems"},
-                    {association: "shippingMethods"},
-                ]
-            });
-            let cartItems = await CartItem.findAll({
-                include:[
-                    {association: "orders"},
-                ]
-            });
-            let shippingMethods = await ShippingMethod.findAll({
-                include:[
-                    {association: "orders"},
-                ]
-            });
-            res.render("admin/admin-profile", {
-                errors: errors.errors,
-                admin: currentUser,
-                users: users, 
-                categories: categories,
-                types: types,
-                shops: shops,
-                products: products,
-                payments:payments,
-                orders:orders,
-                cartItems:cartItems,
-                shippingMethods:shippingMethods
-            }); 
+                res.redirect("/admin#tab-shippingMethods");
+            } else {
+                res.render("admin/admin-profile", {
+                    errors: errors.errors,
+                    admin: currentUser,
+                    users: users, 
+                    categories: categories,
+                    types: types,
+                    shops: shops,
+                    products: products,
+                    payments: payments,
+                    orders: orders,
+                    shippingMethods: shippingMethods,
+                    comments: comments,
+                    coupons: coupons
+                });
+            };
+        } catch (error) {
+            res.status(400).send(error.message);
         }
     },
+
     // DELETE ShippingMethod
     destroyShippingMethod: async (req, res, next) => {
         try {
-            await ShippingMethod.destroy({
-                where: {
-                    id: req.params.id
-                }
-            });
-            res.redirect(`/admin`);
+            await shippingMethodService.destroy(req.params.id);
+            res.redirect("/admin#tab-shippingMethods");
         } catch (error) {
             res.status(400).send(error.message);
         }

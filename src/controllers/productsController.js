@@ -103,7 +103,11 @@ const productsController = {
                 };
 
                 await productService.create(newProduct);
-                res.redirect(`/shops`);
+                if(currentUser.admin){
+                    return res.redirect("/admin#tab-products");
+                } else {
+                    return res.redirect(`/shops`);
+                };
             } else {
                 res.render("products/productCreateForm", { 
                     errors: errors.errors,
@@ -206,8 +210,12 @@ const productsController = {
                 };
 
                 //Agregamos el producto
-                await productService.update(req.params.id, productEdit) 
-                res.redirect(`/products/${req.params.id}/productDetails`);
+                await productService.update(req.params.id, productEdit);
+                if(currentUser.admin){
+                    return res.redirect("/admin#tab-products");
+                } else {
+                    return res.redirect(`/products/${req.params.id}/productDetails`);
+                }
             } else {
                 res.render("products/productEditForm", {
                     errors: errors.errors,

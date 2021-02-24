@@ -11,6 +11,7 @@ const multerProducts = require("../utils/multer/multerProducts");
 // Middlewares
 const assertIsAdmin = require('../middlewares/assert-is-admin');
 const assertSignedIn = require('../middlewares/assert-signed-in');
+const checkUser = require("../middlewares/checkUser");
 
 // Multer
 const uploadUser = multerOneImage('users');
@@ -124,6 +125,11 @@ router.post(
   ],
   adminController.postCreateShop);
 
+//******************* Comments Routes *******************//
+
+// DELETE category 
+router.delete('/:id/comment-destroy', assertIsAdmin, adminController.destroyComment);
+
 //******************* Categories Routes *******************//
 
 // POST create category
@@ -177,9 +183,9 @@ router.put(
 // DELETE type 
 router.delete('/:id/type-destroy', assertIsAdmin, adminController.destroyType);
 
-//******************* Categories Routes *******************//
+//******************* Coupons Routes *******************//
 
-// POST create category
+// POST create coupon
 router.post(
   '/create-coupon',
   assertSignedIn,  
@@ -193,7 +199,7 @@ router.post(
   ],
   adminController.postCreateCoupon);
 
-// PUT edit category
+// PUT edit coupon
 router.put(
   '/:id/edit-coupon',
   assertSignedIn, 
@@ -207,10 +213,10 @@ router.put(
   ],
   adminController.putEditCoupon);
 
-// DELETE category 
+// DELETE coupon 
 router.delete('/:id/coupon-destroy', assertSignedIn, assertIsAdmin, adminController.destroyCoupon);
 
-
+//******************* Payments Routes *******************//
 
 // POST create payment
 router.post(
@@ -234,6 +240,8 @@ router.post(
 
 // DELETE Payment 
 router.delete('/:id/payment-destroy', assertIsAdmin, adminController.destroyPayment);
+
+//******************* Orders Routes *******************//
 
 // POST create order
 router.post(
@@ -260,6 +268,8 @@ router.post(
 
 // DELETE Order 
 router.delete('/:id/order-destroy', assertIsAdmin, adminController.destroyOrder);
+
+//******************* ShippingMethods Routes *******************//
 
 // POST create Shipping Method
 router.post(

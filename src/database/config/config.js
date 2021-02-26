@@ -12,8 +12,8 @@ const {
 
 module.exports = {
   "development": {
-    "username": "root",
-    "password": "",
+    "username": USERNAME,
+    "password": PASSWORD,
     "database": DATABASE,
     "host": HOST,
     "dialect": DIALECT,

@@ -12,11 +12,13 @@
 
             <ul class="center tab-nav clearfix ui-tabs-nav ui-corner-all ui-helper-reset ui-helper-clearfix ui-widget-header"
                 role="tablist">
-  
+
                 <% types.forEach((type, index) => { %>
+                    <% if(type.products.length > 0){ %> 
                     <li role="tab" tabindex="<%= index %>" class="ui-tabs-tab ui-corner-top ui-state-default ui-tab" aria-controls="<%= type.name %>"
                         aria-labelledby="" aria-selected="" aria-expanded="true">
                         <a href="#<%= type.name %>" role="presentation" tabindex="-1" class="ui-tabs-anchor text-uppercase"><%= type.name %></a></li>
+                    <% } %> 
                 <% }) %>
             </ul>
 

@@ -125,6 +125,9 @@ router.post(
   ],
   adminController.postCreateShop);
 
+// DELETE user 
+router.delete('/:id/shop-destroy', assertIsAdmin, adminController.destroyShop);
+
 //******************* Comments Routes *******************//
 
 // DELETE category 

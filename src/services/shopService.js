@@ -1,4 +1,4 @@
-const { Shop, Comment, Order, Product } = require("../database/models");
+const { Shop, Comment, Order, Product, Coupon } = require("../database/models");
 
 module.exports = {
     findOne: async (id) => {
@@ -83,7 +83,20 @@ module.exports = {
             }
         });
 
-        return (data = { products, comments, orders });
+        let allCoupons = await Coupon.findAll({
+            include: [
+                { association: "coupons" },
+                {association: "shopCoupons"},
+            ],
+        });
+        let coupons = [];
+        allCoupons.forEach(coupon => {
+            if (coupon.shopId == currentUser.shopId) {
+                coupons.push(coupon);
+            }
+        });
+
+        return (data = { products, comments, orders, coupons });
     },
 };
 

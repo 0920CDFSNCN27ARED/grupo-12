@@ -1,5 +1,6 @@
 // Services
 const productService = require("../services/productService");
+const typeService = require("../services/typeService");
 
 // Index controller
 const indexController = {
@@ -8,8 +9,10 @@ const indexController = {
     home: async (req, res) => {
         try {
             const products = await productService.findAll();
-            const types = await productService.allTypes();
-
+            const types = await typeService.findAll();
+            for (const type of types) {
+                type.count = type.products.length;
+            }
             res.render('index', { 
                 products: products, 
                 types: types 

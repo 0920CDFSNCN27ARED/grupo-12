@@ -1,5 +1,6 @@
 const createError = require('http-errors');
 const express = require("express");
+const flash = require('connect-flash-plus');
 const path = require("path");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
@@ -14,6 +15,9 @@ const storeRouter = require("./routes/store");
 const productsRouter = require("./routes/products");
 const shopsRouter = require("./routes/shops");
 const adminRouter = require("./routes/admin");
+
+// ************ API ************
+const productsApiRouter = require("./routes/api/products");
 
 
 const app = express();
@@ -33,6 +37,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(methodOverride('_method')); 
 app.use(session({secret:"Nuestro msj secreto!", resave: true, saveUninitialized: false,}));
+app.use(flash());
 app.use(rememberMe);
 app.use(authenticate);
 
@@ -42,6 +47,10 @@ app.use('/store', storeRouter);
 app.use('/products', productsRouter);
 app.use('/shops', shopsRouter);
 app.use('/admin', adminRouter);
+
+// ************ API ************
+app.use('/products', productsApiRouter);
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

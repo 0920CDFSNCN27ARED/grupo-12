@@ -4,6 +4,8 @@
 <head>
 	<%- include('../layout/head', { title:"Ingresar" }) %>
 	<link rel="stylesheet" href="/css/login.css" type="text/css">
+	<script src="/js/validateLogIn.js"></script>
+	<script type="text/javascript" src="/js/validator.min.js"></script>
 </head>
 
 <body class="stretched">
@@ -38,19 +40,21 @@
 							</div>
 						</div>
 						<div class="card-body">
-							<form method="POST" action="/users/login">
+							<form method="POST" id="logInForm" style="margin-bottom:0px"action="/users/login">
 								<div class="input-group form-group">
 									<div class="input-group-prepend">
 										<span class="input-group-text"><i class="fas fa-user"></i></span>
 									</div>
-									<input name="email" class="form-control" placeholder="Email" type="email">
+									<input name="email" class="form-control validate" id="email"placeholder="Email" type="email">
 								</div>
+								<div id="emailFeedback" class="feedback"></div>
 								<div class="input-group form-group">
 									<div class="input-group-prepend">
 										<span class="input-group-text"><i class="fas fa-key"></i></span>
 									</div>
-									<input type="password" class="form-control" name="password"placeholder="Ingresá tu contraseña">
+									<input type="password" class="form-control" class="validate" id="password"name="password"placeholder="Ingresá tu contraseña">
 								</div>
+								<div id="passwordFeedback" class="feedback"></div>
 								<div class="row align-items-center remember">
 									<input type="checkbox" name="remember">Recordame
 								</div>

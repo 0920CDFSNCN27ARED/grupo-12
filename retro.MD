@@ -16,3 +16,8 @@ Nos comprometimos como equipo a sostener los cambios de las retrospectivas anter
 * definir una cantidad especifica y clara de objetivos dentro del sprint y aumentar la comunicacion sobre el avance, para sostener un control sobre el avance de todos.
 * coordinar las tareas y mantener mayor comunicacion.
 
+## Sprint 6
+
+* Pudimos lograr una mejor comunicación a la hora de ir informando los avances 
+
+* Nos propusimos trabajar más en conjunto y mantener el mismo ritmo de trabajo

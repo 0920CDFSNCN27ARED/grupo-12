@@ -20,6 +20,9 @@ module.exports = {
       couponCode: {
         type: Sequelize.STRING
       },
+      status: {
+        type: Sequelize.STRING
+      },
       shopId: {
         type: Sequelize.INTEGER
       },

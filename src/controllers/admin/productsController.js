@@ -49,6 +49,7 @@ const productsController = {
                     gallery01: gallery[0] ? gallery[0] : "without-image.png",
                     gallery02: gallery[1] ? gallery[1] : "without-image.png",
                     gallery03: gallery[2] ? gallery[2] : "without-image.png",
+                    status: req.body.status
                 });
 
                 req.flash('message', 'El producto fue creado correctamente.');

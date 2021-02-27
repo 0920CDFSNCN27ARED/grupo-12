@@ -13,7 +13,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                        <form action="/shops/<%= coupon.id %>/coupon-destroy?_method=DELETE" method="POST">
+                        <form action="/shops/<%= shop.id %>/<%= coupon.id %>/coupon-destroy?_method=DELETE" method="POST">
                             <button class="btn btn-danger" type="submit">Eliminar</button>
                         </form>
                     </div>

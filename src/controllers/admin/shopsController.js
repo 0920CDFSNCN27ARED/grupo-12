@@ -4,59 +4,22 @@ const { check, validationResult, body } = require("express-validator");
 // Services
 const shopService = require("../../services/shopService");
 const userService = require("../../services/userService");
-const categoryService = require("../../services/categoryService");
-const typeService = require("../../services/typeService");
-
-
-// Data
-const { User, Category, Type, Shop, Product} = require("../../database/models");
+const commentService = require("../../services/commentService");
+const productService = require("../../services/productService");
+const couponService = require("../../services/couponService");
 
 // Controller
 const shopsController = {
 
-    //GET shop profile
-    profile: async (req, res, next) => {
-        let errors = validationResult(req);
-        let loggedUserId = req.session.loggedUserId;
-        try {
-            let currentUser = await userService.findOne(loggedUserId);
-            let shop = await shopService.findOne(req.params.id);
-            let shopData = await shopService.getShopData(currentUser);
-            let shopOwner = await userService.findOne(shop.users.id);
-            let categories = await categoryService.findAll();
-            let types = await typeService.findAll();
-            
-            if (errors.isEmpty()) {
-                res.render("admin/shops/shop-profile", {
-                    admin: currentUser,
-                    shop: shop,
-                    user: shopOwner,                   
-                    categories: categories,
-                    types: types,
-                    products: shopData.products,
-                    orders: shopData.orders,
-                    coupons: shopData.coupons,
-                    comments: shopData.comments,
-                });
-            } else {
-                res.render("admin/shops/shop-profile", {
-                    errors: errors.errors,
-                });
-            }
-        } catch (error) {
-            res.status(400).send(error.message);
-        }
-    },
-
     //POST create shop
     create: async (req, res, next) => {
         let errors = validationResult(req);
-        let loggedUserId = req.session.loggedUserId;
         if (errors.isEmpty()) {
             try {
                 let avatar = req.file ? req.file.filename : "default.jpg";
 
-                await Shop.create({ 
+                // Crear tienda
+                let shop = await shopService.create({ 
                     name: req.body.name,
                     phone: req.body.phone,
                     email: req.body.email,
@@ -70,54 +33,133 @@ const shopsController = {
                     twitter: req.body.twitter
                 });
 
-                await User.update({ 
-                    shopId: req.body.userId,
+                // Actualizar propietario
+                await userService.update(req.body.userId, { 
+                    shopId: shop.id,
                     role: 'seller'
-                },
-                {
-                    where: { id: req.body.userId}
                 });
 
-                res.redirect(`/admin`);
+                req.flash('message', 'La tienda fue creada correctamente.');
+                res.redirect("/admin#tab-shops");
             } catch (error) {
                 res.status(400).send(error.message);
             }
         } else {
-            let currentUser = await userService.findOne(loggedUserId);
-            let users = await User.findAll({
-                include: [{association: "shops"}]
-            });
-            let categories = await Category.findAll({
-                include: [{association: "types"}]
-            });
-            let types = await Type.findAll({
-                include: [{association: "categories"}]
-            });
-            let shops = await Shop.findAll({
-                include: [{association: "users"}]
-            });
-            let products = await Product.findAll({
-                include: [
-                    {association: "shops"},
-                    {association: "categories"},
-                    {association: "types"}
-                ]
-            });
-            res.render("admin/admin-profile", {
-                errors: errors.errors,
-                admin: currentUser,
-                users: users, 
-                categories: categories,
-                types: types,
-                shops: shops,
-                products: products
-            });
+            req.flash('validateErrors', errors.errors);
+            res.redirect("/admin#tab-shops");
         }
     },
 
-    //DELETE type
+    //POST shop blocked
+    blocked: async (req, res, next) => {
+        let errors = validationResult(req);
+        if (errors.isEmpty()) {
+            try {
+                let shop = await shopService.findOne(req.params.id);
+                let shopData = await shopService.getShopData(shop);
+
+                // Eliminar comentarios de productos relacionados
+                shopData.products.forEach( async product => {
+                    await productService.update(product.id,{
+                        status: 'blocked'
+                    });
+                });
+
+                // Eliminar cupones emitidos
+                shopData.coupons.forEach( async coupon => {
+                    await couponService.update(coupon.id,{
+                        status: 'blocked'
+                    });
+                });
+
+                await shopService.update(req.params.id,{
+                        status: 'blocked'
+                });
+
+                req.flash('message', 'La tienda fue bloqueda temporalmente.');
+                res.redirect("/admin#tab-shops");
+            } catch (error) {
+                res.status(400).send(error.message);
+            };
+        } else {
+            req.flash('validateErrors', errors.errors);
+            res.redirect("/admin#tab-shops");
+        }
+    },
+
+    //POST shop activate
+    activate: async (req, res, next) => {
+        let errors = validationResult(req);
+        if (errors.isEmpty()) {
+            try {
+                let shop = await shopService.findOne(req.params.id);
+                let shopData = await shopService.getShopData(shop);
+
+                // Eliminar comentarios de productos relacionados
+                shopData.products.forEach( async product => {
+                    await productService.update(product.id,{
+                        status: 'active'
+                    });
+                });
+
+                // Eliminar cupones emitidos
+                shopData.coupons.forEach( async coupon => {
+                    await couponService.update(coupon.id,{
+                        status: 'active'
+                    });
+                });
+
+                await shopService.update(req.params.id,{
+                        status: 'active'
+                });
+
+                req.flash('message', 'La tienda fue habilitada correctamente.');
+                res.redirect("/admin#tab-shops");
+            } catch (error) {
+                res.status(400).send(error.message);
+            };
+        } else {
+            req.flash('validateErrors', errors.errors);
+            res.redirect("/admin#tab-shops");
+        }
+    },
+
+    //DELETE shop
     destroy: async (req, res, next) => {
         try {
+            let shop = await shopService.findOne(req.params.id);
+            let shopData = await shopService.getShopData(shop);
+
+            // Eliminar comentarios de productos relacionados
+            shopData.comments.forEach( async comment => {
+                await commentService.destroy(Comment.id);
+            });
+
+            // Eliminar comentarios de productos relacionados
+            shopData.products.forEach( async product => {
+                
+                // Eliminar imagenes
+                if(product.avatar != "without-image.png"){
+                    fs.unlinkSync( __dirname + "/../public/images/products/" + product.avatar);
+                }; 
+                if(product.gallery01 != "without-image.png"){
+                    fs.unlinkSync( __dirname + "/../public/images/products/" + product.gallery01);
+                };
+                if(product.gallery02 != "without-image.png"){
+                    fs.unlinkSync( __dirname + "/../public/images/products/" + product.gallery02);
+                };
+                if(product.gallery03 != "without-image.png"){
+                    fs.unlinkSync( __dirname + "/../public/images/products/" + product.gallery03);
+                };
+                // Elimnar producto
+                await productService.destroy(product.id);
+            });
+
+            // Eliminar cupones emitidos
+            shopData.coupons.forEach( async coupon => {
+                await couponService.destroy(coupon.id);
+            });
+
             await shopService.destroy(req.params.id);
             req.flash('message', 'La tienda fue eliminada correctamente.');
             res.redirect("/admin#tab-shops");

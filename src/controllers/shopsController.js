@@ -15,11 +15,12 @@ const shopsController = {
         const message = req.flash('message');
         try {
             let currentUser = await userService.findOne(loggedUserId);
-            let shop = await shopService.findOne(currentUser.shopId)
-            let shopData = await shopService.getShopData(currentUser);
+            let shop = await shopService.findOne(req.params.id);
+            let shopData = await shopService.getShopData(shop);
             res.render("shops/shop-profile", {
                 message: message,
                 errors: validateErrors,
+                currentUser: currentUser,
                 products: shopData.products,
                 comments: shopData.comments,
                 orders: shopData.orders,
@@ -34,19 +35,15 @@ const shopsController = {
     // PUT shop profile data form
     putShopData: async (req, res, next) => {
         let errors = validationResult(req);
-        let id = req.session.loggedUserId;
         try {
-            let currentUser = await userService.findOne(id);
-            let shop = await shopService.findOne(currentUser.shopId)
-            let shopData = await shopService.getShopData(currentUser);
-
+            let shop = await shopService.findOne(req.params.id);
             if (errors.isEmpty()) {
-                
+
                 let filename = req.file
                     ? req.file.filename
                     : shop.avatar;
                 
-                let shopToEdit = { 
+                await shopService.update(shop.id, { 
                     name: req.body.name,
                     phone: req.body.phone,
                     email: req.body.email,
@@ -55,18 +52,14 @@ const shopsController = {
                     facebook: req.body.facebook,
                     instagram: req.body.instagram,
                     twitter: req.body.twitter
-                };
+                });
 
-                await shopService.update(shop.id, shopToEdit);
-                res.redirect("/shops");
+                req.flash('message', 'La tienda fue actualizada correctamente.');
+                res.redirect(`/shops/${shop.id}/profile#tab-info`);
 
             } else {
-                res.render("shops/shop-profile", { 
-                    errors: errors.errors,
-                    products: shopData.products,
-                    comments: shopData.comments,
-                    shop, 
-                });
+                req.flash('validateErrors', errors.errors);
+                return res.redirect(`/shops/${shop.id}/profile#tab-data`);
             }
         } catch (error) {
             res.status(400).send(error.message);

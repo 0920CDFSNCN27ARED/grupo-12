@@ -159,23 +159,20 @@
 													</div>
 													<div class="col-4">
 														<h3 class="ml-2">Opciones</h3>
-														<div class="col-12 mb-2">
-															<a href="/products/<%= product.id %>/edit" class="btn btn-warning btn-block center">EDITAR PRODUCTO</a>
-														</div>
-														<div class="col-12 mb-2">
-															<a href="/products/create" class="btn btn-secondary btn-block center">CREAR PRODUCTO</a>
-														</div>
 														<% if(currentUser.admin){ %>
 															<div class="col-12 mb-2">
 																<a href="/admin#tab-products" class="btn btn-secondary btn-block center">VOLVER A LA ADMINISTRACION</a>
 															</div>
 														<% } else { %>
 															<div class="col-12 mb-2">
-																<a href="/shops#tab-products" class="btn btn-secondary btn-block center">VOLVER A LA TIENDA</a>
+																<a href="/shops/<%= product.shopId %>/profile#tab-products" class="btn btn-secondary btn-block center">VOLVER A LA TIENDA</a>
 															</div>
 														<% } %>
 														<div class="col-12 mb-2">
-															<form action="/products/delete/<%= product.id %>?_method=DELETE" method="POST">
+															<a href="/products/<%= product.shopId %>/<%= product.id %>/edit" class="btn btn-warning btn-block center">EDITAR PRODUCTO</a>
+														</div>
+														<div class="col-12 mb-2">
+															<form action="/products/delete/<%= product.shopId %>/<%= product.id %>?_method=DELETE" method="POST">
 																<button type="submit" class="btn btn-block center btn-danger">ELIMINAR PRODUCTO</button>
 															</form>
 														</div>

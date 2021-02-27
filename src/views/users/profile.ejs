@@ -131,9 +131,13 @@
 																	<%= comment.users.name%><span>Fecha: <%= comment.date%></span>
 																</div>
 																<p><%= comment.comment%></p>
-																<small>
-																	comentaste en el producto: <a href="/products/<%= comment.productId %>/productDetails"><%= comment.products.name %></a>
-																</small>
+																<% if(comment.products){ %>
+																	<small>
+																		comentaste en el producto: <a href="/products/<%= comment.productId %>/productDetails"><%= comment.products.name %></a>
+																	</small>
+																<% } else {%>
+																	<small>Esto producto fue eliminado.</small>
+																<% } %> 
 																<form action="/products/deleteComment/<%= comment.id %>?_method=DELETE" method="POST">
 																	<button class="btn btn-danger btn-sm comment-delete-link" type="submit"><i
 																			class="icon-line-trash-2"></i></button>

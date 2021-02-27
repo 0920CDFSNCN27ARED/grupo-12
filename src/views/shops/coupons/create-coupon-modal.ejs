@@ -7,7 +7,7 @@
                     <h4 class="modal-title" id="myModalLabel">Crear Cupón</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 </div>
-                <form action="/shops/create-coupon" method="POST" class="pb-0 mb-0">
+                <form action="/shops/<%= shop.id %>/create-coupon" method="POST" class="pb-0 mb-0">
                     <div class="modal-body">
                         <div class="row">
                             <div class="col-lg-12 col-md-12 form-group">

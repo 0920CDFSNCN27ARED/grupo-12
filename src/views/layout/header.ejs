@@ -46,7 +46,7 @@
                                     <i class="fas fa-user-circle"></i><span>Mi Perfil</a>
                             
                                 <% if (currentUser.role == "seller" && currentUser.shopId != null) { %>
-                                    <a href="/shops" id="login-button" class="button button-small button-reveal d-inline-flex tright">
+                                    <a href="/shops/<%= currentUser.shopId %>/profile" id="login-button" class="button button-small button-reveal d-inline-flex tright">
                                         <i class="icon-home"></i><span>Mi Comercio</a>
                                 <% } %>
                             

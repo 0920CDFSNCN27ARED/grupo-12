@@ -25,6 +25,7 @@ module.exports = (sequelize, DataTypes) => {
     description: DataTypes.STRING,
     discount: DataTypes.FLOAT(10,2),
     couponCode: DataTypes.STRING,
+    status: DataTypes.STRING,
     shopId: DataTypes.INTEGER
   }, {
     sequelize,

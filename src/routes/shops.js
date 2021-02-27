@@ -13,11 +13,11 @@ const uploadShop = multerOneImage('shops');
 const assertSignedIn = require('../middlewares/assert-signed-in');
 
 // GET shop profile
-router.get('/', assertSignedIn, shopsController.getShop);
+router.get('/:id/profile', assertSignedIn, shopsController.getShop);
 
-// PUT Profile user data
+// PUT Profile shop data
 router.put(
-  '/edit-data',
+  '/:id/edit-data',
   uploadShop.single("avatar"),
   [
     check("name").isLength({min:4,max:30}).withMessage("El nombre debe tener entre 4 y 30 caracteres de largo"),
@@ -29,7 +29,7 @@ router.put(
 
 // POST create coupon
 router.post(
-  '/create-coupon',
+  '/:shop/create-coupon',
   assertSignedIn,   
   [
     check("name", "El nombre del cupón es requerido.").notEmpty(),
@@ -42,7 +42,7 @@ router.post(
 
 // PUT edit coupon
 router.put(
-  '/:id/edit-coupon',
+  '/:shop/:id/edit-coupon',
   assertSignedIn, 
   [
     check("name", "El nombre del cupón es requerido.").notEmpty(),
@@ -54,6 +54,6 @@ router.put(
   couponsController.updateCoupon);
 
 // DELETE coupon 
-router.delete('/:id/coupon-destroy', assertSignedIn, couponsController.destroyCoupon);
+router.delete('/:shop/:id/coupon-destroy', assertSignedIn, couponsController.destroyCoupon);
 
 module.exports = router;

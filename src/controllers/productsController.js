@@ -5,6 +5,7 @@ const { check, validationResult, body } = require("express-validator");
 // Services
 const productService = require("../services/productService");
 const userService = require("../services/userService");
+const commentService = require('../services/commentService');
 
 // Controllers
 const commentsController = require("./commentsController");
@@ -32,18 +33,19 @@ const productsController = {
             });
         } catch (error) {
             res.status(400).send(error.message);
-        }
-        
+        };
     },
 
     // GET Create Product Form
     getCreate: async (req, res, next) => {
         const validateErrors = req.flash('validateErrors')
         const message = req.flash('message');
+        let shopId = req.params.shop;
         try {
             const categories = await productService.allCategories();
             const types = await productService.allTypes();
             res.render("products/productCreateForm", {
+                shopId: shopId,
                 message: message,
                 errors: validateErrors, 
                 categories, 
@@ -85,7 +87,7 @@ const productsController = {
 
             if (errors.isEmpty()) {
                 let newProduct = {
-                    shopId: currentUser.shopId,
+                    shopId: req.params.shop,
                     categoryId: req.body.categoryId,
                     typeId: req.body.typeId,
                     name: req.body.name,
@@ -104,22 +106,15 @@ const productsController = {
                     gallery01: gallery[0] ? gallery[0] : "without-image.png",
                     gallery02: gallery[1] ? gallery[1] : "without-image.png",
                     gallery03: gallery[2] ? gallery[2] : "without-image.png",
+                    status: req.body.status
                 };
 
                 req.flash('message', 'El producto fue creado correctamente.');
                 await productService.create(newProduct);
-                if(currentUser.admin){
-                    return res.redirect("/admin#tab-products");
-                } else {
-                    return res.redirect(`/shops`);
-                };
+                return res.redirect(`/shops/${req.params.shop}/profile#tab-products`);
             } else {
                 req.flash('validateErrors', errors.errors);
-                if(currentUser.admin){
-                    return res.redirect("/admin#tab-products");
-                } else {
-                    return res.redirect(`/shops`);
-                };
+                return res.redirect(`/shops/${req.params.shop}/profile#tab-products`);
             }
         } catch (error) {
             res.status(400).send(error.message);    
@@ -131,6 +126,7 @@ const productsController = {
     getEdit: async (req, res, next) => {
         const validateErrors = req.flash('validateErrors')
         const message = req.flash('message');
+        let shopId = req.params.shop;
         try {
             const product = await productService.findOne(req.params.id)
             const categories = await productService.allCategories();
@@ -138,6 +134,7 @@ const productsController = {
             const productGallery = [product.gallery01, product.gallery02, product.gallery03]
             
             res.render("products/productEditForm", {
+                shopId: shopId,
                 message: message,
                 errors: validateErrors,
                 product: product,
@@ -154,12 +151,9 @@ const productsController = {
     putEdit: async (req, res, next) => {
         let errors = validationResult(req);
         const loggedUserId = req.session.loggedUserId;
-        
         try {
             const currentUser = await userService.findOne(loggedUserId);
             const product = await productService.findOne(req.params.id)
-            const categories = await productService.allCategories();
-            const types = await productService.allTypes();
             const productGallery = [product.gallery01, product.gallery02, product.gallery03]
 
             if (errors.isEmpty()) {
@@ -180,9 +174,15 @@ const productsController = {
                 let gallery = [];
                 if (req.files.gallery != null) {
                     // Delete old image
-                    req.files.gallery[0] != null ? fs.unlinkSync( __dirname + "/../public/images/products/" + product.gallery01) : null;
-                    req.files.gallery[1] != null ? fs.unlinkSync( __dirname + "/../public/images/products/" + product.gallery02) : null;
-                    req.files.gallery[2] != null ? fs.unlinkSync( __dirname + "/../public/images/products/" + product.gallery03) : null;
+                    if(product.gallery01 != "without-image.png"){
+                        req.files.gallery[0] != null ? fs.unlinkSync( __dirname + "/../public/images/products/" + product.gallery01) : null;
+                    };
+                    if(product.gallery02 != "without-image.png"){
+                        req.files.gallery[1] != null ? fs.unlinkSync( __dirname + "/../public/images/products/" + product.gallery02) : null;
+                    };
+                    if(product.gallery03 != "without-image.png"){
+                        req.files.gallery[2] != null ? fs.unlinkSync( __dirname + "/../public/images/products/" + product.gallery02) : null;
+                    };
                     // Replace old image
                     let array = req.files.gallery;
                     for (let i = 0; i < array.length; i++) {
@@ -198,7 +198,7 @@ const productsController = {
                 let og = req.body.og == "1000" ? product.og : req.body.og;
 
                 let productEdit = {
-                    shopId: currentUser.shopId,
+                    shopId: req.params.shop,
                     categoryId: req.body.categoryId,
                     typeId: req.body.typeId,
                     name: req.body.name,
@@ -216,23 +216,16 @@ const productsController = {
                     avatar: avatar,
                     gallery01: gallery[0],
                     gallery02: gallery[1],
-                    gallery03: gallery[2]
+                    gallery03: gallery[2],
+                    status: req.body.status
                 };
 
                 req.flash('message', 'El producto fue actualizado correctamente.');
                 await productService.update(req.params.id, productEdit);
-                if(currentUser.admin){
-                    return res.redirect("/admin#tab-products");
-                } else {
-                    return res.redirect("/shops#tab-products");
-                }
+                return res.redirect(`/shops/${req.params.shop}/profile#tab-products`);
             } else {
                 req.flash('validateErrors', errors.errors);
-                if(currentUser.admin){
-                    return res.redirect("/admin#tab-products");
-                } else {
-                    return res.redirect(`/products/${req.params.id}/productDetails`);
-                }
+                return res.redirect(`/shops/${req.params.shop}/profile#tab-products`);
             }
         } catch (error) {
             res.status(400).send(error.message); 
@@ -242,9 +235,33 @@ const productsController = {
     // DELETE - Delete one product from DB
     destroy: async (req, res) => {
         try {
+            let product = await productService.findOne(req.params.id);
+
+            // Eliminar imagenes
+            if(product.avatar != "without-image.png"){
+                fs.unlinkSync( __dirname + "/../public/images/products/" + product.avatar);
+            }; 
+            if(product.gallery01 != "without-image.png"){
+                fs.unlinkSync( __dirname + "/../public/images/products/" + product.gallery01);
+            };
+            if(product.gallery02 != "without-image.png"){
+                fs.unlinkSync( __dirname + "/../public/images/products/" + product.gallery02);
+            };
+            if(product.gallery03 != "without-image.png"){
+                fs.unlinkSync( __dirname + "/../public/images/products/" + product.gallery03);
+            };
+
+            // Eliminar comentarios
+            let allComments = await commentService.findAll();
+            allComments.forEach( async comment => {
+                if(comment.productId == req.params.id){
+                    await commentService.destroy(Comment.id);
+                }
+            });            
+
             await productService.destroy(req.params.id);
             req.flash('message', 'El producto fue eliminado correctamente.');
-            res.redirect("/shops");
+            return res.redirect(`/shops/${req.params.shop}/profile#tab-products`);
         } catch (error) {
             res.status(400).send(error.message);
         }

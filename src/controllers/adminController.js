@@ -88,13 +88,16 @@ const adminController = {
 
     //******************* Shops Controllers *******************//
 
-    //GET shop profile
-    getShopProfile: shopsController.profile,
-
     //POST create shop
     postCreateShop: shopsController.create,
 
-    //POST create shop
+    //POST block shop
+    postBlockedShop: shopsController.blocked,
+
+    //POST activate shop
+    postActivateShop: shopsController.activate,
+
+    //DELETE shop
     destroyShop: shopsController.destroy,
 
     //******************* Products Controllers *******************//

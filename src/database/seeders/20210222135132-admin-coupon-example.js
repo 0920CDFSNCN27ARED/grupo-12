@@ -9,6 +9,7 @@ module.exports = {
         description: 'Cupón de ejemplo',
         discount: 50,
         couponCode: 'ArtisCoupon',
+        status: 'active',
         shopId: 1,
         createdAt: '2021-01-23 20:52:27',
         updatedAt: '2021-01-23 20:52:27'

@@ -37,7 +37,7 @@ module.exports = {
             { where: {id: id} }
         );
     },
-    getShopData: async (currentUser) => {
+    getShopData: async (shop) => {
 
         let allProducts = await Product.findAll({ 
             include:[
@@ -47,7 +47,7 @@ module.exports = {
             ]});
         let products = [];
         allProducts.forEach(product => {
-            if (product.shopId == currentUser.shopId) {
+            if (product.shopId == shop.id) {
                 products.push(product);
             }
         });
@@ -78,7 +78,7 @@ module.exports = {
             ]});
         let orders = [];
         allOrders.forEach(order => {
-            if (order.shopId == currentUser.shopId) {
+            if (order.shopId == shop.id) {
                 orders.push(order);
             }
         });
@@ -91,7 +91,7 @@ module.exports = {
         });
         let coupons = [];
         allCoupons.forEach(coupon => {
-            if (coupon.shopId == currentUser.shopId) {
+            if (coupon.shopId == shop.id) {
                 coupons.push(coupon);
             }
         });

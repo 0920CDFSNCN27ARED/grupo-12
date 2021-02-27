@@ -50,6 +50,9 @@ module.exports = {
       gallery03: {
         type: Sequelize.STRING
       },
+      status: {
+        type: Sequelize.STRING
+      },
       shopId: {
         type: Sequelize.INTEGER
       },

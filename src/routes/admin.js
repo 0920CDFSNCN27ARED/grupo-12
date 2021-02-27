@@ -111,10 +111,7 @@ router.post(
 
 //******************* Shops Routes *******************//
 
-// GET shop profile
-router.get('/:id/shop-profile', assertSignedIn, assertIsAdmin, adminController.getShopProfile);
-
-// POST create product modal 
+// POST create shop
 router.post(
   '/create-shop', 
   assertIsAdmin, 
@@ -125,7 +122,13 @@ router.post(
   ],
   adminController.postCreateShop);
 
-// DELETE user 
+// POST blocked shop 
+router.post('/:id/shop-blocked', assertIsAdmin, adminController.postBlockedShop);
+
+// POST activate shop 
+router.post('/:id/shop-activate', assertIsAdmin, adminController.postActivateShop);
+
+// DELETE shop 
 router.delete('/:id/shop-destroy', assertIsAdmin, adminController.destroyShop);
 
 //******************* Comments Routes *******************//

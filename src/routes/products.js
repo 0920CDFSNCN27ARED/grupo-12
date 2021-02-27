@@ -20,14 +20,14 @@ router.get('/:id/productDetails', productsController.getDetails);
 
 // GET Create product page
 router.get(
-    '/create',
+    '/:shop/create',
     assertSignedIn, 
     assertIsSeller,
     productsController.getCreate);
 
 // POST Create product page    
 router.post(
-    "/create",
+    "/:shop/create",
     assertSignedIn,
     assertIsSeller,
     productImages,
@@ -50,14 +50,14 @@ router.post(
 
 // GET Edit product page
 router.get(
-    '/:id/edit',
+    '/:shop/:id/edit',
     assertSignedIn, 
     assertIsSeller,
     productsController.getEdit);
 
 // PUT Edit product page
 router.put(
-    "/:id/edit",
+    "/:shop/:id/edit",
     assertSignedIn,
     assertIsSeller,
     productImages,
@@ -80,7 +80,7 @@ router.put(
 
 // DELETE one product 
 router.delete(
-    '/delete/:id',
+    '/delete/:shop/:id',
     assertSignedIn, 
     assertIsSeller, 
     productsController.destroy);

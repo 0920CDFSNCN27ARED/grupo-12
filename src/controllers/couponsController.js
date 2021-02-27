@@ -20,10 +20,10 @@ const couponsController = {
                     shopId: req.body.shopId
                 });
                 req.flash('message', 'El cupón fue creado correctamente.');
-                res.redirect("/shops#tab-coupons");
+                res.redirect(`/shops/${req.params.shop}/profile#tab-coupons`);
             } else {
                 req.flash('validateErrors', errors.errors);
-                res.redirect("/shops#tab-coupons");
+                res.redirect(`/shops/${req.params.shop}/profile#tab-coupons`);
             }
         } catch (error) {
             res.status(400).send(error.message);
@@ -43,10 +43,10 @@ const couponsController = {
                     shopId: req.body.shopId
                 });
                 req.flash('message', 'El cupón fue actualizado correctamente.');
-                res.redirect("/shops#tab-coupons");
+                res.redirect(`/shops/${req.params.shop}/profile#tab-coupons`);
             } else {
                 req.flash('validateErrors', errors.errors);
-                res.redirect("/shops#tab-coupons");
+                res.redirect(`/shops/${req.params.shop}/profile#tab-coupons`);
             }
          } catch (error) {
             res.status(400).send(error.message);
@@ -58,7 +58,7 @@ const couponsController = {
         try {
             await couponService.destroy(req.params.id);
             req.flash('message', 'El cupón fue eliminado correctamente.');
-            res.redirect("/shops#tab-coupons");
+            res.redirect(`/shops/${req.params.shop}/profile#tab-coupons`);
         } catch (error) {
             res.status(400).send(error.message);
         }

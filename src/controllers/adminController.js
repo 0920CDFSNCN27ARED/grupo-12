@@ -26,11 +26,11 @@ const adminController = {
     
     //GET admin Profile
     getAdminProfile: async (req, res, next) => {
-        const id = req.session.loggedUserId;
+        const loggedUserId = req.session.loggedUserId;
         const validateErrors = req.flash('validateErrors')
         const message = req.flash('message');
         try {
-            let currentUser = await userService.findOne(id);
+            let currentUser = await userService.findOne(loggedUserId);
             let users = await userService.findAll();
             let categories = await categoryService.findAll();
             let types = await typeService.findAll();

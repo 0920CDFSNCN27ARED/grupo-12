@@ -12,7 +12,7 @@ const authenticate = async (req, res, next) => {
         return next();
     };
 
-    res.locals.current_user = loggedUser;
+    res.locals.currentUser = loggedUser;
 
     next();
 }

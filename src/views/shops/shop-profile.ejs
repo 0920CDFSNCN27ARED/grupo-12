@@ -30,7 +30,7 @@
 	
 				<div class="row clearfix">
 	
-					<div class="col-md-9">
+					<div class="col-md-10">
 						
 						<img src= "/images/shops/<%= shop.avatar%>" class="alignleft img-circle img-thumbnail my-0" alt="Avatar"
 							style="max-width: 84px;">
@@ -46,216 +46,294 @@
 						<div class="row clearfix">
 	
 							<div class="col-lg-12">
+
+								<% if( message ) { %>
+									<div class="col-12">
+										<strong class="text-success">
+											<%= message %>
+										</strong>
+									</div>
+								<% } %>
+								
+								<% if(typeof errors !='undefined' ) { %>
+									<div class="col-12">
+										<ul>
+											<% errors.forEach(error=> { %>
+												<li class="text-danger">
+													<%= error.msg %>
+												</li>
+												<% });%>
+										</ul>
+									</div>
+								<% } %>
 	
-								<div class="tabs tabs-alt clearfix" id="tabs-profile">
+								<div class="tabs clearfix" id="tabs">
 	
 									<ul class="tab-nav clearfix">
-										<% if( shop.status == "active" && current_user.shopId == shop.id ) { %>
-											<li><a href="#tab-products"><i class="icon-box"></i> Administrar Productos</a></li>
-											<li><a href="#tab-comments"><i class="icon-reply"></i> Comentarios del Público</a></li>
-											<li><a href="#tab-sales"><i class="icon-credit-cards"></i> Ventas</a></li>
-											<li><a href="#tab-data"><i class="icon-home"></i> Editar Negocio</a></li>
+										<% if( shop.status == "active" && currentUser.shopId == shop.id ) { %>
+											<li><a href="#tab-products"><i class="icon-line-box"></i> Productos</a></li>
+											<li><a href="#tab-orders"><i class="icon-line-shopping-cart"></i> Pedidos</a></li>
+											<li><a href="#tab-comments"><i class="icon-comments1"></i> Comentarios</a></li>
+											<li><a href="#tab-coupons"><i class="icon-line-gift"></i> Cupones</a></li>
+											<li><a href="#tab-data"><i class="icon-shop"></i> Editar Negocio</a></li>
 										<% } %>
 									</ul>
 	
 									<div class="tab-container">
 										
-										<% if(typeof errors !='undefined' ) { %>
-											<div class="col-12">
-												<ul>
-													<% errors.forEach(error=> { %>
-														<li class="text-danger">
-															<%= error.msg %>
-														</li>
-														<% });%>
-												</ul>
-											</div>
-										<% } %>
-										<% if( shop.status == "active" && current_user.shopId == shop.id ) { %>
+										<% if( shop.status == "active" && currentUser.shopId == shop.id ) { %>
 											
-											<div class="tab-content clearfix" id="tab-comments">
-												<div class="clear topmargin-sm"></div>
-												<h3 id="comments-title"><span><%= comments.length%></span> Comentarios</h3>
-												<!-- Comments List -->
-												<ol class="commentlist clearfix">
-													<% comments.forEach( comment=> { %>
-														<li class="comment even thread-even depth-1" id="li-comment-<%= comment.id%>">
-															<div id="comment-<%= comment.id%>" class="comment-wrap clearfix">
-																<div class="comment-meta">
-																	<div class="comment-author vcard">
-																		<span class="comment-avatar clearfix">
-																			<img alt='Image' src='/images/users/<%= comment.users.avatar%>'
-																				class='avatar avatar-60 photo avatar-default' height='60' width='60' /></span>
-																	</div>
-																</div>
-																<div class="comment-content clearfix">
-																	<div class="comment-author">
-																		<%= comment.users.name%>
-																			<span>Fecha: <%= comment.date%></span>
-																	</div>
-																	<p><%= comment.comment%></p>
-																	
-																		<form action="/products/deleteComment/<%= comment.id %>?_method=DELETE" method="POST">
-																			<button class="btn btn-danger btn-sm comment-delete-link" type="submit"><i class="icon-line-trash-2"></i></button>
-																		</form>
-																		<a href="/products/<%= comment.productId %>/productDetails" class="btn btn-primary btn-sm comment-delete-link mr-5"><i class="icon-line-eye"></i></a>
-																	
-																</div>
-																<div class="clear"></div>
-															</div>
-														</li>
-														<%} ) %>
-												</ol><!-- .commentlist end -->
-											</div>
-
-											<div class="tab-content clearfix" id="tab-products">
-												<a href="/products/create" class="btn btn-warning float-right mb-5">Publicar Producto</a>
-												<div class="table-responsive">
-													<table id="datatable2" class="table table-striped table-bordered" cellspacing="0" width="100%">
-														<thead>
+										<div class="tab-content clearfix" id="tab-products">
+											<a href="/products/create" class="btn btn-warning float-right mb-5">Crear Producto</a>
+											<div class="table-responsive">
+												<table id="products" class="table table-striped table-bordered" cellspacing="0" width="100%">
+													<thead>
+														<tr>
+															<th>#</th>
+															<th>ID</th>
+															<th>Nombre</th>
+															<th>Tienda</th>
+															<th>Cervería</th>
+															<th>Stock</th>
+															<th>Precio</th>
+															<th>Categoria</th>
+															<th>Tipo</th>
+															<th>ABV</th>
+															<th>IBU</th>
+															<th>OG</th>
+															<th class="text-center">Opciones</th>
+														</tr>
+													</thead>
+													<tbody>
+														<% products.forEach((product, index)=> { %>
 															<tr>
-																<th>#</th>
-																<th>ID</th>
-																<th>Nombre</th>
-																<th>Stock</th>
-																<th>Categoría</th>
-																<th>Tipo</th>
-																<th class="text-center">Opciones</th>
+																<td><small><%= index +1 %></small></td>
+																<td><small><%= product.id %></small></td>
+																<td>
+																	<img alt='Image' src='/images/products/<%= product.avatar%>' 
+																	class='avatar img-circle img-thumbnail' height='35' width='35' />
+																	<small><%= product.name %></small>
+																</td>
+																<td><small><%= product.shops.name%></small></td>
+																<td><small><%= product.brewery %></small></td>
+																<td><small><%= product.stock %></small></td>
+																<td><small><%= product.price %></small></td>
+																<td><small><%= product.categories ? product.categories.name : "Sin categoría" %></small></td>
+																<td><small><%= product.types.name %></small></td>
+																<td><small><%= product.abv %></small></td>
+																<td><small><%= product.ibu %></small></td>
+																<td><small><%= product.og %></small></td>
+																<td class="d-flex justify-content-center">
+																	<a href="/products/<%= product.id %>/productDetails" class="btn btn-outline btn-sm p-0"><i
+																			class="m-0 i-rounded i-small icon-eye"></i></a>
+																	<a href="/products/<%= product.id %>/edit" class="btn btn-outline btn-sm p-0"><i
+																			class="m-0 i-rounded i-small icon-pencil2"></i></a>
+																</td>
 															</tr>
-														</thead>
-														<tbody>
-															<% products.forEach((product, index) => { %>
-																<tr>
-																	<td><%= index +1 %></td>
-																	<td><%= product.id %></td>
-																	<td><%= product.name %></td>
-																	<td><%= product.stock %></td>
-																	<td><%= product.categories.name %></td>
-																	<td><%= product.types.name %></td>
-																	<td class="text-center">
-																		<span><a href="/products/<%= product.id %>/productDetails"><i class="icon-eye"></i>&nbsp;</a></span>
-																		<span><a href="/products/<%= product.id %>/edit"><i class="icon-pencil2"></i>&nbsp;</a></span>
-																		<!-- <form action="/products/delete/<%= product.id %>?_method=DELETE" method="POST">
-																			<span><a type="submit"><i class="icon-line-trash-2"></i></a></span>
-																		</form> -->
-																	</td>
-																</tr>
-															<% }); %>
-														</tbody>
-													</table>
-												</div>
+															<% });%>
+													</tbody>
+												</table>
 											</div>
+										</div>
 
-											<div class="tab-content clearfix" id="tab-sales">
-												<p>Administre todas sus compras</p>
-												<div class="table-responsive">
-													<div class="table-responsive">
-														<table id="datatable1" class="table table-striped table-bordered" cellspacing="0" width="100%">
-															<thead>
-																<tr>
-																	<th>#</th>
-																	<th>ID</th>
-																	<th>Fecha</th>
-																	<th>Comprador</th>
-																	<th>Subtotal</th>
-																	<th>Envío</th>
-																	<th>Impuestos</th>
-																	<th>Total</th>
-																	<th>Estado</th>
-																	<th>Opciones</th>
-																</tr>
-															</thead>
-															<tbody>
-																<% orders.forEach((order, index)=> { %>
-																	<tr>
-																		<td><%= index +1 %></td>
-																		<td><%= order.id %></td>
-																		<td><%= order.date %></td>
-																		<td><%= order.users.name %></td>
-																		<td><%= order.totalProducts %></td>
-																		<td><%= order.totalShipping %></td>
-																		<td><%= order.tax %></td>
-																		<td><%= order.total %></td>
-																		<td><%= order.status.name %></td>
-																		<td class="text-center">
-																			<span><a href="#"><i class="icon-eye"></i></a></span>
-																		</td>
-																	</tr>
-																<% }); %>
-															</tbody>
-														</table>
+										<div class="tab-content clearfix" id="tab-orders">
+											<button class="btn btn-warning float-right mb-5" data-toggle="modal" data-target="#createOrder">Crear Orden</button>
+											<div class="table-responsive">
+												<table id="orders" class="table table-striped table-bordered" cellspacing="0" width="100%">
+													<thead>
+														<tr>
+															<th>#</th>
+															<th>ID</th>
+															<th>Envío</th>
+															<th>Subtotal</th>
+															<th>Impuestos</th>
+															<th>Total</th>
+															<th>Estado</th>
+															<th>Usuario</th>
+															<th>Método de Pago</th>
+															<th>Método de Envío</th>
+															<th class="text-center">Opciones</th>
+														</tr>
+													</thead>
+													<tbody>
+														<% orders.forEach((order, index) => { %>
+															<tr>
+																<td><small><%= index +1 %></small></td>
+																<td><small><%= order.id %></small></td>
+																<td><small><%= order.totalShipping %></small></td>
+																<td><small><%= order.totalProducts %></small></td>
+																<td><small><%= order.tax %></small></td>
+																<td><small><%= order.total %></small></td>
+																<td><small><%= order.status ? order.status.name : "" %></small></td>
+																<td><small><%= order.users ? order.users.name : "" %></small></td>
+																<td><small><%= order.payments ? order.payments.name : ""%></small></td>
+																<td><small><%= order.shippingMethods ? order.shippingMethods.name : "" %></small></td>
+																<td class="d-flex justify-content-center">
+																	<button class="btn btn-outline btn-sm p-0" data-toggle="modal" data-target="#<%= `editOrderModal${order.id}` %>">
+																		<i class="m-0 i-rounded i-small icon-pencil2"></i></button>
+																	<button class="btn btn-outline btn-sm p-0" data-toggle="modal" data-target="#<%= `destroyOrderModal${order.id}` %>">
+																		<i class="m-0 i-rounded i-small icon-line-trash-2"></i></button>
+																</td>
+															</tr>
+														<% });%>
+													</tbody>
+												</table>
+											</div>
+										</div>
+											
+										<div class="tab-content clearfix" id="tab-comments">
+											<div class="clear topmargin-sm"></div>
+											<h3 id="comments-title"><span>
+													<%= comments.length%>
+												</span> Comentarios</h3>
+											<div class="table-responsive">
+												<table id="comments" class="table table-striped table-bordered" cellspacing="0" width="100%">
+													<thead>
+														<tr>
+															<th>#</th>
+															<th>ID</th>
+															<th>Fecha</th>
+															<th>Usuario</th>
+															<th>Producto</th>
+															<th>Comentario</th>
+															<th class="text-center">Opciones</th>
+														</tr>
+													</thead>
+													<tbody>
+														<% comments.forEach((comment, index)=> { %>
+															<tr>
+																<td><small><%= index +1 %></small></td>
+																<td><small><%= comment.id %></small></td>
+																<td><small><%= comment.date %></small></td>
+																<td>
+																	<img alt='Image' src='/images/users/<%= comment.users.avatar%>'
+																		class='avatar img-circle img-thumbnail' height='35' width='35' />
+																	<small><%= comment.users.name %></small>
+																</td>
+																<td><small><%= comment.products.name %></small></td>
+																<td><small><%= comment.comment %></small></td>
+																<td class="d-flex justify-content-center">
+																	<a href="/products/<%= comment.productId %>/productDetails" class="btn btn-outline btn-sm p-0">
+																		<i class="m-0 i-rounded i-small icon-eye"></i></a>
+																	<form action="/admin/<%= comment.id %>/comment-destroy?_method=DELETE" method="POST">
+																		<button class="btn btn-outline btn-sm p-0" type="submit"><i class="m-0 i-rounded i-small icon-line-trash-2"></i></button>
+																	</form>
+																</td>
+															</tr>
+															<% });%>
+													</tbody>
+												</table>
+											</div>	
+										</div>	
+
+										<div class="tab-content clearfix" id="tab-coupons">
+											<button class="btn btn-warning float-right mb-5" data-toggle="modal" data-target="#createCoupon">Crear Cupón</button>
+											<div class="table-responsive">
+												<table id="coupons" class="table table-striped table-bordered" cellspacing="0" width="100%">
+													<thead>
+														<tr>
+															<th>#</th>
+															<th>ID</th>
+															<th>Tienda</th>
+															<th>Nombre</th>
+															<th>Descuento</th>
+															<th>Descripción</th>
+															<th>Código</th>
+															<th class="text-center">Opciones</th>
+														</tr>
+													</thead>
+													<tbody>
+														<% coupons.forEach((coupon, index) => { %>
+															<tr>
+																<td><small><%= index +1 %></small></td>
+																<td><small><%= coupon.id %></small></td>
+																<td><small><%= coupon.shopCoupons ? coupon.shopCoupons.name : "Sin Comercio" %></small></td>
+																<td><small><%= coupon.name %></small></td>
+																<td><small><%= coupon.discount %></small></td>
+																<td><small><%= coupon.description %></small></td>
+																<td><small><%= coupon.couponCode %></small></td>
+																<td class="d-flex justify-content-center">
+																	<button class="btn btn-outline btn-sm p-0" data-toggle="modal" data-target="#<%= `editCouponModal${coupon.id}` %>">
+																		<i class="m-0 i-rounded i-small icon-pencil2"></i></button>
+																	<button class="btn btn-outline btn-sm p-0" data-toggle="modal" data-target="#<%= `destroyCouponModal${coupon.id}` %>">
+																		<i class="m-0 i-rounded i-small icon-line-trash-2"></i></button>
+																</td>
+															</tr>
+														<% });%>
+													</tbody>
+												</table>
+											</div>
+										</div>
+											
+										<div class="tab-content clearfix" id="tab-data">
+											<!-- Edit Form -->
+											<form action="/shops/edit-data?_method=PUT" method="POST" enctype="multipart/form-data">
+												<div class="row mt-5 mb-3">
+													<div class="col-lg-6 col-md-6 form-group">
+														<label for="name">* Nombre Completo:</label>
+														<input type="text" name="name" value="<%= shop.name %>" class="form-control" />
+													</div>
+													<div class="col-lg-6 col-md-6 form-group">
+														<label for="avatar">Avatar: <small><%= shop.avatar %></small></label>
+														<input type="file" name="avatar" value="" class="form-control" />
+													</div>
+													<div class="col-lg-6 col-md-6 form-group">
+														<label for="email">* Email:</label>
+														<input type="email" name="email" value="<%= shop.email %>" class="form-control" />
+													</div>
+													<div class="col-lg-6 col-md-6 form-group">
+														<label for="phone">Teléfono:</label>
+														<input type="tel" name="phone" value="<%= shop.phone %>" class="form-control" />
+													</div>
+													<div class="col-lg-6 col-md-6 form-group">
+														<label for="bio">Sobre Mí:</label>
+														<input type="text" name="bio" value="<%= shop.bio %>" placeholder="Escribe algo sobre ti..."
+															class="form-control" />
+													</div>
+													<div class="col-lg-6 col-md-6 form-group">
+														<label for="twitter">Twitter</label>
+														<div class="input-group input-group-merge">
+															<div class="input-group-prepend">
+																<span class="input-group-text" id="basic-addon3">
+																	<i class="icon-twitter" class="font-medium-2"></i>
+																</span>
+															</div>
+															<input name="twitter" type="text" class="form-control" value="<%= shop.twitter %>"
+																placeholder="https://www.twitter.com/su-usuario" />
+														</div>
+													</div>
+													<div class="col-lg-6 col-md-6 form-group">
+														<label for="facebook">Facebook</label>
+														<div class="input-group input-group-merge">
+															<div class="input-group-prepend">
+																<span class="input-group-text" id="basic-addon4">
+																	<i class="icon-facebook" class="font-medium-2"></i>
+																</span>
+															</div>
+															<input name="facebook" type="text" class="form-control" value="<%= shop.facebook %>"
+																placeholder="https://www.facebook.com/su-usuario" />
+														</div>
+													</div>
+													<div class="col-lg-6 col-md-6 form-group">
+														<label for="instagram">Instagram</label>
+														<div class="input-group input-group-merge">
+															<div class="input-group-prepend">
+																<span class="input-group-text" id="basic-addon5">
+																	<i class="icon-instagram" class="font-medium-2"></i>
+																</span>
+															</div>
+															<input name="instagram" type="text" class="form-control" value="<%= shop.instagram %>"
+																placeholder="https://www.instagram.com/su-usuario" />
+														</div>
+													</div>
+													<div class="w-100"></div>
+													<div class="col-lg-12 col-md-12 form-group mt-3">
+														<button class="btn btn-dark m-0" type="submit">Editar Perfil</button>
 													</div>
 												</div>
-											</div>
-											
-											<div class="tab-content clearfix" id="tab-data">
-												<!-- Edit Form -->
-												<form action="/shops/edit-data?_method=PUT" method="POST" enctype="multipart/form-data">
-													<div class="row mt-5 mb-3">
-														<div class="col-lg-6 col-md-6 form-group">
-															<label for="name">* Nombre Completo:</label>
-															<input type="text" name="name" value="<%= shop.name %>" class="form-control" />
-														</div>
-														<div class="col-lg-6 col-md-6 form-group">
-															<label for="avatar">Avatar: <small><%= shop.avatar %></small></label>
-															<input type="file" name="avatar" value="" class="form-control" />
-														</div>
-														<div class="col-lg-6 col-md-6 form-group">
-															<label for="email">* Email:</label>
-															<input type="email" name="email" value="<%= shop.email %>" class="form-control" />
-														</div>
-														<div class="col-lg-6 col-md-6 form-group">
-															<label for="phone">Teléfono:</label>
-															<input type="tel" name="phone" value="<%= shop.phone %>" class="form-control" />
-														</div>
-														<div class="col-lg-6 col-md-6 form-group">
-															<label for="bio">Sobre Mí:</label>
-															<input type="text" name="bio" value="<%= shop.bio %>" placeholder="Escribe algo sobre ti..."
-																class="form-control" />
-														</div>
-														<div class="col-lg-6 col-md-6 form-group">
-															<label for="twitter">Twitter</label>
-															<div class="input-group input-group-merge">
-																<div class="input-group-prepend">
-																	<span class="input-group-text" id="basic-addon3">
-																		<i class="icon-twitter" class="font-medium-2"></i>
-																	</span>
-																</div>
-																<input name="twitter" type="text" class="form-control" value="<%= shop.twitter %>"
-																	placeholder="https://www.twitter.com/su-usuario" />
-															</div>
-														</div>
-														<div class="col-lg-6 col-md-6 form-group">
-															<label for="facebook">Facebook</label>
-															<div class="input-group input-group-merge">
-																<div class="input-group-prepend">
-																	<span class="input-group-text" id="basic-addon4">
-																		<i class="icon-facebook" class="font-medium-2"></i>
-																	</span>
-																</div>
-																<input name="facebook" type="text" class="form-control" value="<%= shop.facebook %>"
-																	placeholder="https://www.facebook.com/su-usuario" />
-															</div>
-														</div>
-														<div class="col-lg-6 col-md-6 form-group">
-															<label for="instagram">Instagram</label>
-															<div class="input-group input-group-merge">
-																<div class="input-group-prepend">
-																	<span class="input-group-text" id="basic-addon5">
-																		<i class="icon-instagram" class="font-medium-2"></i>
-																	</span>
-																</div>
-																<input name="instagram" type="text" class="form-control" value="<%= shop.instagram %>"
-																	placeholder="https://www.instagram.com/su-usuario" />
-															</div>
-														</div>
-														<div class="w-100"></div>
-														<div class="col-lg-12 col-md-12 form-group mt-3">
-															<button class="btn btn-dark m-0" type="submit">Editar Perfil</button>
-														</div>
-													</div>
-												</form>
-											</div>
+											</form>
+										</div>
+
 										<% } %>
 									</div>
 								</div>
@@ -265,7 +343,7 @@
 	
 					<div class="w-100 line d-block d-md-none"></div>
 	
-					<div class="col-md-3">
+					<div class="col-md-2">
 						
 						<div class="fancy-title topmargin title-border">
 							<h4>Datos de contacto</h4>
@@ -313,13 +391,24 @@
 		</div>
 	</section><!-- #content end -->
 
+	<!-- Update Coupon Modal-->
+	<%- include('./coupons/create-coupon-modal') %>
+	
+	<!-- Update Coupon Modal-->
+	<%- include('./coupons/edit-coupon-modal') %>
+
+	<!-- Destroy Coupon Modal -->
+	<%- include('./coupons/destroy-coupon-modal') %>
+
 	<!-- Footer -->
 	<%- include('../layout/footer') %>
 	<script src="/js/components/bs-datatable.js"></script>
 	<script>
 		$(document).ready(function () {
-				$('#datatable1').dataTable();
-				$('#datatable2').dataTable();
+			$('#products').dataTable();
+			$('#orders').dataTable();
+			$('#comments').dataTable();
+			$('#coupons').dataTable();
 		});
 	</script>
 

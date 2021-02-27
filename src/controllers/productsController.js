@@ -6,28 +6,30 @@ const { check, validationResult, body } = require("express-validator");
 const productService = require("../services/productService");
 const userService = require("../services/userService");
 
-// Controller
+// Controllers
+const commentsController = require("./commentsController");
+
 const productsController = {
     
     //GET Product Details
     getDetails: async (req, res, next) => {
-        let errors = validationResult(req);
+        const validateErrors = req.flash('validateErrors')
+        const message = req.flash('message');
+        const loggedUserId = req.session.loggedUserId;
         try {
-            if (errors.isEmpty()) {
-                const product = await productService.findOne(req.params.id);
-                const comments = await productService.productComments(req.params.id);
-                const gallery = [product.gallery01, product.gallery02, product.gallery03 ]
+            const currentUser = await userService.findOne(loggedUserId);
+            const product = await productService.findOne(req.params.id);
+            const comments = await productService.productComments(req.params.id);
+            const gallery = [product.gallery01, product.gallery02, product.gallery03 ]
 
-                res.render("products/productDetails", {
-                    product: product,
-                    comments: comments,
-                    gallery: gallery,
-                });
-            } else {
-                res.render(`/products/productDetails`, {
-                    errors: errors.errors,
-                });
-            }
+            res.render("products/productDetails", {
+                currentUser: currentUser,
+                message: message,
+                errors: validateErrors,
+                product: product,
+                comments: comments,
+                gallery: gallery,
+            });
         } catch (error) {
             res.status(400).send(error.message);
         }
@@ -36,10 +38,14 @@ const productsController = {
 
     // GET Create Product Form
     getCreate: async (req, res, next) => {
+        const validateErrors = req.flash('validateErrors')
+        const message = req.flash('message');
         try {
             const categories = await productService.allCategories();
             const types = await productService.allTypes();
-            res.render("products/productCreateForm", { 
+            res.render("products/productCreateForm", {
+                message: message,
+                errors: validateErrors, 
                 categories, 
                 types 
             });
@@ -54,9 +60,7 @@ const productsController = {
         const loggedUserId = req.session.loggedUserId;
         try {
             const currentUser = await userService.findOne(loggedUserId);
-            const categories = await productService.allCategories();
-            const types = await productService.allTypes();
-
+            
             let avatar = req.files.avatar;
             if (req.files.avatar != null) {
                 avatar = req.files.avatar[0].filename;
@@ -102,6 +106,7 @@ const productsController = {
                     gallery03: gallery[2] ? gallery[2] : "without-image.png",
                 };
 
+                req.flash('message', 'El producto fue creado correctamente.');
                 await productService.create(newProduct);
                 if(currentUser.admin){
                     return res.redirect("/admin#tab-products");
@@ -109,11 +114,12 @@ const productsController = {
                     return res.redirect(`/shops`);
                 };
             } else {
-                res.render("products/productCreateForm", { 
-                    errors: errors.errors,
-                    categories, 
-                    types  
-                });
+                req.flash('validateErrors', errors.errors);
+                if(currentUser.admin){
+                    return res.redirect("/admin#tab-products");
+                } else {
+                    return res.redirect(`/shops`);
+                };
             }
         } catch (error) {
             res.status(400).send(error.message);    
@@ -123,6 +129,8 @@ const productsController = {
 
     // Update - Form to edit
     getEdit: async (req, res, next) => {
+        const validateErrors = req.flash('validateErrors')
+        const message = req.flash('message');
         try {
             const product = await productService.findOne(req.params.id)
             const categories = await productService.allCategories();
@@ -130,6 +138,8 @@ const productsController = {
             const productGallery = [product.gallery01, product.gallery02, product.gallery03]
             
             res.render("products/productEditForm", {
+                message: message,
+                errors: validateErrors,
                 product: product,
                 gallery: productGallery,
                 categories, 
@@ -209,21 +219,20 @@ const productsController = {
                     gallery03: gallery[2]
                 };
 
-                //Agregamos el producto
+                req.flash('message', 'El producto fue actualizado correctamente.');
                 await productService.update(req.params.id, productEdit);
+                if(currentUser.admin){
+                    return res.redirect("/admin#tab-products");
+                } else {
+                    return res.redirect("/shops#tab-products");
+                }
+            } else {
+                req.flash('validateErrors', errors.errors);
                 if(currentUser.admin){
                     return res.redirect("/admin#tab-products");
                 } else {
                     return res.redirect(`/products/${req.params.id}/productDetails`);
                 }
-            } else {
-                res.render("products/productEditForm", {
-                    errors: errors.errors,
-                    product: product,
-                    gallery: productGallery,
-                    categories, 
-                    types
-                });
             }
         } catch (error) {
             res.status(400).send(error.message); 
@@ -234,7 +243,8 @@ const productsController = {
     destroy: async (req, res) => {
         try {
             await productService.destroy(req.params.id);
-        res.redirect("/shops");
+            req.flash('message', 'El producto fue eliminado correctamente.');
+            res.redirect("/shops");
         } catch (error) {
             res.status(400).send(error.message);
         }
@@ -242,56 +252,11 @@ const productsController = {
     },
 
     // Create Comment Form
-    postComment: async (req, res, next) => {
-        let f = new Date();
-        let date = f.getFullYear() + "-" + (f.getMonth() + 1) + "-" + f.getDate(); 
-        console.log(date);
-        let errors = validationResult(req);
-        const loggedUserId = req.session.loggedUserId;
-        try {
-            const currentUser = await userService.findOne(loggedUserId);
-
-            if (errors.isEmpty()) {
-                let newComment = {
-                    comment: req.body.comment,
-                    date: date.toString(),
-                    userId: currentUser.id,
-                    productId: parseInt(req.params.id)
-                };
-
-                //Creamos comentario
-                await productService.createComment(newComment);
-                res.redirect(
-                    `/products/${req.params.id}/productDetails#product-comments`
-                );
-            } else {
-                const product = await productService.findOne(req.params.id);
-                const comments = await productService.productComments(req.params.id);
-                const gallery = [product.gallery01, product.gallery02, product.gallery03 ];
-
-                res.render("products/productDetails", {
-                    errors: errors.errors,
-                    product,
-                    comments,
-                    gallery,
-                });
-            }
-        } catch (error) {
-            res.status(400).send(error.message);
-        }
-    },
+    postComment: commentsController.create,
 
     // Delete - Delete one comment
-    destroyComment: async (req, res) => {
-        try {
-            let comment = await productService.findOneComment(req.params.id);
-            let productID = comment.productId;
-            await productService.destroyComment(req.params.id);
-            res.redirect(`/products/${productID}/productDetails`);
-        } catch (error) {
-            res.status(400).send(error.message);
-        }
-    },
+    destroyComment: commentsController.destroy,
+
 };
 
 module.exports = productsController;

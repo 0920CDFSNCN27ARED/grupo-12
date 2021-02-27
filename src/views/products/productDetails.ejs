@@ -27,6 +27,14 @@
             
             <div class="content-wrap pt-5">
 				<div class="container">
+					
+					<% if( message ) { %>
+						<div class="col-12">
+							<strong class="text-success">
+								<%= message %>
+							</strong>
+						</div>
+					<% } %>
 
 					<div class="row my-5">
 						<!-- Product Gallery -->
@@ -94,7 +102,7 @@
 								<ul class="tab-nav clearfix">
 									<li><a href="#product-description" class="text-uppercase">Descripción</a></li>
 									<li><a href="#product-comments" class="text-uppercase">Comentarios</a></li>
-									<% if (current_user && current_user.admin) { %>
+									<% if (currentUser && currentUser.admin || currentUser && currentUser.shopId == product.shopId) { %>
 										<li><a href="#admin" class="text-uppercase">Administrar Producto</a></li>
 									<% } %>
 								</ul>
@@ -113,12 +121,12 @@
 									<div class="tab-content clearfix" id="product-comments">
 										<div>
 											<%- include('productComments', {comments}) %>
-											<% if (current_user == null) { %>
+											<% if (currentUser == null) { %>
 												<h3>Para dejar un comentario por favor <span><a class="button button-large button-rounded px-4 button-border button-light button-white font-weight-semibold fadeInUp animated" href="/users/login">Ingresa o Registrate</a></span></h3>
 											<% } %>
 											<!-- Comment Form -->
-											<% if (current_user) { %>
-												<h3>Hola <%= current_user.name %>, dejanos tu <span>Comentario</span></h3>
+											<% if (currentUser) { %>
+												<h3>Hola <%= currentUser.name %>, dejanos tu <span>Comentario</span></h3>
 												<% if(typeof errors != 'undefined') { %>
 													<div class="col-12">
 														<ul>
@@ -143,7 +151,7 @@
 											<% } %>
 										</div>
 									</div>
-									<% if (current_user && current_user.admin) { %>
+									<% if (currentUser && currentUser.admin || currentUser && currentUser.shopId == product.shopId) { %>
 											<div class="tab-content clearfix" id="admin">
 												<div class="row mt-3">
 													<div class="col-8">
@@ -157,15 +165,26 @@
 														<div class="col-12 mb-2">
 															<a href="/products/create" class="btn btn-secondary btn-block center">CREAR PRODUCTO</a>
 														</div>
+														<% if(currentUser.admin){ %>
+															<div class="col-12 mb-2">
+																<a href="/admin#tab-products" class="btn btn-secondary btn-block center">VOLVER A LA ADMINISTRACION</a>
+															</div>
+														<% } else { %>
+															<div class="col-12 mb-2">
+																<a href="/shops#tab-products" class="btn btn-secondary btn-block center">VOLVER A LA TIENDA</a>
+															</div>
+														<% } %>
 														<div class="col-12 mb-2">
 															<form action="/products/delete/<%= product.id %>?_method=DELETE" method="POST">
 																<button type="submit" class="btn btn-block center btn-danger">ELIMINAR PRODUCTO</button>
 															</form>
 														</div>
+														
 													</div>
 												</div>
 											</div>
 									<% } %>
+									
 								</div>
 							</div>
 						</div>

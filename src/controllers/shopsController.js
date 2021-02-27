@@ -10,26 +10,22 @@ const shopsController = {
     
     //GET shop profile
     getShop: async (req, res, next) => {
-        let errors = validationResult(req);
-        let id = req.session.loggedUserId;
+        let loggedUserId = req.session.loggedUserId;
+        const validateErrors = req.flash('validateErrors')
+        const message = req.flash('message');
         try {
-            if (errors.isEmpty()) {
-                let currentUser = await userService.findOne(id);
-                let shop = await shopService.findOne(currentUser.shopId)
-                let shopData = await shopService.getShopData(currentUser);
-                console.log(shopData.products);
-                res.render("shops/shop-profile", {
-                    products: shopData.products,
-                    comments: shopData.comments,
-                    orders: shopData.orders,
-                    shop,
-                });
-
-            } else {
-                res.render("shops/shop-profile", {
-                    errors: errors.errors,
-                });
-            };
+            let currentUser = await userService.findOne(loggedUserId);
+            let shop = await shopService.findOne(currentUser.shopId)
+            let shopData = await shopService.getShopData(currentUser);
+            res.render("shops/shop-profile", {
+                message: message,
+                errors: validateErrors,
+                products: shopData.products,
+                comments: shopData.comments,
+                orders: shopData.orders,
+                coupons: shopData.coupons,
+                shop,
+            });
         } catch (error) {
             res.status(400).send(error.message);
         };

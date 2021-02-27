@@ -19,7 +19,7 @@
                 <!-- #cart panel -->
                 <div class="header-misc">
                     <!-- #cart panel -->
-                    <% if (!current_user) { %>
+                    <% if (!currentUser) { %>
                         <div>
                             <i type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
                                 class="button button-small header-button button-rounded button-reveal d-inline-flex tright font-weight-semibold icon-user dropdown-toggle dropdown-login"></i>
@@ -34,10 +34,10 @@
                             </div>
                         </div>
                     <% } %>
-                    <% if (current_user){ %>
+                    <% if (currentUser){ %>
                         <div class="">
                             <i data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class=" d-inline-flex dropdown-login">
-                                <img src="/images/users/<%= current_user.avatar%>" class="alignleft img-circle img-thumbnail my-0" alt="Avatar"
+                                <img src="/images/users/<%= currentUser.avatar%>" class="alignleft img-circle img-thumbnail my-0" alt="Avatar"
                                     style="max-width: 45px;">
                             </i>
                             <div class="dropdown-menu dropdown-menu-right" style="width: 200px;">
@@ -45,12 +45,12 @@
                                 <a href="/users/profile" id="login-button" class="button button-small button-reveal d-inline-flex tright">
                                     <i class="fas fa-user-circle"></i><span>Mi Perfil</a>
                             
-                                <% if (current_user.role == "seller" && current_user.shopId != null) { %>
+                                <% if (currentUser.role == "seller" && currentUser.shopId != null) { %>
                                     <a href="/shops" id="login-button" class="button button-small button-reveal d-inline-flex tright">
                                         <i class="icon-home"></i><span>Mi Comercio</a>
                                 <% } %>
                             
-                                <% if (current_user.admin == true) { %>
+                                <% if (currentUser.admin == true) { %>
                                     <a href="/admin" id="login-button" class="button button-small button-reveal d-inline-flex tright">
                                         <i class="icon-cog"></i><span>Administrador</a>
                                 <% } %>

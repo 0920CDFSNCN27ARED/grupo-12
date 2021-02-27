@@ -1,0 +1,45 @@
+<!-- Create Category Modal -->
+<div class="modal fade" id="createCoupon" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-body">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel">Crear Cupón</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                </div>
+                <form action="/shops/create-coupon" method="POST" class="pb-0 mb-0">
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12 form-group">
+                                <label for="name">* Nombre:</label>
+                                <input type="text" name="name" class="form-control" />
+                            </div>
+                            <div class="col-lg-12 col-md-12 form-group">
+                                <label for="description">* Descripción:</label>
+                                <input type="text" name="description"  class="form-control" />
+                            </div>
+                            <div class="col-lg-12 col-md-12 form-group">
+                                <label for="discount">* Descuento (cantidad):</label>
+                                <input type="number" name="discount" class="form-control" />
+                            </div>
+                            <div class="col-lg-12 col-md-12 form-group">
+                                <label for="couponCode">* Código de Descuento:</label>
+                                <input type="text" name="couponCode"  class="form-control" />
+                            </div>
+                            <div class="col-lg-12 col-md-12 form-group">
+                                <label for="shopId">Tienda Emisora:</label>
+                                <select class="form-control" name="shopId" id="shopId">
+                                    <option value="<%= shop.id %> "><%= shop.name %></option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                        <button class="btn btn-success" type="submit">Crear Cupón</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,5 +1,5 @@
 function assertSignedIn (req, res, next) {
-    if (!res.locals.current_user) {
+    if (!res.locals.currentUser) {
         res.redirect("/users/login");
     } else {
         next();

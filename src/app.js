@@ -27,7 +27,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
 /// APPLY VIEWS VARIABLES ANDS FUNCTIONS
-app.locals.current_user = null;
+app.locals.currentUser = null;
 
 // ************ Middlewares ************
 app.use(logger('dev'));

@@ -29,12 +29,10 @@ const storeController = {
     },
     postCheckout: async (req, res) => {
         let errors = validationResult(req);
-        console.log(errors.errors)
-        console.log(req.body)
         try{
             if (errors.isEmpty()) {
-                let current_user = req.session.current_user;
-                let userId= current_user != undifined ? current_user.id : null;
+                let currentUser = req.session.currentUser;
+                let userId= currentUser != undifined ? currentUser.id : null;
                 let addreses = await addressService.findAll();
                 let id = addresses.length != 0 ? addreses[addresses.length -1].id +1 : 1; 
                 
@@ -59,13 +57,13 @@ const storeController = {
                         userId: userId,
                     })
                 }   
-                if(req.body.save-data && current_user){
+                if(req.body.save-data && currentUser){
                     await userService.update(userId,{
                         dni: req.body.dni,
                         addressId: id
                     })
                 };
-                if(req.body.password && !current_user){
+                if(req.body.password && !currentUser){
                     await userService.create({
                         name: req.body.name,
                         email: req.body.email,

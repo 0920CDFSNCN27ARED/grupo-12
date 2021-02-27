@@ -51,8 +51,7 @@ const shopsController = {
     //POST create shop
     create: async (req, res, next) => {
         let errors = validationResult(req);
-        let current_user = req.session.current_user;
-
+        let loggedUserId = req.session.loggedUserId;
         if (errors.isEmpty()) {
             try {
                 let avatar = req.file ? req.file.filename : "default.jpg";
@@ -84,6 +83,7 @@ const shopsController = {
                 res.status(400).send(error.message);
             }
         } else {
+            let currentUser = await userService.findOne(loggedUserId);
             let users = await User.findAll({
                 include: [{association: "shops"}]
             });
@@ -105,7 +105,7 @@ const shopsController = {
             });
             res.render("admin/admin-profile", {
                 errors: errors.errors,
-                admin: current_user,
+                admin: currentUser,
                 users: users, 
                 categories: categories,
                 types: types,

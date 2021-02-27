@@ -1,8 +1,8 @@
 <div class="top-header">
     <div class="d-flex justify-content-around">
-        <% if (current_user !=null) { %>
+        <% if (currentUser !=null) { %>
             <div class="p-2 mt-2 text-center one-page-menu" data-easing="easeInOutExpo" data-speed="1250" data-offset="60">
-                <small>Hola <span class="color"><%= current_user.name%></span>, Bienvenid@!</small>
+                <small>Hola <span class="color"><%= currentUser.name%></span>, Bienvenid@!</small>
             </div>
             <div class="p-2 mt-2 text-center">   
             </div>
@@ -21,7 +21,7 @@
                 </a>
             </div>
         <% } %>
-        <% if (current_user == null) { %>
+        <% if (currentUser == null) { %>
             <div class="p-2 mt-2 text-center one-page-menu" data-easing="easeInOutExpo" data-speed="1250" data-offset="60">
                 <a href="#" data-href="#delivery" data-offset="20" class="top-header-buttom"><i class="icon-headphones-alt"></i>
                     011 444-3232</a>

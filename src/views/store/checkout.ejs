@@ -59,7 +59,7 @@
 									<form id="billing-form" name="billing-form" class="row  mt-4" action="/store/checkout" method="POST">
 										<div class="col-md-12 form-group">
 											<label for="name">*Nombre:</label>
-											<input type="text" id="name" name="name" value="<%= current_user ? current_user.name : "" %> " class="sm-form-control" />
+											<input type="text" id="name" name="name" value="<%= currentUser ? currentUser.name : "" %> " class="sm-form-control" />
 										</div>
 
 										<div class="w-100"></div>
@@ -99,12 +99,12 @@
 
 										<div class="col-md-6 form-group">
 											<label for="billing-form-email">*Email:</label>
-											<input type="email" id="billing-form-email" name="email" value="<%= current_user ? current_user.email : "" %>" class="sm-form-control" />
+											<input type="email" id="billing-form-email" name="email" value="<%= currentUser ? currentUser.email : "" %>" class="sm-form-control" />
 										</div>
 
 										<div class="col-md-6 form-group">
 											<label for="billing-form-phone">Teléfono:</label>
-											<input type="text" id="billing-form-phone" name="phone" value="<%= current_user ? current_user.phone : "" %>" class="sm-form-control" />
+											<input type="text" id="billing-form-phone" name="phone" value="<%= currentUser ? currentUser.phone : "" %>" class="sm-form-control" />
 										</div>
 										<div class="col-12 form-group">
 											<label for="billing-form-message">Aclaraciones:</label>

@@ -11,7 +11,12 @@ const usersController = {
 
     // GET Login
     getLogin: function (req, res, next) {
-        res.render("users/login");
+        const validateErrors = req.flash('validateErrors')
+        const message = req.flash('message');
+        res.render("users/login",{
+            message: message,
+            errors: validateErrors,
+        });
     },
 
     // POST Login
@@ -19,7 +24,7 @@ const usersController = {
         try {
             let errors = validationResult(req);
             let loggedUser;
-        
+    
             if (errors.isEmpty()) {
                 let users = await userService.findAll();
 
@@ -46,15 +51,15 @@ const usersController = {
                         maxAge: 60000,
                     });
                 };
-                
+                req.flash('message', `Hola ${loggedUser.name}, bienvenido nuevamente!`);
                 if(loggedUser.admin){
                     res.redirect("/admin");
                 } else {
                     res.redirect("/");
                 };
-
             } else {
-                return res.render("users/login", { errors: errors.errors });
+                req.flash('validateErrors', errors.errors);
+                return res.redirect("/users/login");
             }
         } catch (error) {
             res.status(400).send(error.message);
@@ -120,12 +125,16 @@ const usersController = {
 
     // GET user profile
     getProfile: async (req, res, next) => {
+        const validateErrors = req.flash('validateErrors')
+        const message = req.flash('message');
         let loggedUserId = req.session.loggedUserId;
         try {
             let currentUser = await userService.findOne(loggedUserId);
             let userData = await userService.getCurrentUserData(currentUser);
 
             res.render("users/profile", {
+                message: message,
+                errors: validateErrors,
                 comments: userData.comments,
                 orders: userData.orders,
                 currentUser,

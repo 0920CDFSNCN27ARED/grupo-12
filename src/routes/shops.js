@@ -25,6 +25,19 @@ router.put(
   ],
   shopsController.putShopData);
 
+// POST create shop modal
+router.post(
+  '/create-shop',  
+  uploadShop.single("avatar"),
+  [
+    check("name", "El nombre de la tienda es requerido.").notEmpty(),
+    check("email", "El nombre de la tienda es requerido.").notEmpty(),
+    check("email", "Email inválido.").isEmail(),
+    check("phone", "El teléfono de la tienda es requerido.").notEmpty(),
+    check("bio", "Una pequeña descripcion de la tienda es requerida.").notEmpty(),
+  ],
+  shopsController.postShopCreate);
+
 //******************* Coupons Routes *******************//
 
 // POST create coupon

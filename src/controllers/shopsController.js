@@ -65,6 +65,47 @@ const shopsController = {
             res.status(400).send(error.message);
         }
     },
+
+    //POST create shop
+    postShopCreate: async (req, res, next) => {
+        let errors = validationResult(req);
+        if (errors.isEmpty()) {
+            const loggedUserId = req.session.loggedUserId;
+            try {
+                let avatar = req.file ? req.file.filename : "default.jpg";
+
+                // Crear tienda
+                let shop = await shopService.create({ 
+                    name: req.body.name,
+                    phone: req.body.phone,
+                    email: req.body.email,
+                    avatar: avatar,
+                    ranking: 0,
+                    status: 'active',
+                    sales: 0,
+                    bio: req.body.bio,
+                    facebook: req.body.facebook,
+                    instagram: req.body.instagram,
+                    twitter: req.body.twitter
+                });
+
+                // Actualizar propietario
+                await userService.update(loggedUserId, { 
+                    shopId: shop.id,
+                    role: 'seller'
+                });
+
+                req.flash('message', 'Tu tienda fue creada correctamente, ya puedes empezar a vender tu productos.');
+                res.redirect(`/shops/${shop.id}/profile#tab-info`);
+            } catch (error) {
+                res.status(400).send(error.message);
+            }
+        } else {
+            req.flash('validateErrors', errors.errors);
+            res.redirect(`/users/profile`);
+        }
+    },
+
 };
 
 module.exports = shopsController;

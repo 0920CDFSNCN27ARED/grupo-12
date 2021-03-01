@@ -10,6 +10,11 @@
 		<!--Cart Panel -->
 		<%- include('./layout/panelCart') %>
 
+		<!-- Create Shop Modal -->
+		<% if(currentUser && currentUser.role=='buyer' ){ %>
+			<%- include('./layout/create-shop-modal') %>
+		<% } %>
+
 		<!-- Header -->
 		<header id="header" class="dark" data-sticky-class="dark-color" data-sticky-shrink-offset="0"
 			data-mobile-sticky="true">

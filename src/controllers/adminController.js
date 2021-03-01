@@ -104,6 +104,12 @@ const adminController = {
 
     //POST create product
     postCreateProduct: productsController.create,
+    
+    //POST blocked product
+    postBlockedProduct: productsController.blocked,
+
+    //POST activate product
+    postActivateProduct: productsController.activate,
 
     //******************* Order Controllers *******************//
 
@@ -150,6 +156,12 @@ const adminController = {
 
     //PUT edit coupon
     putEditCoupon: couponsController.update,
+
+    //POT blocked coupon
+    postBlockedCoupon: couponsController.blocked,
+
+    //POST activate coupon
+    postActivateCoupon: couponsController.activate,
 
     //DELETE coupon
     destroyCoupon: couponsController.destroy,

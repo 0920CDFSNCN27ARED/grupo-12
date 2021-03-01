@@ -182,7 +182,7 @@
 																<td>
 																	<% if(shop.status == "active") { %>
 																		<small><span class="badge badge-pill badge-success">ACTIVO</span></small>
-																	<% } else { %>  
+																	<% } else if(shop.status == "blocked"){ %>  
 																		<small><span class="badge badge-pill badge-danger">BLOQUEDO</span></small>
 																	<% } %>
 																</td>
@@ -191,12 +191,12 @@
 																	<a href="/shops/<%= shop.id %>/profile" class="btn btn-outline btn-sm p-0"><i class="m-0 i-rounded i-small icon-eye"></i></a>
 																	<a href="/shops/<%= shop.id %>/profile#tab-data" class="btn btn-outline btn-sm p-0"><i class="m-0 i-rounded i-small icon-pencil2"></i></a>
 																	<% if(shop.status == "active") { %>
-																		<form action="/admin/<%= shop.id %>/shop-blocked" method="POST">
+																		<form action="/admin/<%= shop.id %>/shop-blocked" class="m-0" method="POST">
 																			<button class="btn btn-outline btn-sm p-0" type="submit">
 																				<i class="m-0 i-rounded i-small icon-lock1"></i></button>
 																		</form>
 																	<% } else if(shop.status == "blocked") { %>  
-																		<form action="/admin/<%= shop.id %>/shop-activate" method="POST">
+																		<form action="/admin/<%= shop.id %>/shop-activate" class="m-0" method="POST">
 																			<button class="btn btn-outline btn-sm p-0" type="submit">
 																				<i class="m-0 i-rounded i-small icon-unlocked"></i></button>
 																		</form>
@@ -251,9 +251,9 @@
 																<td><small><%= product.ibu %></small></td>
 																<td><small><%= product.og %></small></td>
 																<td>
-																	<% if(product.status == "active") { %>
+																	<% if(product.status=="active" ) { %>
 																		<small><span class="badge badge-pill badge-success">ACTIVO</span></small>
-																	<% } else { %>  
+																	<% } else if(product.status=="blocked" ){ %>
 																		<small><span class="badge badge-pill badge-danger">BLOQUEDO</span></small>
 																	<% } %>
 																</td>
@@ -262,7 +262,18 @@
 																			class="m-0 i-rounded i-small icon-eye"></i></a>
 																	<a href="/products/<%= product.shopId %>/<%= product.id %>/edit" class="btn btn-outline btn-sm p-0"><i
 																			class="m-0 i-rounded i-small icon-pencil2"></i></a>
-																	<form action="/products/delete/<%= product.shopId %>/<%= product.id %>?_method=DELETE" method="POST">
+																	<% if(product.status == "active") { %>
+																		<form action="/admin/<%= product.id %>/product-blocked" class="m-0" method="POST">
+																			<button class="btn btn-outline btn-sm p-0" type="submit">
+																				<i class="m-0 i-rounded i-small icon-lock1"></i></button>
+																		</form>
+																	<% } else if(product.status == "blocked") { %>  
+																		<form action="/admin/<%= product.id %>/product-activate" class="m-0" method="POST">
+																			<button class="btn btn-outline btn-sm p-0" type="submit">
+																				<i class="m-0 i-rounded i-small icon-unlocked"></i></button>
+																		</form>
+																	<% } %>
+																	<form action="/products/delete/<%= product.shopId %>/<%= product.id %>?_method=DELETE" class="m-0" method="POST">
 																		<button type="submit" class="btn btn-outline btn-sm p-0"><i class="m-0 i-rounded i-small icon-line-trash-2"></i>
 																		</button>
 																	</form>
@@ -355,7 +366,7 @@
 																		<a href="/products/<%= comment.productId %>/productDetails" class="btn btn-outline btn-sm p-0">
 																		<i class="m-0 i-rounded i-small icon-eye"></i></a>
 																	<% } %> 
-																	<form action="/admin/<%= comment.id %>/comment-destroy?_method=DELETE" method="POST">
+																	<form action="/admin/<%= comment.id %>/comment-destroy?_method=DELETE" class="m-0" method="POST">
 																		<button class="btn btn-outline btn-sm p-0" type="submit"><i class="m-0 i-rounded i-small icon-line-trash-2"></i></button>
 																	</form>
 																</td>
@@ -396,13 +407,24 @@
 																<td>
 																	<% if(coupon.status == "active") { %>
 																		<small><span class="badge badge-pill badge-success">ACTIVO</span></small>
-																	<% } else { %>  
+																	<% } else if(coupon.status == "blocked"){ %>  
 																		<small><span class="badge badge-pill badge-danger">BLOQUEDO</span></small>
 																	<% } %>
 																</td>
-																<td class="d-flex justify-content-center">
+																<td class="d-flex justify-content-center align-items-center">
 																	<button class="btn btn-outline btn-sm p-0" data-toggle="modal" data-target="#<%= `editCouponModal${coupon.id}` %>">
 																		<i class="m-0 i-rounded i-small icon-pencil2"></i></button>
+																	<% if(coupon.status == "active") { %>
+																		<form action="/admin/<%= coupon.id %>/coupon-blocked" class="m-0" method="POST">
+																			<button class="btn btn-outline btn-sm p-0" type="submit">
+																				<i class="m-0 i-rounded i-small icon-lock1"></i></button>
+																		</form>
+																	<% } else if(coupon.status == "blocked") { %>  
+																		<form action="/admin/<%= coupon.id %>/coupon-activate" class="m-0" method="POST">
+																			<button class="btn btn-outline btn-sm p-0" type="submit">
+																				<i class="m-0 i-rounded i-small icon-unlocked"></i></button>
+																		</form>
+																	<% } %>
 																	<button class="btn btn-outline btn-sm p-0" data-toggle="modal" data-target="#<%= `destroyCouponModal${coupon.id}` %>">
 																		<i class="m-0 i-rounded i-small icon-line-trash-2"></i></button>
 																</td>

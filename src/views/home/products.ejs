@@ -30,8 +30,8 @@
                         <div id="oc-wheel" class="owl-carousel shop-carousel carousel-widget mt-5" data-margin="30"
                             data-nav="true" data-pagi="true" data-items-xs="2" data-items-sm="3" data-items-md="4"
                             data-items-lg="4" data-autoplay="5000" data-loop="false">
-                            <% products.map( product => { %>
-                                <% if(product.types.name == type.name){ %>
+                            <% products.forEach( product => { %>
+                                <% if(product.types.name == type.name && product.status == 'active'){ %>
                                     <%- include('./productSlider', { product: product}) %>
                                 <% }; %>
                             <% }) %>

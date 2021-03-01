@@ -72,7 +72,9 @@
 						============================================= -->
 						<div id="portfolio" class="portfolio row gutter-30 grid-container" data-layout="fitRows">
 							<% products.forEach( product => { %>
-								<%- include('./productStore', { product: product, categories:categories }) %>
+								<% if(product.status == 'active'){ %>
+									<%- include('./productStore', { product: product, categories:categories }) %>
+								<% } %> 
 							<% }) %> 
 						</div>
 					</div>

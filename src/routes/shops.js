@@ -53,6 +53,12 @@ router.put(
   ],
   couponsController.updateCoupon);
 
+// POST blocked coupon 
+router.post('/:shop/:id/coupon-blocked', assertSignedIn, couponsController.blockedCoupon);
+
+// POST activate coupon 
+router.post('/:shop/:id/coupon-activate', assertSignedIn, couponsController.activateCoupon);
+
 // DELETE coupon 
 router.delete('/:shop/:id/coupon-destroy', assertSignedIn, couponsController.destroyCoupon);
 

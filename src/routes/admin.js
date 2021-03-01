@@ -87,7 +87,7 @@ router.delete('/:id/user-destroy', assertIsAdmin, adminController.destroyUser);
 
 //******************* Products Routes *******************//
 
-// POST create shop modal 
+// POST create product modal 
 router.post(
   '/create-product', 
   assertIsAdmin, 
@@ -108,6 +108,12 @@ router.post(
         ).isLength({ min: 10 }),
     ],
   adminController.postCreateProduct);
+
+// POST Blocked product     
+router.post("/:id/product-blocked", assertSignedIn, assertIsAdmin, adminController.postBlockedProduct);
+
+// POST Activate product     
+router.post("/:id/product-activate", assertSignedIn, assertIsAdmin, adminController.postActivateProduct);
 
 //******************* Shops Routes *******************//
 
@@ -218,6 +224,12 @@ router.put(
     check("shopId", "La tienda emisora del cupón es requerida.").notEmpty(),
   ],
   adminController.putEditCoupon);
+
+// POST blocked coupon 
+router.post('/:id/coupon-blocked', assertIsAdmin, adminController.postBlockedCoupon);
+
+// POST activate coupon 
+router.post('/:id/coupon-activate', assertIsAdmin, adminController.postActivateCoupon);
 
 // DELETE coupon 
 router.delete('/:id/coupon-destroy', assertSignedIn, assertIsAdmin, adminController.destroyCoupon);

@@ -59,10 +59,7 @@ const productsController = {
     // POST Create Product Form
     postCreate: async (req, res, next) => {
         let errors = validationResult(req);
-        const loggedUserId = req.session.loggedUserId;
-        try {
-            const currentUser = await userService.findOne(loggedUserId);
-            
+        try {           
             let avatar = req.files.avatar;
             if (req.files.avatar != null) {
                 avatar = req.files.avatar[0].filename;
@@ -150,9 +147,7 @@ const productsController = {
     // PUT - Edit Product Form
     putEdit: async (req, res, next) => {
         let errors = validationResult(req);
-        const loggedUserId = req.session.loggedUserId;
         try {
-            const currentUser = await userService.findOne(loggedUserId);
             const product = await productService.findOne(req.params.id)
             const productGallery = [product.gallery01, product.gallery02, product.gallery03]
 
@@ -229,6 +224,44 @@ const productsController = {
             }
         } catch (error) {
             res.status(400).send(error.message); 
+        }
+    },
+
+    //POST blocked product
+    postBlocked: async (req, res, next) => {
+        let errors = validationResult(req);
+        if (errors.isEmpty()) {
+            try {
+                await productService.update(req.params.id,{
+                    status: 'blocked'
+                });
+                req.flash('message', 'El producto fue bloquedo temporalmente.');
+                return res.redirect(`/shops/${req.params.shop}/profile#tab-products`);
+            } catch (error) {
+                res.status(400).send(error.message);
+            };
+        } else {
+            req.flash('validateErrors', errors.errors);
+            return res.redirect(`/shops/${req.params.shop}/profile#tab-products`);
+        }
+    },
+
+    //POST activate product
+    postActivate: async (req, res, next) => {
+        let errors = validationResult(req);
+        if (errors.isEmpty()) {
+            try {
+                await productService.update(req.params.id,{
+                    status: 'active'
+                });
+                req.flash('message', 'El producto fue habilitado correctamente.');
+                return res.redirect(`/shops/${req.params.shop}/profile#tab-products`);
+            } catch (error) {
+                res.status(400).send(error.message);
+            };
+        } else {
+            req.flash('validateErrors', errors.errors);
+            return res.redirect(`/shops/${req.params.shop}/profile#tab-products`);
         }
     },
 

@@ -78,6 +78,12 @@ router.put(
     productsController.putEdit
 );
 
+// POST Blocked product     
+router.post("/:shop/:id/product-blocked", assertSignedIn, assertIsSeller, productsController.postBlocked);
+
+// POST Activate product     
+router.post("/:shop/:id/product-activate", assertSignedIn, assertIsSeller, productsController.postActivate);
+
 // DELETE one product 
 router.delete(
     '/delete/:shop/:id',

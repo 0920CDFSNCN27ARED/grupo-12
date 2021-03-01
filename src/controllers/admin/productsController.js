@@ -70,6 +70,44 @@ const productsController = {
             res.status(400).send(error.message);
         }
     },
+
+    //POST blocked product
+    blocked: async (req, res, next) => {
+        let errors = validationResult(req);
+        if (errors.isEmpty()) {
+            try {
+                await productService.update(req.params.id,{
+                    status: 'blocked'
+                });
+                req.flash('message', 'El producto fue bloquedo temporalmente.');
+                res.redirect("/admin#tab-products");
+            } catch (error) {
+                res.status(400).send(error.message);
+            };
+        } else {
+            req.flash('validateErrors', errors.errors);
+            res.redirect("/admin#tab-products");
+        }
+    },
+
+    //POST activate product
+    activate: async (req, res, next) => {
+        let errors = validationResult(req);
+        if (errors.isEmpty()) {
+            try {
+                await productService.update(req.params.id,{
+                    status: 'active'
+                });
+                req.flash('message', 'El producto fue habilitado correctamente.');
+                res.redirect("/admin#tab-products");
+            } catch (error) {
+                res.status(400).send(error.message);
+            };
+        } else {
+            req.flash('validateErrors', errors.errors);
+            res.redirect("/admin#tab-products");
+        }
+    },
     
 }
 

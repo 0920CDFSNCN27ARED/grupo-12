@@ -160,19 +160,20 @@ const usersController = {
         } else if(message.length != 0){
             notification = 'message'
         };
+        
+        console.log(req.url)
 
-        let loggedUserId = req.session.loggedUserId;
         try {
-            let currentUser = await userService.findOne(loggedUserId);
-            let userData = await userService.getUserData(currentUser);
-
+            let user = await userService.findOne(req.params.id);
+            let userData = await userService.getUserData(user);
+            
             res.render("users/profile", {
                 notification: notification,
                 message: message,
                 errors: validateErrors,
                 comments: userData.comments,
                 orders: userData.orders,
-                currentUser,
+                user: user,
             });
         } catch (error) {
             res.status(400).send(error.message);
@@ -182,17 +183,34 @@ const usersController = {
     // PUT user profile data form
     putUserData: async (req, res, next) => {
         let errors = validationResult(req);
-        let loggedUserId = req.session.loggedUserId;
         try {
-            let currentUser = await userService.findOne(loggedUserId);
+            let user = await userService.findOne(req.params.id);
             
             if (errors.isEmpty()) {
 
+                // Chequear mail en uso
+                if(user.email != req.body.email){
+                    let checkEmail = await userService.checkUserEmail(req.body.email);
+                    if(checkEmail){
+                        req.flash('validateErrors', [{msg: 'El email ingresado ya se encuentra en uso.'}]);
+                        return res.redirect(`/users/${req.params.id}/profile#tab-data`);
+                    }
+                };
+
+                // Chequear username en uso
+                if(user.userName != req.body.userName){
+                    let checkUserName = await userService.checkUserName(req.body.userName);
+                    if(checkUserName){
+                        req.flash('validateErrors', [{msg: 'El nombre de usuario ingresado ya se encuentra en uso.'}]);
+                        return res.redirect(`/users/${req.params.id}/profile#tab-data`);
+                    }
+                };
+
                 let filename = req.file
                     ? req.file.filename
-                    : currentUser.avatar;
+                    : user.avatar;
                 
-                await userService.update(currentUser.id,{
+                await userService.update(req.params.id,{
                     name: req.body.name,
                     userName: req.body.userName,
                     phone: req.body.phone,
@@ -205,10 +223,10 @@ const usersController = {
                 });
 
                 req.flash('message', 'Tus datos fueron actualizados correctamente.');
-                return res.redirect("/users/profile");
+                return res.redirect(`/users/${req.params.id}/profile#tab-info`);
             } else {
                 req.flash('validateErrors', errors.errors);
-                return res.redirect("/users/profile");
+                return res.redirect(`/users/${req.params.id}/profile#tab-data`);
             }
         } catch (error) {
             res.status(400).send(error.message);
@@ -219,32 +237,31 @@ const usersController = {
     putUserPassword: async (req, res, next) => {
         let errors = validationResult(req);
         try {
-            let id = req.session.loggedUserId;
-            let currentUser = await userService.findOne(id);
+            let user = await userService.findOne(req.params.id);
             let change_password = "";
             
             if (errors.isEmpty()) {
                 
-                if (!bcrypt.compareSync(req.body.password, currentUser.password)) {
-                    req.flash('message', "La contraseña actual ingresada es incorrecta");
-                    return res.redirect("/users/profile");
+                if (!bcrypt.compareSync(req.body.password, user.password)) {
+                    req.flash('validateErrors', [{msg: 'La contraseña actual ingresada es incorrecta'}]);
+                    return res.redirect(`/users/${req.params.id}/profile#tab-pass`);
                 }
 
                 if (req.body.confirmation == req.body.new_password) {
                     change_password = bcrypt.hashSync(req.body.new_password,10);
                 } else {
-                    change_password = currentUser.password;
+                    change_password = user.password;
                 }
 
-                await userService.update(id, {
+                await userService.update(req.params.id, {
                     password: change_password,   
                 });
 
-            req.flash('message', 'Tus datos fueron actualizados correctamente.');
-                return res.redirect("/users/profile");
+            req.flash('message', 'Tu contraseña fue actualizada correctamente.');
+                return res.redirect(`/users/${req.params.id}/profile#tab-info`);
             } else {
                 req.flash('validateErrors', errors.errors);
-                return res.redirect("/users/profile");
+                return res.redirect(`/users/${req.params.id}/profile#tab-pass`);
             }
         } catch (error) {
             res.status(400).send(error.message);

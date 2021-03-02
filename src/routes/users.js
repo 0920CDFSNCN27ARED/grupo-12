@@ -11,6 +11,7 @@ const uploadUser = multerOneImage('users');
 const assertSignedIn = require('../middlewares/assert-signed-in');
 const confirmPassword = require('../middlewares/confirmPassword');
 const checkUser = require('../middlewares/checkUser');
+const userProfile = require('../middlewares/userProfile');
 
 
 // GET Login page
@@ -44,11 +45,11 @@ router.post(
   usersController.postRegister);
 
 // GET Profile page
-router.get('/profile',assertSignedIn, usersController.getProfile);
+router.get('/:id/profile',assertSignedIn, userProfile, usersController.getProfile);
 
 // PUT Profile user data
 router.put(
-  '/edit-data',
+  '/:id/edit-data',
   uploadUser.single("avatar"),
   [
     check("name").isLength({min:4,max:30}).withMessage("El nombre debe tener entre 4 y 30 caracteres de largo"),
@@ -60,7 +61,7 @@ router.put(
 
 // PUT Profile user data
 router.put(
-  '/edit-password',
+  '/:id/edit-password',
   [
     check("password", "La constraseña actual es requerida.").notEmpty(),
     check("new_password", "La nueva constraseña es requerida.").notEmpty(),

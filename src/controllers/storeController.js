@@ -152,7 +152,7 @@ const storeController = {
                     shippingAddressId: shippingAddressId
                 })
                 req.flash('message', 'Tu pedido se realizo correctamente.');
-                return res.redirect("/users/profile")
+                return res.redirect(`/users/${req.params.id}/profile#tab-orders`)
             } else {
                 req.flash('validateErrors', errors.errors);
                 return res.redirect("/store/checkout");

@@ -10,14 +10,24 @@ const shopsController = {
     
     //GET shop profile
     getShop: async (req, res, next) => {
-        let loggedUserId = req.session.loggedUserId;
+
+        // Notifications
         const validateErrors = req.flash('validateErrors')
         const message = req.flash('message');
+        let notification = null;
+        if(validateErrors.length != 0){
+            notification = 'error'
+        } else if(message.length != 0){
+            notification = 'message'
+        };
+
+        let loggedUserId = req.session.loggedUserId;
         try {
             let currentUser = await userService.findOne(loggedUserId);
             let shop = await shopService.findOne(req.params.id);
             let shopData = await shopService.getShopData(shop);
             res.render("shops/shop-profile", {
+                notification: notification,
                 message: message,
                 errors: validateErrors,
                 currentUser: currentUser,
@@ -102,7 +112,7 @@ const shopsController = {
             }
         } else {
             req.flash('validateErrors', errors.errors);
-            res.redirect(`/users/profile`);
+            res.redirect(`/users/${req.params.id}/profile`);
         }
     },
 

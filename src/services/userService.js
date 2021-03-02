@@ -27,8 +27,35 @@ module.exports = {
             { where: {id: id} }
         );
     },
-    getUserData: async (currentUser) => {
 
+    checkUserEmail: async (email) => {
+        let user = await User.findAll({
+            where: {
+                email: email,
+            },
+        });
+        if(user){
+            return true;
+        } else {
+            return false;
+        };
+    },
+
+    checkUserName: async (userName) => {
+        let user = await User.findAll({
+            where: {
+                userName: userName,
+            },
+        });
+        if(user){
+            return true;
+        } else {
+            return false;
+        };
+    },
+
+    getUserData: async (currentUser) => {
+       
         //user comments
         let comments = await Comment.findAll({
             include:[ "users", "products"],

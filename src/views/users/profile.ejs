@@ -12,7 +12,7 @@
 	<%- include('../layout/panelCart') %>
 
 	<!-- Create Shop Modal -->
-	<% if(currentUser && currentUser.role=='buyer' ){ %>
+	<% if(user && user.role=='buyer' ){ %>
 		<%- include('../layout/create-shop-modal') %>
 	<% } %>
 
@@ -34,11 +34,11 @@
 			<div class="container clearfix">	
 				<div class="row clearfix">	
 					<div class="col-md-12">					
-						<img src= "/images/users/<%= currentUser.avatar%>" class="alignleft img-circle img-thumbnail my-0" alt="Avatar"
+						<img src= "/images/users/<%= user.avatar%>" class="alignleft img-circle img-thumbnail my-0" alt="Avatar"
 							style="max-width: 84px;">	
 						<div class="heading-block border-0">
-							<h3><%= currentUser.name %></h3>
-							<small><span class="m-0"><%= currentUser.email %></span></small><br>
+							<h3><%= user.name %></h3>
+							<small><span class="m-0"><%= user.email %></span></small><br>
 							<small class="m-0"><span class="badge badge-pill badge-warning">Perfil Público</span></small>
 						</div>
 						
@@ -52,7 +52,7 @@
 								<div class="tabs clearfix" id="tabs">
 	
 									<ul class="tab-nav clearfix">
-										<% if( currentUser && currentUser.status=="active" || currentUser && currentUser.admin) { %>
+										<% if( user && user.status=="active" || currentUser.admin) { %>
 											<li><a href="#tab-orders"><i class="icon-credit-cards"></i> Compras </a></li>
 											<li><a href="#tab-comments"><i class="icon-reply"></i> Comentarios</a></li>
 											<li><a href="#tab-data"><i class="icon-pencil2"></i> Editar Datos</a></li>
@@ -63,7 +63,7 @@
 	
 									<div class="tab-container">
 
-									<% if( currentUser && currentUser.status=="active" || currentUser && currentUser.admin) { %>
+									<% if( user && user.status=="active" || currentUser.admin) { %>
 
 										<div class="tab-content clearfix" id="tab-orders">
 											<p>Administre todas sus compras</p>
@@ -156,32 +156,32 @@
 
 										<div class="tab-content clearfix" id="tab-data">
 											<!-- Edit Form -->
-											<form  action="/users/edit-data?_method=PUT" method="POST" enctype="multipart/form-data">
+											<form  action="/users/<%= user.id %>/edit-data?_method=PUT" method="POST" enctype="multipart/form-data">
 												<div class="row mt-5 mb-3">
 													<div class="col-lg-6 col-md-6 form-group">
 														<label for="name">* Nombre Completo:</label>
-														<input type="text" name="name" value="<%= currentUser.name %>" class="form-control" />
+														<input type="text" name="name" value="<%= user.name %>" class="form-control" />
 													</div>
 													<div class="col-lg-6 col-md-6 form-group">
 														<label for="userName">* Nombre de Usuario:</label>
-														<input type="text" name="userName" value="<%= currentUser.userName %>" class="form-control" />
+														<input type="text" name="userName" value="<%= user.userName %>" class="form-control" />
 													</div>
 													<div class="w-100"></div>
 													<div class="col-lg-6 col-md-6 form-group">
-														<label for="avatar">Avatar: <small><%= currentUser.avatar %></small></label>
+														<label for="avatar">Avatar: <small><%= user.avatar %></small></label>
 														<input type="file" name="avatar" value="" class="form-control" />
 													</div>
 													<div class="col-lg-6 col-md-6 form-group">
 														<label for="email">* Email:</label>
-														<input type="email" name="email" value="<%= currentUser.email %>" class="form-control" />
+														<input type="email" name="email" value="<%= user.email %>" class="form-control" />
 													</div>
 													<div class="col-lg-6 col-md-6 form-group">
 														<label for="phone">Teléfono:</label>
-														<input type="tel" name="phone" value="<%= currentUser.phone %>" class="form-control" />
+														<input type="tel" name="phone" value="<%= user.phone %>" class="form-control" />
 													</div>
 													<div class="col-lg-6 col-md-6 form-group">
 														<label for="bio">Sobre Mí:</label>
-														<input type="text" name="bio" value="<%= currentUser.bio %>" placeholder="Escribe algo sobre ti..." class="form-control" />
+														<input type="text" name="bio" value="<%= user.bio %>" placeholder="Escribe algo sobre ti..." class="form-control" />
 													</div>
 													<div class="col-lg-6 col-md-6 form-group">
 														<label for="twitter">Twitter</label>
@@ -191,7 +191,7 @@
 																	<i class="icon-twitter" class="font-medium-2"></i>
 																</span>
 															</div>
-															<input name="twitter" type="text" class="form-control" value="<%= currentUser.twitter %>" placeholder="https://www.twitter.com/su-usuario" />
+															<input name="twitter" type="text" class="form-control" value="<%= user.twitter %>" placeholder="https://www.twitter.com/su-usuario" />
 														</div>
 													</div>
 													<div class="col-lg-6 col-md-6 form-group">
@@ -202,7 +202,7 @@
 																	<i class="icon-facebook" class="font-medium-2"></i>
 																</span>
 															</div>
-															<input name="facebook" type="text" class="form-control" value="<%= currentUser.facebook %>" placeholder="https://www.facebook.com/su-usuario" />
+															<input name="facebook" type="text" class="form-control" value="<%= user.facebook %>" placeholder="https://www.facebook.com/su-usuario" />
 														</div>
 													</div>
 													<div class="col-lg-6 col-md-6 form-group">
@@ -213,7 +213,7 @@
 																	<i class="icon-instagram" class="font-medium-2"></i>
 																</span>
 															</div>
-															<input name="instagram" type="text" class="form-control" value="<%= currentUser.instagram %>" placeholder="https://www.instagram.com/su-usuario" />
+															<input name="instagram" type="text" class="form-control" value="<%= user.instagram %>" placeholder="https://www.instagram.com/su-usuario" />
 														</div>
 													</div>
 													<div class="w-100"></div>
@@ -226,7 +226,7 @@
 
 										<div class="tab-content clearfix" id="tab-pass">
 											<!-- Edit Form -->
-											<form action="/users/edit-password?_method=PUT" method="POST">
+											<form action="/users/<%= user.id %>/edit-password?_method=PUT" method="POST">
 												<div class="row mt-5 mb-3">
 													<div class="col-md-12">
 														<div class="form-group">
@@ -271,18 +271,18 @@
 														<h4>Información</h4>
 													</div>
 													<p>
-														Nombre: <%= currentUser.name %></br>
-															Usuario: <%= currentUser.userName %></br>
-																Email: <%= currentUser.email %></br>
-																	Teléfono: <%= currentUser.phone %>
+														Nombre: <%= user.name %></br>
+															Usuario: <%= user.userName %></br>
+																Email: <%= user.email %></br>
+																	Teléfono: <%= user.phone %>
 													</p>
 												
-													<% if(currentUser.bio !="" ) {%>
+													<% if(user.bio !="" ) {%>
 														<div class="fancy-title topmargin title-border">
 															<h4>Sobre Mí</h4>
 														</div>
 														<p>
-															<%= currentUser.bio %>
+															<%= user.bio %>
 														</p>
 														<% } %>
 												
@@ -290,22 +290,22 @@
 																<h4>Perfiles Conectados</h4>
 															</div>
 												
-															<% if(currentUser.facebook !="" ) {%>
-																<a href="<%= currentUser.facebook %>" target="_blank"
+															<% if(user.facebook !="" ) {%>
+																<a href="<%= user.facebook %>" target="_blank"
 																	class="social-icon si-facebook si-small si-rounded si-light" title="Facebook">
 																	<i class="icon-facebook"></i>
 																	<i class="icon-facebook"></i>
 																</a>
 																<% } %>
-																	<% if(currentUser.instagram !="" ) {%>
-																		<a href="<%= currentUser.instagram %>" target="_blank"
+																	<% if(user.instagram !="" ) {%>
+																		<a href="<%= user.instagram %>" target="_blank"
 																			class="social-icon si-instagram si-small si-rounded si-light" title="Instagram">
 																			<i class="icon-instagram"></i>
 																			<i class="icon-instagram"></i>
 																		</a>
 																		<% } %>
-																			<% if(currentUser.twitter !="" ) {%>
-																				<a href="<%= currentUser.twitter %>" target="_blank"
+																			<% if(user.twitter !="" ) {%>
+																				<a href="<%= user.twitter %>" target="_blank"
 																					class="social-icon si-twitter si-small si-rounded si-light" title="Twitter">
 																					<i class="icon-twitter"></i>
 																					<i class="icon-twitter"></i>
@@ -313,7 +313,7 @@
 																				<% } %>
 												</div>
 
-												<% if( currentUser.status=="blocked") { %>
+												<% if( user.status=="blocked") { %>
 												<div class="col-md-6 mt-5">
 													<div class="promo promo-dark bg-danger p-4 p-md-5 mb-5">
 														<div class="row align-items-center">

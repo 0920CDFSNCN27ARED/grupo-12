@@ -42,7 +42,7 @@
                             </i>
                             <div class="dropdown-menu dropdown-menu-right" style="width: 200px;">
                             
-                                <a href="/users/profile" id="login-button" class="button button-small button-reveal d-inline-flex tright">
+                                <a href="/users/<%= currentUser.id %>/profile" id="login-button" class="button button-small button-reveal d-inline-flex tright">
                                     <i class="fas fa-user-circle"></i><span>Mi Perfil</a>
                             
                                 <% if (currentUser.role == "seller" && currentUser.shopId != null) { %>

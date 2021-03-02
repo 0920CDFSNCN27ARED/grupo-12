@@ -2,37 +2,87 @@
 const { validationResult } = require("express-validator");
 const bcrypt = require("bcrypt");
 
-//Models
-const {Order, Address} = require("../database/models")
-
 // Services
 const orderService = require("../services/orderService");
 const productService = require("../services/productService");
 const userService = require("../services/userService");
 const addressService = require("../services/addressService");
+const categoryService = require("../services/categoryService");
+const typeService = require("../services/typeService");
 
 const storeController = {
-    store: async function (req, res) {
+    getStore: async function (req, res) {
+        
+        // Notifications
+        const validateErrors = req.flash('validateErrors')
+        const message = req.flash('message');
+        let notification = null;
+        if(validateErrors.length != 0){
+            notification = 'error'
+        } else if(message.length != 0){
+            notification = 'message'
+        };
+
         try {
             let products = await productService.findAll();
-            let categories = await productService.allCategories();
-            res.render("store/store", { products, categories });
+            let categories = await categoryService.findAll();
+            res.render("store/store",{ 
+                notification: notification,
+                message: message,
+                errors: validateErrors,
+                products, 
+                categories 
+            });
         } catch (error) {
             res.status(404).send(error.message);
         }
     },
-    cart: function (req, res) {
-        res.render("store/productCart");
+
+    getCart: function (req, res) {
+        
+        // Notifications
+        const validateErrors = req.flash('validateErrors')
+        const message = req.flash('message');
+        let notification = null;
+        if(validateErrors.length != 0){
+            notification = 'error'
+        } else if(message.length != 0){
+            notification = 'message'
+        };
+
+        res.render("store/productCart",{ 
+                notification: notification,
+                message: message,
+                errors: validateErrors,
+            });
     },
+
     getCheckout: function (req, res) {
-        res.render("store/checkout");
+        
+        // Notifications
+        const validateErrors = req.flash('validateErrors')
+        const message = req.flash('message');
+        let notification = null;
+        if(validateErrors.length != 0){
+            notification = 'error'
+        } else if(message.length != 0){
+            notification = 'message'
+        };
+
+        res.render("store/checkout",{ 
+                notification: notification,
+                message: message,
+                errors: validateErrors, 
+            });
     },
+
     postCheckout: async (req, res) => {
         let errors = validationResult(req);
+        let loggedUserId = req.session.loggedUserId;
         try{
             if (errors.isEmpty()) {
-                let currentUser = req.session.currentUser;
-                let userId= currentUser != undifined ? currentUser.id : null;
+                
+                let userId = currentUser != undefined ? loggedUserId : null;
                 let addreses = await addressService.findAll();
                 let id = addresses.length != 0 ? addreses[addresses.length -1].id +1 : 1; 
                 
@@ -46,6 +96,7 @@ const storeController = {
                     message: req.body.billingMessage,
                     userId: userId,
                 });
+                
                 if(req.body.shippingAddress){
                     await addressService.create({
                         fullName: req.body.name,
@@ -56,13 +107,15 @@ const storeController = {
                         country: req.body.shippingCountry,
                         userId: userId,
                     })
-                }   
+                };  
+
                 if(req.body.save-data && currentUser){
                     await userService.update(userId,{
                         dni: req.body.dni,
                         addressId: id
                     })
                 };
+
                 if(req.body.password && !currentUser){
                     await userService.create({
                         name: req.body.name,
@@ -98,9 +151,11 @@ const storeController = {
                     billAddressId:id,
                     shippingAddressId: shippingAddressId
                 })
-                res.redirect("/")
+                req.flash('message', 'Tu pedido se realizo correctamente.');
+                return res.redirect("/users/profile")
             } else {
-                res.render("store/checkout", { errors: errors.errors });
+                req.flash('validateErrors', errors.errors);
+                return res.redirect("/store/checkout");
             }
         }catch(error){
             res.status(400).send(error.message);

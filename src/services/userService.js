@@ -3,20 +3,12 @@ const { User, Comment, Order, Shop } = require("../database/models");
 module.exports = {
     findOne: async (id) => {
         return await User.findByPk(id, {
-            include:[
-                {association: "shops"},
-                {association: "comments"},
-                {association: "orders"},
-            ],
+            include:["shops", "comments", "orders"],
         });
     },
     findAll: async () => {
         return await User.findAll({
-            include:[
-                {association: "shops"},
-                {association: "comments"},
-                {association: "orders"},
-            ],
+            include:["shops", "comments", "orders"],
         });
     },
     create: async (attributes) => {
@@ -35,51 +27,28 @@ module.exports = {
             { where: {id: id} }
         );
     },
-    getCurrentUserData: async (currentUser) => {
+    getUserData: async (currentUser) => {
 
         //user comments
-        let allComments = await Comment.findAll({
-            include: [
-                { association: "users" },
-                { association: "products" },
-            ],
+        let comments = await Comment.findAll({
+            include:[ "users", "products"],
+            where: {
+                userId: currentUser.id,
+            },
         });
-        let comments = [];
-        for (const comment of allComments) {
-            if(comment.userId == currentUser.id){
-                comments.push(comment);
-            }
-        };
 
         //user order
-        let allOrders = await Order.findAll({
-            include: [
-                { association: "payments" },
-                { association: "users" },
-                { association: "cartItems" },
-                { association: "shippingMethods" },
-                { association: "shops" },
-                { association: "products" },
-                { association: "billAddresses" },
-                { association: "shippingAddresses" },
-                { association: "coupons" },
-                { association: "status" },
-            ],
+        let orders = await Order.findAll({ 
+            include:["users", "shops", "payments", "cartItems", "products", 
+                     "billAddresses", "shippingAddresses", "shippingMethods", "coupons", "status"],
+            where: {
+                userId: currentUser.id,
+            },
         });
-        let orders = [];
-        for (const order of allOrders) {
-            if(order.userId == currentUser.id){
-                orders.push(order);
-            }
-        };
 
         // user Shop
         let shop = await Shop.findByPk(currentUser.id, {
-            include:[
-                {association: "products"},
-                {association: "users"},
-                {association: "orders"},
-            ],
+            include:["products", "users", "orders", "shopCoupons"],
         });
 
         //user data

@@ -15,7 +15,7 @@ const usersController = {
         try {
             let currentUser = await userService.findOne(id);
             let user = await userService.findOne(req.params.id);
-            let userData = await userService.getCurrentUserData(user);
+            let userData = await userService.getUserData(user);
             
             if (errors.isEmpty()) {            
                 res.render("admin/users/admin-user-profile", {

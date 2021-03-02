@@ -22,13 +22,23 @@ const shippingMethodsController = require("../controllers/admin/shippingMethodsC
 const paymentsController = require("../controllers/admin/paymentsController");
 const couponsController = require("../controllers/admin/couponsController");
 
+
 const adminController = {
     
     //GET admin Profile
     getAdminProfile: async (req, res, next) => {
         const loggedUserId = req.session.loggedUserId;
+        
+        // Notifications
         const validateErrors = req.flash('validateErrors')
         const message = req.flash('message');
+        let notification = null;
+        if(validateErrors.length != 0){
+            notification = 'error'
+        } else if(message.length != 0){
+            notification = 'message'
+        };
+
         try {
             let currentUser = await userService.findOne(loggedUserId);
             let users = await userService.findAll();
@@ -44,6 +54,7 @@ const adminController = {
 
             
             res.render("admin/admin-profile", {
+                notification: notification,
                 message: message,
                 errors: validateErrors,
                 admin: currentUser,

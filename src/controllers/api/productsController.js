@@ -1,6 +1,7 @@
 // Require
 const fs = require('fs');
 const { check, validationResult, body } = require("express-validator");
+let beerResource = require("../../requests/beerResource");
 
 // Services
 const productService = require("../../services/productService");
@@ -28,7 +29,7 @@ const productsController = {
             },
             data: products
         });
-    }
+    },
 }
 
 module.exports = productsController;

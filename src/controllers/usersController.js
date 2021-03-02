@@ -10,10 +10,20 @@ const userService = require("../services/userService");
 const usersController = {
 
     // GET Login
-    getLogin: function (req, res, next) {
+    getLogin: function (req, res, next) {        
+        
+        // Notifications
         const validateErrors = req.flash('validateErrors')
         const message = req.flash('message');
+        let notification = null;
+        if(validateErrors.length != 0){
+            notification = 'error'
+        } else if(message.length != 0){
+            notification = 'message'
+        };
+
         res.render("users/login",{
+            notification: notification,
             message: message,
             errors: validateErrors,
         });
@@ -39,9 +49,8 @@ const usersController = {
                 };
 
                 if (!loggedUser) {
-                    return res.render("users/login", {
-                        errors: [{ msg: "Email o contraseña incorrectos" }],
-                    });
+                    req.flash('validateErrors', [{msg: 'Email o contraseña incorrectos'}]);
+                    return res.redirect("/users/login");
                 };
 
                 req.session.loggedUserId = loggedUser.id;
@@ -68,7 +77,22 @@ const usersController = {
 
     // GET Register
     getRegister: function (req, res, next) {
-        res.render("users/register");
+        
+        // Notifications
+        const validateErrors = req.flash('validateErrors')
+        const message = req.flash('message');
+        let notification = null;
+        if(validateErrors.length != 0){
+            notification = 'error'
+        } else if(message.length != 0){
+            notification = 'message'
+        };
+
+        res.render("users/register",{
+            notification: notification,
+            message: message,
+            errors: validateErrors,
+        });
     },
 
     // POST Register
@@ -78,7 +102,7 @@ const usersController = {
             if (errors.isEmpty()) {
                 const avatar = req.file ? req.file.filename : "default-avatar.png";
             
-                let newUser = {
+                await userService.create({
                     name: req.body.name,
                     userName: req.body.userName,
                     phone: req.body.selectNumber + req.body.phoneNumber,
@@ -95,12 +119,13 @@ const usersController = {
                     twitter: "",
                     shopId: null,
                     addressId: null
-                };
-                
-                await userService.create(newUser);
-                res.redirect("/users/login");
+                });
+
+                req.flash('message', 'Tu cuenta fue creada correctamente, por favor logeate para verfificarla.');
+                return res.redirect("/users/login");
             } else {
-                res.render("users/register", { errors: errors.errors });
+                req.flash('validateErrors', errors.errors);
+                return res.redirect("/users/register");
             }
         } catch (error) {
             res.status(400).send(error.message);
@@ -125,14 +150,24 @@ const usersController = {
 
     // GET user profile
     getProfile: async (req, res, next) => {
+        
+        // Notifications
         const validateErrors = req.flash('validateErrors')
         const message = req.flash('message');
+        let notification = null;
+        if(validateErrors.length != 0){
+            notification = 'error'
+        } else if(message.length != 0){
+            notification = 'message'
+        };
+
         let loggedUserId = req.session.loggedUserId;
         try {
             let currentUser = await userService.findOne(loggedUserId);
-            let userData = await userService.getCurrentUserData(currentUser);
+            let userData = await userService.getUserData(currentUser);
 
             res.render("users/profile", {
+                notification: notification,
                 message: message,
                 errors: validateErrors,
                 comments: userData.comments,
@@ -150,7 +185,6 @@ const usersController = {
         let loggedUserId = req.session.loggedUserId;
         try {
             let currentUser = await userService.findOne(loggedUserId);
-            let userData = await userService.getCurrentUserData(currentUser);
             
             if (errors.isEmpty()) {
 
@@ -158,7 +192,7 @@ const usersController = {
                     ? req.file.filename
                     : currentUser.avatar;
                 
-                let userToEdit = {
+                await userService.update(currentUser.id,{
                     name: req.body.name,
                     userName: req.body.userName,
                     phone: req.body.phone,
@@ -168,18 +202,13 @@ const usersController = {
                     facebook: req.body.facebook,
                     instagram: req.body.instagram,
                     twitter: req.body.twitter
-                };
-
-                await userService.update(currentUser.id, userToEdit)
-                res.redirect("/users/profile");
-
-            } else {
-                res.render("users/profile", { 
-                    errors: errors.errors,
-                    currentUser: currentUser,
-                    comments: userData.comments,
-                    orders: userData.orders, 
                 });
+
+                req.flash('message', 'Tus datos fueron actualizados correctamente.');
+                return res.redirect("/users/profile");
+            } else {
+                req.flash('validateErrors', errors.errors);
+                return res.redirect("/users/profile");
             }
         } catch (error) {
             res.status(400).send(error.message);
@@ -192,18 +221,13 @@ const usersController = {
         try {
             let id = req.session.loggedUserId;
             let currentUser = await userService.findOne(id);
-            let userData = await userService.getCurrentUserData(currentUser);
             let change_password = "";
             
             if (errors.isEmpty()) {
                 
                 if (!bcrypt.compareSync(req.body.password, currentUser.password)) {
-                    return res.render("users/profile", {
-                        errors: [{msg:"La contraseña actual ingresada es incorrecta"}],
-                        currentUser: currentUser,
-                        comments: userData.comments,
-                        orders: userData.orders, 
-                    });
+                    req.flash('message', "La contraseña actual ingresada es incorrecta");
+                    return res.redirect("/users/profile");
                 }
 
                 if (req.body.confirmation == req.body.new_password) {
@@ -212,19 +236,15 @@ const usersController = {
                     change_password = currentUser.password;
                 }
 
-                let userToEdit = {
+                await userService.update(id, {
                     password: change_password,   
-                };
-
-                await userService.update(id, userToEdit)
-                res.redirect("/users/profile");
-            } else {
-                res.render("users/profile", { 
-                    errors: errors.errors,
-                    currentUser: currentUser,
-                    comments: userData.comments,
-                    orders: userData.orders, 
                 });
+
+            req.flash('message', 'Tus datos fueron actualizados correctamente.');
+                return res.redirect("/users/profile");
+            } else {
+                req.flash('validateErrors', errors.errors);
+                return res.redirect("/users/profile");
             }
         } catch (error) {
             res.status(400).send(error.message);

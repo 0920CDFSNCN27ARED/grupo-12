@@ -15,12 +15,15 @@
 	<% if(currentUser && currentUser.role=='buyer' ){ %>
 		<%- include('./layout/create-shop-modal') %>
 	<% } %>
-	
+
+	<!-- Notifications -->
+	<%- include('./layout/notifications') %>
+
 	<!-- Header -->
 	<header id="header" class="transparent-header dark" data-sticky-class="dark-color" data-sticky-shrink-offset="0" data-mobile-sticky="true">
 		<%- include('./layout/header') %>
 	</header>
-	
+
 	<!-- Slider-->
 	<%- include('./home/sliders') %>
 

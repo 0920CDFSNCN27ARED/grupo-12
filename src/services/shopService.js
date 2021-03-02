@@ -1,4 +1,5 @@
-const { Shop, Comment, Order, Product, Coupon } = require("../database/models");
+const { Shop, Comment, Order, Product, Coupon, sequelize } = require("../database/models");
+const { queryTypes } = require("sequelize")
 
 module.exports = {
     findOne: async (id) => {
@@ -39,61 +40,33 @@ module.exports = {
     },
     getShopData: async (shop) => {
 
-        let allProducts = await Product.findAll({ 
-            include:[
-                {association: "shops"},
-                {association: "categories"},
-                {association: "types"}
-            ]});
-        let products = [];
-        allProducts.forEach(product => {
-            if (product.shopId == shop.id) {
-                products.push(product);
-            }
-        });
-            
-        let allComments = await Comment.findAll({ 
-            include:[
-                {association: "users"},
-                {association: "products"}
-            ]});
-        let comments = [];
-        products.forEach(product => {
-            allComments.forEach(comment => {
-                if (comment.productId == product.id) {
-                    comments.push(comment);
-                }
-            });
+        let products = await Product.findAll({
+            include:[ "shops", "categories", "types"],
+            where: {
+                shopId: shop.id,
+            },
         });
 
-        let allOrders = await Order.findAll({ 
-            include:[
-                {association: "users"},
-                {association: "shops"},
-                {association: "payments"},
-                {association: "billAddresses"},
-                {association: "shippingAddresses"},
-                {association: "coupons"},
-                {association: "status"}
-            ]});
-        let orders = [];
-        allOrders.forEach(order => {
-            if (order.shopId == shop.id) {
-                orders.push(order);
-            }
+        let comments = await Comment.findAll({
+            include:[ "users", "products"],
+            where: {
+                "$products.id$": shop.id,
+            },
         });
 
-        let allCoupons = await Coupon.findAll({
-            include: [
-                { association: "coupons" },
-                {association: "shopCoupons"},
-            ],
+        let orders = await Order.findAll({ 
+            include:["users", "shops", "payments", "cartItems", "products", 
+                     "billAddresses", "shippingAddresses", "shippingMethods", "coupons", "status"],
+            where: {
+                shopId: shop.id,
+            },
         });
-        let coupons = [];
-        allCoupons.forEach(coupon => {
-            if (coupon.shopId == shop.id) {
-                coupons.push(coupon);
-            }
+        
+        let coupons = await Coupon.findAll({
+            include: ["coupons", "shopCoupons"],
+            where: {
+                shopId: shop.id,
+            },
         });
 
         return (data = { products, comments, orders, coupons });

@@ -29,15 +29,8 @@
 			<div class="content-wrap">
 				<div class="container clearfix">
 
-					<% if(typeof errors != 'undefined') { %>
-						<div class="col-12">
-							<ul>
-								<% errors.forEach(error => { %>
-								<li class="text-danger"><%= error.msg %></li>
-								<% });%>
-							</ul>
-						</div>
-					<% } %>
+					<!-- Notifications -->
+					<%- include('../layout/notifications') %>
 
 					<div class="col-lg-12">
 						<form action="/products/<%= shopId %>/create" method="POST" enctype="multipart/form-data">

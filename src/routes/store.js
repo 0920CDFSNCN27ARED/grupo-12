@@ -4,15 +4,16 @@ const router = express.Router();
 const {check,validationResult, body}= require("express-validator");
 
 /* GET store page. */
-router.get('/', storeController.store);
+router.get('/', storeController.getStore);
 
 /* GET cart page. */
-router.get('/productCart', storeController.cart);
+router.get('/productCart', storeController.getCart);
 
 /* GET checkout page. */
 router.get('/checkout', storeController.getCheckout);
 
- router.post('/checkout', //[
+/* POST checkout page. */
+router.post('/checkout', //[
 //     check('name').isEmpty().withMessage('El campo "nombre" no puede estar vacío'),
 //     check('dni').isEmpty().withMessage('El campo "DNI/CUIT" no puede estar vacío'),
 //     check('billingCountry').isEmpty().withMessage('El campo "país" no puede estar vacío'),

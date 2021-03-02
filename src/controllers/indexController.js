@@ -7,8 +7,17 @@ const indexController = {
 
     // GET home
     home: async (req, res) => {
+        
+        // Notifications
         const validateErrors = req.flash('validateErrors')
         const message = req.flash('message');
+        let notification = null;
+        if(validateErrors.length != 0){
+            notification = 'error'
+        } else if(message.length != 0){
+            notification = 'message'
+        };
+
         try {
             const products = await productService.findAll();
             const types = await typeService.findAll();
@@ -16,6 +25,7 @@ const indexController = {
                 type.count = type.products.length;
             }
             res.render('index', { 
+                notification,
                 message: message,
                 errors: validateErrors,
                 products: products, 
@@ -29,22 +39,42 @@ const indexController = {
 
     // GET story
     story: function(req, res) {
+        
+        // Notifications
         const validateErrors = req.flash('validateErrors')
         const message = req.flash('message');
+        let notification = null;
+        if(validateErrors.length != 0){
+            notification = 'error'
+        } else if(message.length != 0){
+            notification = 'message'
+        };
+
         res.render('story', { 
-                message: message,
-                errors: validateErrors, 
-            });
+            notification,
+            message: message,
+            errors: validateErrors, 
+        });
     },
 
     // GET contact
     contact: function(req, res) {
+        
+        // Notifications
         const validateErrors = req.flash('validateErrors')
         const message = req.flash('message');
+        let notification = null;
+        if(validateErrors.length != 0){
+            notification = 'error'
+        } else if(message.length != 0){
+            notification = 'message'
+        };
+
         res.render('contact', { 
-                message: message,
-                errors: validateErrors, 
-            });
+            notification,
+            message: message,
+            errors: validateErrors, 
+        });
     }
 }
 

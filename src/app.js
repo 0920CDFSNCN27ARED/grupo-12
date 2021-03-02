@@ -16,8 +16,11 @@ const productsRouter = require("./routes/products");
 const shopsRouter = require("./routes/shops");
 const adminRouter = require("./routes/admin");
 
-// ************ API ************
+// ******************** API ********************//
 const productsApiRouter = require("./routes/api/products");
+
+// *************** EXTERNAL API ****************//
+const breweryDBApiRouter = require("./routes/api/breweryDB");
 
 
 const app = express();
@@ -48,8 +51,11 @@ app.use('/products', productsRouter);
 app.use('/shops', shopsRouter);
 app.use('/admin', adminRouter);
 
-// ************ API ************
-app.use('/products', productsApiRouter);
+// ******************** API ********************//
+app.use('/api/products', productsApiRouter);
+
+// *************** EXTERNAL API ****************//
+app.use('/api/breweryDB', breweryDBApiRouter);
 
 
 // catch 404 and forward to error handler
@@ -65,7 +71,20 @@ app.use(function(err, req, res, next) {
 
   // render the error page
   res.status(err.status || 500);
-  res.render('error');
+
+  const validateErrors = req.flash('validateErrors')
+  const message = req.flash('message');
+  let notification = null;
+  if(validateErrors.length != 0){
+      notification = 'error'
+  } else if(message.length != 0){
+      notification = 'message'
+  };
+  res.render('error',{
+    notification: notification,
+    message: message,
+    errors: validateErrors,
+  });
 });
 
 module.exports = app;

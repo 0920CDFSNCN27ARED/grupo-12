@@ -49,25 +49,9 @@
 						<div class="row clearfix">
 	
 							<div class="col-lg-12">
-
-								<% if( message ) { %>
-									<div class="col-12">
-										<strong class="text-success"><%= message %></strong>
-									</div>
-								<% } %>
-
-								<% if(typeof errors !='undefined' ) { %>
-									<div class="col-12">
-										<ul>
-											<% errors.forEach(error=> { %>
-												<li class="text-primary">
-													<%= error.msg %>
-												</li>
-												<% });%>
-										</ul>
-									</div>
-								<% } %>
-	
+							
+								<%- include('../layout/notifications') %>
+								
 								<div class="tabs clearfix" id="tabs">
 	
 									<ul class="tab-nav clearfix">

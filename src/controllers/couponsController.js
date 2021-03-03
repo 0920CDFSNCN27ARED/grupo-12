@@ -17,7 +17,7 @@ const couponsController = {
                     description: req.body.description,
                     discount: req.body.discount,
                     couponCode: req.body.couponCode,
-                    shopId: req.body.shopId,
+                    shopId: req.params.shop,
                     status: req.body.status
                 });
                 req.flash('message', 'El cupón fue creado correctamente.');
@@ -41,7 +41,7 @@ const couponsController = {
                     description: req.body.description,
                     discount: req.body.discount,
                     couponCode: req.body.couponCode,
-                    shopId: req.body.shopId,
+                    shopId: req.params.shop,
                     status: req.body.status
                 });
                 req.flash('message', 'El cupón fue actualizado correctamente.');

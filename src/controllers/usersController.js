@@ -77,7 +77,6 @@ const usersController = {
 
     // GET Register
     getRegister: function (req, res, next) {
-        
         // Notifications
         const validateErrors = req.flash('validateErrors')
         const message = req.flash('message');
@@ -120,7 +119,6 @@ const usersController = {
                     shopId: null,
                     addressId: null
                 });
-
                 req.flash('message', 'Tu cuenta fue creada correctamente, por favor logeate para verfificarla.');
                 return res.redirect("/users/login");
             } else {
@@ -191,7 +189,7 @@ const usersController = {
                 // Chequear mail en uso
                 if(user.email != req.body.email){
                     let checkEmail = await userService.checkUserEmail(req.body.email);
-                    if(checkEmail){
+                    if(checkEmail == 'used'){
                         req.flash('validateErrors', [{msg: 'El email ingresado ya se encuentra en uso.'}]);
                         return res.redirect(`/users/${req.params.id}/profile#tab-data`);
                     }
@@ -200,7 +198,7 @@ const usersController = {
                 // Chequear username en uso
                 if(user.userName != req.body.userName){
                     let checkUserName = await userService.checkUserName(req.body.userName);
-                    if(checkUserName){
+                    if(checkUserName == 'used'){
                         req.flash('validateErrors', [{msg: 'El nombre de usuario ingresado ya se encuentra en uso.'}]);
                         return res.redirect(`/users/${req.params.id}/profile#tab-data`);
                     }

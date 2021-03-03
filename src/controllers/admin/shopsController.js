@@ -58,20 +58,21 @@ const shopsController = {
                 let shop = await shopService.findOne(req.params.id);
                 let shopData = await shopService.getShopData(shop);
 
-                // Eliminar comentarios de productos relacionados
+                // Bloquear productos relacionados
                 shopData.products.forEach( async product => {
                     await productService.update(product.id,{
                         status: 'blocked'
                     });
                 });
 
-                // Eliminar cupones emitidos
+                // Bloquear cupones emitidos
                 shopData.coupons.forEach( async coupon => {
                     await couponService.update(coupon.id,{
                         status: 'blocked'
                     });
                 });
 
+                // Bloquear tienda
                 await shopService.update(req.params.id,{
                         status: 'blocked'
                 });
@@ -95,20 +96,21 @@ const shopsController = {
                 let shop = await shopService.findOne(req.params.id);
                 let shopData = await shopService.getShopData(shop);
 
-                // Eliminar comentarios de productos relacionados
+                // Activar productos relacionados
                 shopData.products.forEach( async product => {
                     await productService.update(product.id,{
                         status: 'active'
                     });
                 });
 
-                // Eliminar cupones emitidos
+                // Activar cupones emitidos
                 shopData.coupons.forEach( async coupon => {
                     await couponService.update(coupon.id,{
                         status: 'active'
                     });
                 });
 
+                // Activar tienda
                 await shopService.update(req.params.id,{
                         status: 'active'
                 });

@@ -26,15 +26,6 @@ router.get('/', assertSignedIn, assertIsAdmin, adminController.getAdminProfile);
 
 //******************* Users Routes *******************//
 
-// GET user profile
-router.get('/:id/user-profile', assertSignedIn, assertIsAdmin, adminController.getUserProfile);
-
-// GET edit user data form
-router.get('/:id/edit-user', assertSignedIn, assertIsAdmin, adminController.getEditUserForm);
-
-// GET create user form 
-router.get('/create-user', assertSignedIn, assertIsAdmin, adminController.getCreateUserForm);
-
 // POST create user form 
 router.post(
   '/create-user', 
@@ -55,32 +46,11 @@ router.post(
   ],
   adminController.postCreateUserForm);
 
-// PUT edit user data form
-router.put(
-  '/:id/edit-user-data', 
-  assertIsAdmin, 
-  uploadUser.single("avatar"),
-  [
-    check("name", "El nombre no puede estar vacio").notEmpty(),
-    check("userName", "El nombre de usuario no puede estar vacio").notEmpty(),
-    check("email", "Email inválido").isEmail(),
-  ],
-  adminController.putEditDataUserForm);
+// POST blocked user 
+router.post('/:id/user-blocked', assertIsAdmin, adminController.postBlockedUser);
 
-// PUT edit user password form
-router.put(
-  '/:id/edit-user-pass', 
-  assertIsAdmin,
-  [
-    check("new_password", "La nueva constraseña es requerida.").notEmpty(),
-    check("new_password", "La nueva constraseña debe tener al menos 8 caracteres.").isLength({ min: 8 }),
-    body('confirmation').custom((value, { req }) => {
-        if (value !== req.body.new_password) { 
-            throw new Error('Las contraseñas deben ser iguales');
-        } return true 
-    }),
-  ], 
-  adminController.putEditPassUserForm);
+// POST activate user 
+router.post('/:id/user-activate', assertIsAdmin, adminController.postActivateUser);
 
 // DELETE user 
 router.delete('/:id/user-destroy', assertIsAdmin, adminController.destroyUser);

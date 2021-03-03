@@ -15,9 +15,6 @@
 		<%- include('../layout/create-shop-modal') %>
 	<% } %>
 
-	<!-- Notifications -->
-	<%- include('../layout/notifications') %>
-
 	<!-- Header -->
 	<header id="header" class="dark" data-sticky-class="dark-color" data-sticky-shrink-offset="0"
 		data-mobile-sticky="true">
@@ -36,13 +33,8 @@
             <div class="content-wrap pt-5">
 				<div class="container">
 					
-					<% if( message ) { %>
-						<div class="col-12">
-							<strong class="text-success">
-								<%= message %>
-							</strong>
-						</div>
-					<% } %>
+					<!-- Notifications -->
+					<%- include('../layout/notifications') %>
 
 					<div class="row my-5">
 						<!-- Product Gallery -->

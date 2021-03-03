@@ -2,29 +2,26 @@ const userService = require("../services/userService");
 
 const checkUser = async (req,res,next) => {
     try {
+        // Comprobar si existen usuarios
         let users = await userService.findAll();
-
         if(users.length == 0){
             next();
         };
 
-        for (let i = 0; i < users.length; i++) {
-            const user = users[i];
-            if(req.body.email == user.email && req.body.userName == user.userName){
-                res.render("users/register", {errors:[
-                    {msg:"El email y usuario ingresado ya se encuentran en uso"}
-                ]});
-            }else if(req.body.email == user.email){
-                res.render("users/register", {errors:[
-                    {msg:"El email ingresado ya está en uso"}
-                ]});
-            }else if(req.body.userName == user.userName){
-                res.render("users/register", {errors:[
-                    {msg:"El nombre de usuario ingresado ya está en uso"}
-                ]});
-            }
+        // Chequear mail en uso
+        let checkEmail = await userService.checkUserEmail(req.body.email);
+        if(checkEmail == 'used'){
+            req.flash('validateErrors', [{msg: 'El email ingresado ya se encuentra en uso.'}]);
+            return res.redirect("/users/register");
         };
-
+        
+        // Chequear username en uso
+        let checkUserName = await userService.checkUserName(req.body.userName);
+        if(checkUserName == 'used'){
+            req.flash('validateErrors', [{msg: 'El nombre de usuario ingresado ya se encuentra en uso.'}]);
+            return res.redirect("/users/register");
+        }
+        
         next();
 
     } catch (error) {

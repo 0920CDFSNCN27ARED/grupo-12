@@ -9,7 +9,6 @@ const uploadUser = multerOneImage('users');
 
 // Middlewares
 const assertSignedIn = require('../middlewares/assert-signed-in');
-const confirmPassword = require('../middlewares/confirmPassword');
 const checkUser = require('../middlewares/checkUser');
 const userProfile = require('../middlewares/userProfile');
 
@@ -38,9 +37,13 @@ router.post(
     check("userName").isLength({min:4,max:15}).withMessage("El nombre de usuario debe tener entre 4 y 15 caracteres de largo"),
     check("email").isEmail().withMessage("Email inválido"),
     check("phoneNumber").isMobilePhone().withMessage("Numero de telefono inválido"),
-    check("password").isLength({min:8, max:undefined}).isAlphanumeric().withMessage("Contraseña inválida: minimo 8 caracteres,letras(a-zA-Z) y números"), 
+    check("password").isLength({min:8, max:undefined}).isAlphanumeric().withMessage("Contraseña inválida: minimo 8 caracteres,letras(a-zA-Z) y números"),
+    body('confirmation').custom((value, { req }) => {
+        if (value !== req.body.password) { 
+            throw new Error('Las contraseñas deben ser iguales');
+        } return true 
+    }), 
   ],
-  confirmPassword,
   checkUser,
   usersController.postRegister);
 

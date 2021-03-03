@@ -4,99 +4,42 @@ const bcrypt = require("bcrypt");
 
 // Services
 const userService = require("../../services/userService");
+const shopService = require("../../services/shopService");
+const productService = require("../../services/productService");
+const couponService = require("../../services/couponService");
 
 // Controller
 const usersController = {
 
-    //GET user profile
-    profile: async (req, res, next) => {
-        let errors = validationResult(req);
-        const id = req.session.loggedUserId;
-        try {
-            let currentUser = await userService.findOne(id);
-            let user = await userService.findOne(req.params.id);
-            let userData = await userService.getUserData(user);
-            
-            if (errors.isEmpty()) {            
-                res.render("admin/users/admin-user-profile", {
-                    admin: currentUser,
-                    user: user,
-                    comments: userData.comments,
-                    orders: userData.orders
-                }); 
-            } else {
-                res.render("admin/users/admin-user-profile", {
-                    errors: errors.errors,
-                });
-            }
-        } catch (error) {
-            res.status(400).send(error.message);
-        }
-    },
-
-    //GET create user form
-    createForm: async (req, res, next) => {
-        let errors = validationResult(req);
-        let loggedUserId = req.session.loggedUserId;
-        try {
-            let currentUser = await userService.findOne(loggedUserId);
-            if (errors.isEmpty()) {
-                res.render("admin/users/admin-create-user-form", {
-                    admin: currentUser,
-                });
-            } else {
-                res.render("admin/users/admin-create-user-form", {
-                    admin: currentUser,
-                    errors: errors.errors,
-                });
-            }
-        } catch (error) {
-            res.status(400).send(error.message);
-        }
-    },
-
     //POST create user form
     create: async (req, res, next) => {
         let errors = validationResult(req);
-        let loggedUserId = req.session.loggedUserId; 
-        try {
-            let currentUser = await userService.findOne(loggedUserId);
-            let users = await userService.findAll();
+        try {  
             if (errors.isEmpty()) {
+
+                // Chequear mail en uso
+                let checkEmail = await userService.checkUserEmail(req.body.email);
+                                console.log(checkEmail);
+                if(checkEmail == 'used'){
+                    req.flash('validateErrors', [{msg: 'El email ingresado ya se encuentra en uso.'}]);
+                    return res.redirect(`/admin#tab-users`);
+                };
+                
+                // Chequear username en uso
+                let checkUserName = await userService.checkUserName(req.body.userName);
+                if(checkUserName == 'used'){
+                    req.flash('validateErrors', [{msg: 'El nombre de usuario ingresado ya se encuentra en uso.'}]);
+                    return res.redirect(`/admin#tab-users`);
+                }
+
                 let avatar = req.file ? req.file.filename : "default-avatar.png";
 
-                for (let i = 0; i < users.length; i++) {
-                    const user = users[i];
-                    if(req.body.email == user.email && req.body.userName == user.userName){
-                        return res.render("admin/users/admin-create-user-form", {
-                            admin: currentUser,
-                            user: user,
-                            errors:[
-                            {msg:"El email y usuario ingresado ya se encuentran en uso"}
-                        ]});
-                    }else if(req.body.email == user.email){
-                        return res.render("admin/users/admin-create-user-form", {
-                            admin: currentUser,
-                            user: user,
-                            errors:[
-                            {msg:"El email ingresado ya está en uso"}
-                        ]});
-                    }else if(req.body.userName == user.userName){
-                        return res.render("admin/users/admin-create-user-form", {
-                            admin: currentUser,
-                            user: user,
-                            errors:[
-                            {msg:"El nombre de usuario ingresado ya está en uso"}
-                        ]});
-                    }
-                };
-
-                await userService.create({
+                let user = await userService.create({
                     name: req.body.name,
                     userName: req.body.userName,
                     phone: req.body.phone,
                     email: req.body.email,
-                    password: req.body.password,
+                    password: bcrypt.hashSync(req.body.password, 10),
                     avatar: avatar,
                     admin: req.body.admin,
                     status: req.body.status,
@@ -108,151 +51,113 @@ const usersController = {
                     instagram: req.body.instagram,
                     twitter: req.body.twitter
                 });
-                res.redirect(`/admin`);
-                
+
+                req.flash('message', 'El usuario fue creado correctamente correctamente.');
+                return res.redirect(`/users/${user.id}/profile#tab-info`);
             } else {
-                res.render("admin/users/admin-create-user-form", {
-                    errors: errors.errors,
-                    admin: currentUser,
-                });
+                req.flash('validateErrors', errors.errors);
+                return res.redirect(`/admin#tab-users`);
             }
         } catch (error) {
             res.status(400).send(error.message);
         }
     },
 
-    //GET edit user form
-    updateForm: async (req, res, next) => {
+    //POST user blocked
+    blocked: async (req, res, next) => {
         let errors = validationResult(req);
-        let loggedUserId = req.session.loggedUserId;
-        try {
-            let currentUser = await userService.findOne(loggedUserId);
-            let user = await userService.findOne(req.params.id);
-        
-            if (errors.isEmpty()) {
-                res.render("admin/users/admin-edit-user-form", {
-                    admin: currentUser,
-                    user: user,
+        if (errors.isEmpty()) {
+            try {
+                let user = await userService.findOne(req.params.id);
+
+                console.log(user);
+
+                // Bloquear tienda en caso de ser propietario
+                if(user.shopId != null){
+                    let shop = await shopService.findOne(user.shopId);
+                    let shopData = await shopService.getShopData(shop);
+
+                    // Bloquear productos relacionados
+                    shopData.products.forEach( async product => {
+                        await productService.update(product.id,{
+                            status: 'blocked'
+                        });
+                    });
+
+                    // Bloquear cupones emitidos
+                    shopData.coupons.forEach( async coupon => {
+                        await couponService.update(coupon.id,{
+                            status: 'blocked'
+                        });
+                    });
+
+                    // Bloquear tienda
+                    await shopService.update(user.shopId,{
+                            status: 'blocked'
+                    });
+                };
+
+                // Bloquear usuario
+                await userService.update(user.id,{
+                        status: 'blocked'
                 });
-            } else {
-                res.render("admin/users/admin-edit-user-form", {
-                    errors: errors.errors,
-                    admin: currentUser,
-                    user: user
-                });
-            }
-        } catch (error) {
-            res.status(400).send(error.message);
+
+                req.flash('message', 'El usario fue bloquedo temporalmente.');
+                res.redirect("/admin#tab-users");
+            } catch (error) {
+                res.status(400).send(error.message);
+            };
+        } else {
+            req.flash('validateErrors', errors.errors);
+            res.redirect("/admin#tab-users");
         }
     },
 
-    //PUT edit data user form
-    updateData: async (req, res, next) => {
+    //POST user activate
+    activate: async (req, res, next) => {
         let errors = validationResult(req);
-        let loggedUserId = req.session.loggedUserId;
-        try {
-            let currentUser = await userService.findOne(loggedUserId);
-            let user = await userService.findOne(req.params.id);
-            let users = await userService.findAll();
+        if (errors.isEmpty()) {
+            try {
 
-            if (errors.isEmpty()) {
-                
-                let avatar = req.file ? req.file.filename : user.avatar;
+                // Habilitar usuario
+                let user = await userService.findOne(req.params.id);
+                await userService.update(user.id,{
+                        status: 'active'
+                });
 
-                if(user.role == "seller"){
-                    user.role = req.body.role;
+                // Habilitar tienda en caso de ser propietario
+                if(user.shopId != null){
+                    let shop = await shopService.findOne(user.shopId);
+                    let shopData = await shopService.getShopData(shop);
+
+                    // Activar productos relacionados
+                    shopData.products.forEach( async product => {
+                        await productService.update(product.id,{
+                            status: 'active'
+                        });
+                    });
+
+                    // Activar cupones emitidos
+                    shopData.coupons.forEach( async coupon => {
+                        await couponService.update(coupon.id,{
+                            status: 'active'
+                        });
+                    });
+
+                    // Activar tienda
+                    await shopService.update(user.shopId,{
+                            status: 'active'
+                    });
                 };
 
-                if(req.body.role == "buyer" || user.role == "buyer"){
-                    user.shopId = null;
-                }
-
-                // for (let i = 0; i < users.length; i++) {
-                //     const user = users[i];
-                //     if(req.body.email == user.email && req.body.userName == user.userName){
-                //         return res.render("admin/users/admin-edit-user-form", {
-                //             admin: currentUser,
-                //             user: user,
-                //             errors:[
-                //             {msg:"El email y usuario ingresado ya se encuentran en uso"}
-                //         ]});
-                //     }else if(req.body.email == user.email){
-                //         return res.render("admin/users/admin-edit-user-form", {
-                //             admin: currentUser,
-                //             user: user,
-                //             errors:[
-                //             {msg:"El email ingresado ya está en uso"}
-                //         ]});
-                //     }else if(req.body.userName == user.userName){
-                //         return res.render("admin/users/admin-edit-user-form", {
-                //             admin: currentUser,
-                //             user: user,
-                //             errors:[
-                //             {msg:"El nombre de usuario ingresado ya está en uso"}
-                //         ]});
-                //     }
-                // };
-                
-                let userToEdit = {
-                    name: req.body.name,
-                    userName: req.body.userName,
-                    phone: req.body.phone,
-                    email: req.body.email,
-                    avatar: avatar,
-                    admin: req.body.admin,
-                    status: req.body.status,
-                    shopId: user.shopId,
-                    role: user.role,
-                    bio: req.body.bio || "Escribe algo sobre tí",
-                    facebook: req.body.facebook,
-                    instagram: req.body.instagram,
-                    twitter: req.body.twitter
-                };
-
-                await userService.update(req.params.id, userToEdit)
-                res.redirect(`/admin/${req.params.id}/user-profile`);
-                
-            } else {
-                res.render("admin/users/admin-edit-user-form", {
-                    errors: errors.errors,
-                    admin: currentUser,
-                    user: user
-                });
-            }
-        } catch (error) {
-            res.status(400).send(error.message);
-        }
-    },
-
-    //PUT edit pass user form
-    updatePass: async (req, res, next) => {
-        let errors = validationResult(req);
-        let loggedUserId = req.session.loggedUserId;
-        try {
-            let currentUser = await userService.findOne(loggedUserId);
-            let user = await userService.findOne(req.params.id);
-
-            if (errors.isEmpty()) {
-                let change_password = "";
-                if (req.body.confirmation == req.body.new_password) {
-                    change_password = bcrypt.hashSync(req.body.new_password,10);
-                } else {
-                    change_password = user.password;
-                };
-                await userService.update(req.params.id,{
-                    password: change_password
-                });
-                res.redirect(`/admin/${req.params.id}/user-profile`);
-           
-            } else {
-                res.render("admin/users/admin-edit-user-form", {
-                    errors: errors.errors,
-                    admin: currentUser,
-                    user: user
-                });
-            }
-         } catch (error) {
-            res.status(400).send(error.message);
+                req.flash('message', 'El usuario fue habilitado correctamente.');
+                res.redirect("/admin#tab-users");
+            } catch (error) {
+                res.status(400).send(error.message);
+            };
+        } else {
+            req.flash('validateErrors', errors.errors);
+            res.redirect("/admin#tab-users");
         }
     },
 

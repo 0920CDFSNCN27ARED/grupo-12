@@ -14,9 +14,18 @@ const productsController = {
     
     //GET Product Details
     getDetails: async (req, res, next) => {
+        const loggedUserId = req.session.loggedUserId;
+
+        // Notifications
         const validateErrors = req.flash('validateErrors')
         const message = req.flash('message');
-        const loggedUserId = req.session.loggedUserId;
+        let notification = null;
+        if(validateErrors.length != 0){
+            notification = 'error'
+        } else if(message.length != 0){
+            notification = 'message'
+        };
+
         try {
             const currentUser = await userService.findOne(loggedUserId);
             const product = await productService.findOne(req.params.id);
@@ -25,6 +34,7 @@ const productsController = {
 
             res.render("products/productDetails", {
                 currentUser: currentUser,
+                notification: notification,
                 message: message,
                 errors: validateErrors,
                 product: product,
@@ -38,14 +48,24 @@ const productsController = {
 
     // GET Create Product Form
     getCreate: async (req, res, next) => {
+        
+        // Notifications
         const validateErrors = req.flash('validateErrors')
         const message = req.flash('message');
+        let notification = null;
+        if(validateErrors.length != 0){
+            notification = 'error'
+        } else if(message.length != 0){
+            notification = 'message'
+        };
+
         let shopId = req.params.shop;
         try {
             const categories = await productService.allCategories();
             const types = await productService.allTypes();
             res.render("products/productCreateForm", {
                 shopId: shopId,
+                notification: notification,
                 message: message,
                 errors: validateErrors, 
                 categories, 
@@ -121,8 +141,17 @@ const productsController = {
 
     // Update - Form to edit
     getEdit: async (req, res, next) => {
+        
+        // Notifications
         const validateErrors = req.flash('validateErrors')
         const message = req.flash('message');
+        let notification = null;
+        if(validateErrors.length != 0){
+            notification = 'error'
+        } else if(message.length != 0){
+            notification = 'message'
+        };
+
         let shopId = req.params.shop;
         try {
             const product = await productService.findOne(req.params.id)
@@ -132,6 +161,7 @@ const productsController = {
             
             res.render("products/productEditForm", {
                 shopId: shopId,
+                notification: notification,
                 message: message,
                 errors: validateErrors,
                 product: product,

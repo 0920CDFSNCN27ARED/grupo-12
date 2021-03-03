@@ -28,16 +28,16 @@ module.exports = {
         );
     },
 
-    checkUserEmail: async (email) => {
+    checkUserEmail: async (checkEmail) => {
         let user = await User.findAll({
             where: {
-                email: email,
+                email: checkEmail,
             },
         });
-        if(user){
-            return true;
+        if(user.length != 0){
+            return 'used';
         } else {
-            return false;
+            return null;
         };
     },
 
@@ -47,10 +47,10 @@ module.exports = {
                 userName: userName,
             },
         });
-        if(user){
-            return true;
+        if(user.length != 0){
+            return 'used';
         } else {
-            return false;
+            return null;
         };
     },
 

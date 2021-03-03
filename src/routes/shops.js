@@ -49,7 +49,6 @@ router.post(
     check("description", "La descripción del cupón es requerida.").notEmpty(),
     check("discount", "El descuento del cupón es requerido.").notEmpty(),
     check("couponCode", "El código del cupón es requerido.").notEmpty(),
-    check("shopId", "La tienda emisora del cupón es requerida.").notEmpty(),
   ],
   couponsController.createCoupon);
 
@@ -62,7 +61,6 @@ router.put(
     check("description", "La descripción del cupón es requerida.").notEmpty(),
     check("discount", "El descuento del cupón es requerido.").notEmpty(),
     check("couponCode", "El código del cupón es requerido.").notEmpty(),
-    check("shopId", "La tienda emisora del cupón es requerida.").notEmpty(),
   ],
   couponsController.updateCoupon);
 

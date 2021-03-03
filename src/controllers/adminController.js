@@ -76,23 +76,14 @@ const adminController = {
 
     //******************* Users Controllers *******************//
 
-    //GET user profile
-    getUserProfile: usersController.profile,
-
-    //GET create user form
-    getCreateUserForm: usersController.createForm,
-
     //POST create user form
     postCreateUserForm: usersController.create,
 
-    //GET edit user form
-    getEditUserForm: usersController.updateForm,
+    // POST blocked user 
+    postBlockedUser: usersController.blocked,
 
-    //PUT edit data user form
-    putEditDataUserForm: usersController.updateData,
-
-    //PUT edit pass user form
-    putEditPassUserForm: usersController.updatePass,
+    // POST activate user 
+    postActivateUser: usersController.activate,
 
     //DELETE user
     destroyUser: usersController.destroy,

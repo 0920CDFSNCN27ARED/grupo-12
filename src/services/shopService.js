@@ -50,7 +50,7 @@ module.exports = {
         let comments = await Comment.findAll({
             include:[ "users", "products"],
             where: {
-                "$products.id$": shop.id,
+                "$products.shopId$": shop.id,
             },
         });
 

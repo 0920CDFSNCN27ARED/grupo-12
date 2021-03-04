@@ -29,8 +29,8 @@ const productsController = {
         try {
             const currentUser = await userService.findOne(loggedUserId);
             const product = await productService.findOne(req.params.id);
-            const comments = await productService.productComments(req.params.id);
-            const gallery = [product.gallery01, product.gallery02, product.gallery03 ]
+            const comments = await commentService.productComments(req.params.id);
+            const gallery = [product.gallery01, product.gallery02, product.gallery03]
 
             res.render("products/productDetails", {
                 currentUser: currentUser,

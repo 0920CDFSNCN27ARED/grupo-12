@@ -30,6 +30,22 @@ const productsController = {
             data: products
         });
     },
+
+    findOne: async (req, res) => {
+        try {    
+            let product = await productService.findOne(req.params.id);
+            res.json({
+                meta: {
+                    status: 200,
+                    url: req.originalUrl,
+                },
+                data: product
+            });
+        } catch (error) {
+            res.status(400).send(error.message);
+        }
+    },
+
 }
 
 module.exports = productsController;

@@ -25,21 +25,6 @@ module.exports = {
             ],
         });
     },
-    allCategories: async () => {
-        return await Category.findAll({
-            include:[
-                {association: "types"},
-            ],
-        });
-    },
-    allTypes: async () => {
-        return await Type.findAll({
-            include:[
-                {association: "categories"},
-            ],
-        });
-    },
-    
     create: async (attributes) => {
         return await Product.create(
             attributes
@@ -62,31 +47,6 @@ module.exports = {
                 {association: "users"},
                 {association: "products"}
             ],
-        });
-    },
-    productComments: async (id) => {
-        let allComments = await Comment.findAll({
-            include:[
-                {association: "products"},
-                {association: "users"}
-            ],
-        });
-        let comments = [];
-        allComments.forEach(comment => {
-            if(comment.productId == id){
-                comments.push(comment);
-            };            
-        });
-        return comments;
-    },
-    createComment: async (attributes) => {
-        return await Comment.create(
-            attributes
-        );
-    },
-    destroyComment: async (id) => {
-        return await Comment.destroy({
-            where: {id: id}
         });
     },
 };

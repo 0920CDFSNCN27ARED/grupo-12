@@ -1,4 +1,4 @@
-<article class="portfolio-item col-12 col-sm-6 col-md-3 <%= product.categoryId %>">
+<article id="product-item" class="portfolio-item col-12 col-sm-6 col-md-3 <%= product.categoryId %>">
     <div class="grid-inner">
         <div class="portfolio-image br-5">
             <a href="#">
@@ -14,10 +14,9 @@
                     <a href="/products/<%= product.id %>/productDetails" class="overlay-trigger-icon bg-light text-dark portfolio-ajax-trigger"
                         data-hover-animate="fadeInDownSmall" data-hover-animate-out="fadeOutUpSmall"
                         data-hover-speed="350"><i class="icon-line-eye"></i></a>
-                    <a href="#"
-                        class="overlay-trigger-icon bg-light text-dark portfolio-ajax-trigger side-panel-trigger"
+                    <!-- <a href="#" class=" overlay-trigger-icon bg-light text-dark portfolio-ajax-trigger side-panel-trigger"
                         data-hover-animate="fadeInDownSmall" data-hover-animate-out="fadeOutUpSmall"
-                        data-hover-speed="350"><i class="icon-line-shopping-cart"></i></a>
+                        data-hover-speed="350"><i class="icon-line-shopping-cart"></i></a> -->
                 </div>
                 <div class="bg-overlay-bg dark" data-hover-animate="fadeIn"></div>
             </div>
@@ -30,6 +29,7 @@
                 <del class="mr-2">$<%= product.price %></del> 
                 <h3 class="color">$<%= product.price - product.discount %></h3>
             </div>
+            <button class="btn btn-block btn-outline-warning btn-sm mt-2 mb-2 add-product" data-id="<%= product.id %>">Comprar</button>
             <% categories.forEach(category => { %>
                 <% if (category.id == product.categoryId) { %>
                     <span class="text-center text-uppercase p-1">Categoria: <%= category.name %></span>
@@ -43,3 +43,4 @@
         </div>
     </div>
 </article>
+

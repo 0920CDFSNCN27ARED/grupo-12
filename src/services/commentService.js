@@ -17,6 +17,14 @@ module.exports = {
             ],
         });
     },
+    productComments: async (id) => {
+        return await Comment.findAll({
+            include:[ "users", "products"],
+            where: {
+                productId: id,
+            },
+        });
+    },
     create: async (attributes) => {
         return await Comment.create(attributes);
     },
@@ -29,5 +37,5 @@ module.exports = {
         return await Comment.update(attributes, { 
             where: { id: id }, 
         });
-    }
+    },
 };

@@ -64,59 +64,59 @@
 								<div>
 									<h3 class="mb-0">Dirección de Facturación</h3><small>Los campos como * son obligatorios.</small>
 
-									<form id="billing-form" name="billing-form" class="row  mt-4" action="/store/checkout" method="POST">
+									<form id="billing-form" name="billing-form" class="row  mt-4" action="/store/checkout" method="POST" class="needs-validation" novalidate>
 										<div class="col-md-12 form-group">
 											<label for="name">*Nombre:</label>
-											<input type="text" id="name" name="name" value="<%= currentUser ? currentUser.name : "" %> " class="sm-form-control" />
+											<input type="text" id="name" name="name" value="<%= currentUser ? currentUser.name : "" %> " class="sm-form-control" required/>
 										</div>
 
 										<div class="w-100"></div>
 
 										<div class="col-12 form-group">
 											<label for="dni">*DNI:</label>
-											<input type="text" id="dni" name="dni" value="" class="sm-form-control" />
+											<input type="text" id="dni" name="dni"  class="sm-form-control" required/>
 										</div>
 
 										<div class="col-12 form-group">
 											<label for="country">*País:</label>
-											<select type="text" id="country" name="billingCountry" value="" class="sm-form-control" >
+											<select type="text" id="country" name="billingCountry"  class="custom-select sm-form-control" required>
 												<option value="Argentina"selected>Argentina</option>
 												<option value="Brasil">Brasil</option>
 											</select>
 										</div>
 
 										<div class="col-12 form-group">
-											<label for="province">*Provincia</label>
-											<input type="text" id="province" name="billingProvince" value="" class="sm-form-control" />
+											<label for="billingProvince">*Provincia</label>
+											<input type="text" id="billingProvince" name="billingProvince" class="sm-form-control" required/>
 										</div>
 
 										<div class="col-12 form-group">
-											<label for="city">*Ciudad</label>
-											<input type="text" id="city" name="billingCity" value="" class="sm-form-control" />
+											<label for="billingCity">*Ciudad</label>
+											<input type="text" id="billingCity" name="billingCity"  class="sm-form-control" required/>
 										</div>
 
 										<div class="col-12 form-group">
-											<label for="postal-code">*Código postal</label>
-											<input type="text" id="postal-code" name="billingPostalCode" value="" class="sm-form-control" />
+											<label for="billingPostalCode">*Código postal</label>
+											<input type="text" id="billingPostalCode" name="billingPostalCode"  class="sm-form-control" required/>
 										</div>
 
 										<div class="col-12 form-group">
 											<label for="billingAddress">*Dirección:</label>
-											<input type="text" id="billingAddress" name="billingAddress" value="" class="sm-form-control" />
+											<input type="text" id="billingAddress" name="billingAddress"  class="sm-form-control" required/>
 										</div>
 
 										<div class="col-md-6 form-group">
-											<label for="billing-form-email">*Email:</label>
-											<input type="email" id="billing-form-email" name="email" value="<%= currentUser ? currentUser.email : "" %>" class="sm-form-control" />
+											<label for="email">*Email:</label>
+											<input type="email" id="email" name="email" value="<%= currentUser ? currentUser.email : "" %>" class="sm-form-control" required/>
 										</div>
 
 										<div class="col-md-6 form-group">
-											<label for="billing-form-phone">Teléfono:</label>
-											<input type="text" id="billing-form-phone" name="phone" value="<%= currentUser ? currentUser.phone : "" %>" class="sm-form-control" />
+											<label for="phone">Teléfono:</label>
+											<input type="text" id="phone" name="phone" value="<%= currentUser ? currentUser.phone : "" %>" class="sm-form-control" required/>
 										</div>
 										<div class="col-12 form-group">
-											<label for="billing-form-message">Aclaraciones:</label>
-											<textarea class="sm-form-control" id="billing-form-message" name="billingMessage" placeholder="Menciona si tienes un requerimiento especifico para tu envío" rows="6" cols="30"></textarea>
+											<label for="billingMessage">Aclaraciones:</label>
+											<textarea class="sm-form-control" id="billingMessage" name="billingMessage" placeholder="Menciona si tienes un requerimiento especifico para tu envío" rows="6" cols="30"></textarea>
 										</div>
 
 										<div class="form-check form-check-inline" style="width:100%; margin: 10px 0px 10px 16px;">
@@ -158,31 +158,31 @@
 											<h3 class="mb-0">Datos de Envío</h3><small>Los campos como * son obligatorios.</small>			
 
 												<div class="col-12 form-group">
-													<label for="country">*País:</label>
-													<select type="text" id="country" name="shippingCountry" value="" class="sm-form-control" >
+													<label for="shippingCountry">*País:</label>
+													<select type="text" id="shippingCountry" name="shippingCountry"  class="sm-form-control custom-select" required>
 														<option value="Arg">Argentina</option>
 														<option value="Bra">Brasil</option>
 													</select>
 												</div>
 		
 												<div class="col-12 form-group">
-													<label for="province">*Provincia</label>
-													<input type="text" id="province" name="shippingProvince" value="" class="sm-form-control" />
+													<label for="shippingProvince">*Provincia</label>
+													<input type="text" id="shippingProvince" name="shippingProvince"  class="sm-form-control" required/>
 												</div>
 		
 												<div class="col-12 form-group">
-													<label for="city">*Ciudad</label>
-													<input type="text" id="city" name="shippingCity" value="" class="sm-form-control" />
+													<label for="shippingCity">*Ciudad</label>
+													<input type="text" id="shippingCity" name="shippingCity"  class="sm-form-control" required/>
 												</div>
 		
 												<div class="col-12 form-group">
-													<label for="postal-code">*Código postal</label>
-													<input type="text" id="postal-code" name="shippingPostalCode" value="" class="sm-form-control" />
+													<label for="shippingPostalCode">*Código postal</label>
+													<input type="text" id="shippingPostalCode" name="shippingPostalCode" class="sm-form-control" required/>
 												</div>
 		
 												<div class="col-12 form-group">
-													<label for="billing-form-address">*Dirección:</label>
-													<input type="text" id="billing-form-address" name="shippingAddress" value="" class="sm-form-control" />
+													<label for="shippingAddress">*Dirección:</label>
+													<input type="text" id="shippingAddress" name="shippingAddress"  class="sm-form-control" required/>
 												</div>
 											
 										</div>
@@ -278,8 +278,8 @@
 									</div>
 								</div>
 								<div class="col-12 form-group">
-									<label for="order-message">Aclaraciones:</label>
-									<textarea class="sm-form-control" id="order-message" name="orderMessage" placeholder="Menciona si tienes un requerimiento especifico para tu orden" rows="6" cols="30"></textarea>
+									<label for="orderMessage">Aclaraciones:</label>
+									<textarea class="sm-form-control" id="orderMessage" name="orderMessage" placeholder="Menciona si tienes un requerimiento especifico para tu orden" rows="6" cols="30"></textarea>
 								</div>
 								<div>
 									<hr>
@@ -395,8 +395,8 @@
 								</div>
 								<div class="col-md-12 mb-3">
 									<div class="form-check form-check-inline">
-										<input class="form-check-input" type="checkbox" id="inlineCheckbox2" value="option2">
-										<label class="form-check-label nott ls0 mb-0 font-weight-semibold" for="inlineCheckbox2">He leído y estoy de acuerdo con los <a href="#">términos y condiciones</a> de la web *</label>
+										<input class="form-check-input" type="checkbox" id="termsCheck" value="option2" required>
+										<label class="form-check-label nott ls0 mb-0 font-weight-semibold" for="termsCheck">He leído y estoy de acuerdo con los <a href="#">términos y condiciones</a> de la web *</label>
 									</div>
 								</div>
 								<button type="submit"class="button button-rounded button-reveal float-right">Comprar</button>
@@ -410,5 +410,24 @@
 
 			<!-- Footer -->
 			<%- include('../layout/footer') %>
+		<script>
+			bootstrapValidate("#name","min:2: Debes ingresar al menos 2 caracteres");
+			bootstrapValidate("#name","required: Debes ingresar tu nombre!");
+			bootstrapValidate("#dni","required: Debes ingresar tu dni!");
+			bootstrapValidate("#dni","numeric: Debes ingresar únicamente números");
+			bootstrapValidate("#billingProvince","required: Debes ingresar una provincia.");
+			bootstrapValidate("#billingCity","required: Debes ingresar una ciudad.");
+			bootstrapValidate("#billingPostalCode","required: Debes ingresar un código postal.");
+			bootstrapValidate("#billingPostalCode","numeric: Debes ingresar únicamente números");
+			bootstrapValidate("#billingAddress","required: Debes ingresar una dirección.");
+			bootstrapValidate("#email","email: Debes ingresar un email válido");
+			bootstrapValidate("#phone","numeric: Debes ingresar únicamente números");
+			bootstrapValidate("#password","min:8:Debes ingresar al menos 8 caracteres");
+			bootstrapValidate("#shippingProvince","required: Debes ingresar una provincia.");
+			bootstrapValidate("#shippingCity","required: Debes ingresar una ciudad.");
+			bootstrapValidate("#shippingPostalCode","required: Debes ingresar un código postal.");
+			bootstrapValidate("#shippingPostalCode","numeric: Debes ingresar únicamente números");
+			bootstrapValidate("#shippingAddress","required: Debes ingresar una dirección.");
+		</script>
 	</body>	
 </html>

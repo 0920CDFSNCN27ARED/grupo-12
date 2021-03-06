@@ -136,12 +136,13 @@
 														</ul>
 													</div>
 												<% } %>
-												<form action="/products/<%= product.id %>/productDetails" method="POST">
+												<form action="/products/<%= product.id %>/productDetails" method="POST" class="needs-validation" novalidate>
 													<div class="row">
 														<div class="w-100"></div>
 														<div class="col-12 form-group">
 															<label for="comment">*Comentario</label>
-															<textarea name="comment" cols="58" rows="4" placeholder="Ingresa un comentario..." class="sm-form-control" required></textarea>
+															<textarea name="comment" id="comment"cols="58" rows="4" placeholder="Ingresa un comentario..." class="sm-form-control" required></textarea>
+															<div class="invalid-feedback">Debes ingresar al menos 1 caracter para comentar</div>
 														</div>
 														<div class="col-12 form-group">
 															<button type="submit" class="button button-3d m-0">Comentar</button>

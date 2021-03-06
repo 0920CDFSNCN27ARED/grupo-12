@@ -156,15 +156,18 @@
 
 										<div class="tab-content clearfix" id="tab-data">
 											<!-- Edit Form -->
-											<form  action="/users/<%= user.id %>/edit-data?_method=PUT" method="POST" enctype="multipart/form-data">
+											<form  action="/users/<%= user.id %>/edit-data?_method=PUT" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
 												<div class="row mt-5 mb-3">
 													<div class="col-lg-6 col-md-6 form-group">
 														<label for="name">* Nombre Completo:</label>
-														<input type="text" name="name" value="<%= user.name %>" class="form-control" />
+														<input type="text" name="name" id="name"value="<%= user.name %>" class="form-control" required/>
+														
 													</div>
 													<div class="col-lg-6 col-md-6 form-group">
 														<label for="userName">* Nombre de Usuario:</label>
-														<input type="text" name="userName" value="<%= user.userName %>" class="form-control" />
+														<input type="text" name="userName" id="userName"value="<%= user.userName %>" class="form-control" required/>
+														<div class="valid-feedback">Ok válido!</div>
+														<div class="invalid-feedback">Complete este campo</div>
 													</div>
 													<div class="w-100"></div>
 													<div class="col-lg-6 col-md-6 form-group">
@@ -173,7 +176,9 @@
 													</div>
 													<div class="col-lg-6 col-md-6 form-group">
 														<label for="email">* Email:</label>
-														<input type="email" name="email" value="<%= user.email %>" class="form-control" />
+														<input type="email" name="email" id="email"value="<%= user.email %>" class="form-control" required/>
+														<div class="valid-feedback">Ok válido!</div>
+														<div class="invalid-feedback">Complete este campo</div>
 													</div>
 													<div class="col-lg-6 col-md-6 form-group">
 														<label for="phone">Teléfono:</label>
@@ -226,14 +231,16 @@
 
 										<div class="tab-content clearfix" id="tab-pass">
 											<!-- Edit Form -->
-											<form action="/users/<%= user.id %>/edit-password?_method=PUT" method="POST">
+											<form action="/users/<%= user.id %>/edit-password?_method=PUT" method="POST" class="needs-validation" novalidate>
 												<div class="row mt-5 mb-3">
 													<div class="col-md-12">
 														<div class="form-group">
 															<label for="password">Contraseña Actual</label>
 															<div class="input-group input-group-merge form-password-toggle">
-																<input class="form-control form-control-merge" type="password" name="password" placeholder="Ingrese su contraseña actual" />
+																<input class="form-control form-control-merge" type="password" name="password" id="password"placeholder="Ingrese su contraseña actual" required/>
 																<div class="input-group-append"><span class="input-group-text cursor-pointer"><i class="icon-line-eye"></i></span></div>
+																<div class="valid-feedback">Ok válido!</div>
+                                								<div class="invalid-feedback">Complete este campo</div>
 															</div>
 														</div>
 													</div>
@@ -241,8 +248,10 @@
 														<div class="form-group">
 															<label for="new_password">Ingresar Nueva Contraseña</label>
 															<div class="input-group input-group-merge form-password-toggle">
-																<input class="form-control form-control-merge" type="password" name="new_password" placeholder="Ingrese la nueva contraseña" />
+																<input class="form-control form-control-merge" type="password" name="new_password" id="new_password"placeholder="Ingrese la nueva contraseña" required/>
 																<div class="input-group-append"><span class="input-group-text cursor-pointer"><i class="icon-line-eye"></i></span></div>
+																<div class="valid-feedback">Ok válido!</div>
+                                								<div class="invalid-feedback">Complete este campo</div>
 															</div>
 														</div>
 													</div>
@@ -250,8 +259,9 @@
 														<div class="form-group">
 															<label for="confirmation">Confirmar Nueva Contraseña</label>
 															<div class="input-group input-group-merge form-password-toggle">
-																<input class="form-control form-control-merge" type="password" name="confirmation" placeholder="Confirme su nueva contraseña" />
+																<input class="form-control form-control-merge" type="password" name="confirmation" id="confirmation"placeholder="Confirme su nueva contraseña" required/>
 																<div class="input-group-append"><span class="input-group-text cursor-pointer"><i class="icon-line-eye"></i></span></div>
+																<div class="valid-feedback">Ok válido!</div>
 															</div>
 														</div>
 													</div>
@@ -370,7 +380,14 @@
 			}
 		});
 	</script>
-
+	<script>
+		bootstrapValidate("#name","min:4: El nombre debe tener mínimo 4 caracteres");
+		bootstrapValidate("#name","max:30: El nombre debe tener máximo 30 caracteres");
+		bootstrapValidate("#userName","min:4: El nombre de usuario debe tener mínimo 4 caracteres");
+		bootstrapValidate("#userName","max:15: El nombre de usuario debe tener máximo 15 caracteres");
+		bootstrapValidate("#email","email: Debes ingresar un email válido");
+		bootstrapValidate("#confirmation","matches:#new_password:Las contraseñas deben coincidir");
+	</script>
 </body>
 
 </html>

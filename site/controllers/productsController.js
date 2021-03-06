@@ -9,6 +9,8 @@ const commentService = require('../services/commentService');
 
 // Controllers
 const commentsController = require("./commentsController");
+const categoryService = require('../services/categoryService');
+const typeService = require('../services/typeService');
 
 const productsController = {
     
@@ -61,8 +63,8 @@ const productsController = {
 
         let shopId = req.params.shop;
         try {
-            const categories = await productService.allCategories();
-            const types = await productService.allTypes();
+            const categories = await categoryService.findAll();
+            const types = await typeService.findAll();
             res.render("products/productCreateForm", {
                 shopId: shopId,
                 notification: notification,
@@ -155,8 +157,8 @@ const productsController = {
         let shopId = req.params.shop;
         try {
             const product = await productService.findOne(req.params.id)
-            const categories = await productService.allCategories();
-            const types = await productService.allTypes();
+            const categories = await categoryService.findAll();
+            const types = await typeService.findAll();
             const productGallery = [product.gallery01, product.gallery02, product.gallery03]
             
             res.render("products/productEditForm", {

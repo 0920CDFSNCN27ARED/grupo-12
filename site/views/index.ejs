@@ -52,7 +52,13 @@
 
 	<!-- Footer -->
 	<%- include('./layout/footer') %>
-	
+	<script>
+		bootstrapValidate("#name","required: Debes completar este campo");
+		bootstrapValidate("#tel","numeric: Puedes ingresar números únicamente");
+		bootstrapValidate("#email","email: Debes ingresar un email válido");
+		bootstrapValidate("#issue","required: Debes completar este campo");
+		bootstrapValidate("#message","min:8: El mensaje debe tener al menos 8 caracteres");
+	</script>
 </body>
 
 </html>

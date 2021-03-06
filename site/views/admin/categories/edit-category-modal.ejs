@@ -9,25 +9,30 @@
                         <h4 class="modal-title" id="myModalLabel">Actualizar Categoría</h4>
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     </div>
-                    <form action="/admin/<%= category.id %>/edit-category?_method=PUT" method="POST" class="pb-0 mb-0">
+                    <form action="/admin/<%= category.id %>/edit-category?_method=PUT" method="POST" class="pb-0 mb-0 needs-validation" novalidate>
                         <div class="modal-body">
                             <div class="row">
                                 <div class="col-lg-12 col-md-12 form-group">
                                     <label for="name">* Nombre:</label>
-                                    <input type="text" name="name" value="<%= category.name %>" class="form-control" />
+                                    <input type="text" name="name" value="<%= category.name %>" class="form-control" required/>
+                                    <div class="valid-feedback">Ok válido!</div>
+                                    <div class="invalid-feedback">Complete este campo</div>
                                 </div>
                                 <div class="col-lg-12 col-md-12 form-group">
                                     <label for="description">* Descripción:</label>
                                     <input type="text" name="description" value="<%= category.description %>"
-                                        class="form-control" />
+                                        class="form-control" required/>
+                                    <div class="valid-feedback">Ok válido!</div>
+                                    <div class="invalid-feedback">Complete este campo</div>
                                 </div>
                                 <div class="col-lg-12 col-md-12 form-group">
                                     <label for="typeId">Tipo:</label>
-                                    <select class="form-control" name="typeId" id="typeId">
+                                    <select class="custom-select" name="typeId" id="typeId"required>
                                         <% types.forEach(type => { %>
                                             <option <%= category.typeId == type.id ? "selected" :null %> value="<%= type.id %> "><%= type.name %></option>
                                         <% }) %>
                                     </select>
+                                    <div class="invalid-feedback">Selecione un tipo</div>
                                 </div>
                             </div>
                         </div>

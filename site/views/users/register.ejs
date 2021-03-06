@@ -39,45 +39,46 @@
 						<p class="divider-text">
 							<span class="c-white text-align-center">ó</span>
 						</p>
-						<form method="POST" action="/users/register" enctype="multipart/form-data">
+						<form method="POST" action="/users/register" enctype="multipart/form-data" class="needs-validation" novalidate >
 							<div class="form-group input-group">
 								<div class="input-group-prepend-s">
 									<span class="input-group-text"> <i class="fa fa-user"></i> </span>
 								</div>
-								<input name="name" class="form-control" placeholder="Nombre Completo" type="text">
+								<input name="name" id="name" class="form-control" placeholder="Nombre Completo" type="text" required>
 							</div> <!-- form-group// -->
 							<div class="form-group input-group">
 								<div class="input-group-prepend-s">
 									<span class="input-group-text"><i class="fas fa-at"></i></span>
 								</div>
-								<input name="userName" class="form-control" placeholder="Nombre de Usuario" type="text">
+								<input name="userName" id="userName"class="form-control" placeholder="Nombre de Usuario" type="text" required>
 							</div> <!-- form-group// -->
 							<div class="form-group input-group">
 								<div class="input-group-prepend-s">
 									<span class="input-group-text"> <i class="fa fa-envelope"></i> </span>
 								</div>
-								<input name="email" class="form-control" placeholder="Email" type="email">
+								<input name="email" id="email"class="form-control" placeholder="Email" type="email" required>
 							</div> <!-- form-group// -->
 							<div class="form-group input-group">
 								<div class="input-group-prepend-s">
 									<span class="input-group-text"> <i class="fa fa-phone"></i> </span>
 								</div>
-								<select id="select-number"class="custom-select border-soft" name="selectNumber"style="max-width: 120px;">
+								<select id="select-number"class="custom-select border-soft" name="selectNumber"style="max-width: 120px;" required>
 									<option selected="+54">+54</option>
 								</select>
-								<input name="phoneNumber" class="form-control" placeholder="Número de telefono" type="text">
+								<input name="phoneNumber" id="phone"class="form-control" placeholder="Número de telefono" type="text" required>
 							</div>
 							<div class="form-group input-group">
 								<div class="input-group-prepend-s">
 									<span class="input-group-text"> <i class="fa fa-lock"></i> </span>
 								</div>
-								<input class="form-control" name="password"placeholder="Creá tu contraseña" type="password">
+									<input class="form-control" name="password" id="password"placeholder="Creá tu contraseña" type="password" required> 
 							</div> <!-- form-group// -->
 							<div class="form-group input-group">
 								<div class="input-group-prepend-s">
 									<span class="input-group-text"> <i class="fa fa-lock"></i> </span>
 								</div>
-								<input class="form-control" name="confirmation"placeholder="Repetí tu contraseña" type="password">
+								
+									<input class="form-control" id="confirmPassword" name="confirmation"placeholder="Repetí tu contraseña" type="password" required>
 							</div> <!-- form-group// -->
 							<p style="margin-bottom: 4px;margin-left: 2px;color: #5a5a5a;font-size: 16px;text-align: center;">Elegí tu foto de perfil:</p>
 							<div class="form-group input-group d-flex">
@@ -181,6 +182,19 @@
 		});
 
 	</script>
+
+	<script>
+		bootstrapValidate("#name","min:2: Debes ingresar al menos 2 caracteres");
+		bootstrapValidate("#name","max:35: Debes ingresar como máximo 35 caracteres");
+		bootstrapValidate("#userName","max:15: Debes ingresar como máximo 15 caracteres");
+		bootstrapValidate("#userName","min:4: Debes ingresar al menos 4 caracteres");
+		bootstrapValidate("#email","email:Ingrese un email válido");
+		bootstrapValidate("#phone","numeric:Puedes ingresar números únicamente");
+		bootstrapValidate("#password","min:8:Debes ingresar al menos 8 caracteres");
+		bootstrapValidate("#password","alphanumeric:Puedes ingresar letras(a-z,A-Z) y números únicamente");
+		bootstrapValidate("#confirmPassword","matches:#password:Las contraseñas deben coincidir");
+	</script>
+
 </body>
 	
 </html>

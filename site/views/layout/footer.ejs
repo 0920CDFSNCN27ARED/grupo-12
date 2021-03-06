@@ -99,12 +99,17 @@
 		<h5 class="border-b-grey">Chat</h5>
 		<div class="d-flex row">
 		<input id="message-holder"type="text" placeholder="Escribí tu consulta..">
-		<i id="send-icon"class="fas fa-paper-plane"></i>
+		<i id="send-icon"style="color:rgb(85, 85, 85)!important" class="fas fa-paper-plane"></i>
 		</div>
 	</div>
-
+    
+    
 <!-- JavaScripts -->
 <script src="/js/hover-animate.js"></script>
+    
+<!-- Bootstrap Validate
+    ============================================= -->
+<script src="https://cdn.rawgit.com/PascaleBeier/bootstrap-validate/v2.2.0/dist/bootstrap-validate.js" ></script>
 
 <!-- Bootstrap Select Plugin -->
 <script src="/js/components/bs-select.js"></script>
@@ -124,3 +129,23 @@
 <script src="/js/plugins.min.js"></script>
 <script src="/js/cart.js"></script>
 <script src="/js/orders.js"></script>
+
+<script>
+    (function() {
+        'use strict';
+        window.addEventListener('load', function() {
+        // Fetch all the forms we want to apply custom Bootstrap validation styles to
+        var forms = document.getElementsByClassName('needs-validation');
+        // Loop over them and prevent submission
+        var validation = Array.prototype.filter.call(forms, function(form) {
+            form.addEventListener('submit', function(event) {
+            if (form.checkValidity() === false) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+            form.classList.add('was-validated');
+            }, false);
+        });
+        }, false);
+    })();
+</script>

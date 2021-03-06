@@ -284,6 +284,7 @@
   background-color:#ece9e9 !important;
   flex-direction: column;
   justify-content: space-between;
+  z-index: 500;
 }
 
 .border-b-grey{

@@ -237,10 +237,10 @@ router.post(
   assertIsAdmin, 
   [
     check("email", "El campo 'email' debe ser un email válido.").isEmail(),
-    check("count", "La cantidad de productos es requerida.").notEmpty(),
-    check("totalShipping", "El envío total es requerido.").notEmpty(),
-    check("tax", "El impuesto es requerido.").notEmpty(),
-    check("total", "El total es requerido.").notEmpty(),
+    check("count", "La cantidad de productos debe ser un número entero").isInt(),
+    check("totalShipping", "El envío total debe ser un número decimal").isFloat(),
+    check("tax", "El impuesto debe ser un número decimal").isFloat(),
+    check("total", "El total debe ser un número decimal").isFloat(),
   ],
   adminController.postCreateOrder);
 

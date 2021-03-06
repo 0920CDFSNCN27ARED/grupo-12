@@ -7,24 +7,32 @@
                     <h4 class="modal-title" id="myModalLabel">Crear Método de Envío</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 </div>
-                <form action="/admin/create-shippingMethod" method="POST" class="pb-0 mb-0">
+                <form action="/admin/create-shippingMethod" method="POST" class="pb-0 mb-0 needs-validation" novalidate>
                     <div class="modal-body">
                         <div class="row">
                             <div class="col-lg-12 col-md-12 form-group">
                                 <label for="name">* Nombre:</label>
-                                <input type="text" name="name" value="" class="form-control" />
+                                <input type="text" name="name"  class="form-control" required/>
+                                <div class="valid-feedback">Ok válido!</div>
+                                <div class="invalid-feedback">Complete este campo</div>
                             </div>
                             <div class="col-lg-12 col-md-12 form-group">
                                 <label for="amount">* Monto:</label>
-                                <input type="text" name="amount" value="" class="form-control" />
+                                <input type="text" name="amount"  class="form-control" required/>
+                                <div class="valid-feedback">Ok válido!</div>
+                                <div class="invalid-feedback">Complete este campo</div>
                             </div>
                             <div class="col-lg-12 col-md-12 form-group">
                                 <label for="description">* Descripción:</label>
-                                <input type="text" name="description" value="" class="form-control" />
+                                <input type="text" name="description" class="form-control" required/>
+                                <div class="valid-feedback">Ok válido!</div>
+                                <div class="invalid-feedback">Complete este campo</div>
                             </div>
                             <div class="col-lg-12 col-md-12 form-group">
                                 <label for="location">* Ubicación:</label>
-                                <input type="text" name="location" value="" class="form-control" />
+                                <input type="text" name="location"  class="form-control" required/>
+                                <div class="valid-feedback">Ok válido!</div>
+                                <div class="invalid-feedback">Complete este campo</div>
                             </div>
                         </div>
                     </div>

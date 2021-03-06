@@ -33,42 +33,42 @@
 					<%- include('../layout/notifications') %>
 
 					<div class="col-lg-12">
-						<form action="/products/<%= shopId %>/<%= product.id %>/edit?_method=PUT" method="POST" enctype="multipart/form-data">
+						<form action="/products/<%= shopId %>/<%= product.id %>/edit?_method=PUT" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
 							<div class="row">
 								<div class="col-6 form-group">
 									<label for="name">Nombre de Producto:</label>
-									<input type="text" name="name" class="form-control required" value="<%= product.name %>" placeholder="Cerveza IPA">
+									<input type="text" name="name" id="name"class="form-control required" value="<%= product.name %>" placeholder="Cerveza IPA" required>
 								</div>
 								<div class="col-6 form-group">
 									<label for="brewery">Cervería de Origen:</label>
-									<input type="text" name="brewery" class="form-control" value="<%= product.brewery %>" placeholder="Quién fabrica el producto...">
+									<input type="text" name="brewery" id="brewery"class="form-control" value="<%= product.brewery %>" placeholder="Quién fabrica el producto..." required>
 								</div>
 								<div class="col-6 form-group">
 									<label for="price">Precio:</label>
-									<input type="text" name="price" class="form-control required" value="<%= product.price %>" placeholder="Ingrese un valor">
+									<input type="text" name="price" id="price"class="form-control required" value="<%= product.price %>" placeholder="Ingrese un valor" required>
 								</div>
 								<div class="col-6 form-group">
 									<label for="discount">Descuento:</label>
-									<input type="text" name="discount" class="form-control required" value="<%= product.discount %>" placeholder="Ingrese un valor">
+									<input type="text" name="discount" id="discount"class="form-control required" value="<%= product.discount %>" placeholder="Ingrese un valor" required>
 								</div>
 								<div class="col-6 form-group">
 									<label for="stock">Stock:</label>
-									<input type="number" name="stock" class="form-control required" value="<%= product.stock %>" placeholder="Ingrese un valor">
+									<input type="number" name="stock" id="stock"class="form-control required" value="<%= product.stock %>" placeholder="Ingrese un valor" required>
 								</div>
 								<div class="col-6 form-group">
 									<label for="description">Descripción Corta:</label>
-									<input type="text" name="description" class="form-control required" value="<%= product.description %>" placeholder="Describa brevemente el producto...">
+									<input type="text" name="description" id="description"class="form-control required" value="<%= product.description %>" placeholder="Describa brevemente el producto..." required>
 								</div>
 								<div class="col-4 form-group">
 									<label for="status">Estado:</label>
-									<select class="form-control" name="status" id="status">
+									<select class="custom-select" name="status" id="status" required>
 										<option <%=product.status== 'active' ? 'selected' : null %> value="active">Habilitado</option>
 										<option <%=product.status=='blocked' ? 'selected' : null %> value="blocked">Bloqueado</option>
 									</select>
 								</div>
 								<div class="col-4 form-group">
 									<label for="typeId">Tipo:</label>
-									<select class="form-control" name="typeId" id="typeId">
+									<select class="custom-select" name="typeId" id="typeId" required>
 										<% types.forEach((type)=> {%>
 											<option <%= type.id == product.typeId ? 'selected' : null %>  value="<%=type.id %>"><%=type.name %></option>
 											<% });%>
@@ -76,7 +76,7 @@
 								</div>
 								<div class="col-4 form-group">
 									<label for="categoryId">Categoría:</label>
-									<select class="form-control" name="categoryId" id="categoryId">
+									<select class="custom-select" name="categoryId" id="categoryId" required>
 										<% categories.forEach((category) => {%>
 											<option <%= category.id == product.categoryId ? 'selected' : null %> value="<%=category.id %> "><%=category.name %></option>
 										<% }); %> 
@@ -190,6 +190,17 @@
 					showUpload: false
 				});
 			})
+		</script>
+		<script>
+			bootstrapValidate("#name","min:2: Debes ingresar al menos 2 caracteres");
+			bootstrapValidate("#name","max:35: Debes ingresar como máximo 35 caracteres");
+			bootstrapValidate("#brewery","required: Debes completar este campo");
+			bootstrapValidate("#price","required: Debes completar este campo");
+			bootstrapValidate("#price","numeric:Puedes ingresar números únicamente ");
+			bootstrapValidate("#discount","required: Debes completar este campo");
+			bootstrapValidate("#discount","numeric:Puedes ingresar números únicamente ");
+			bootstrapValidate("#stock","required: Debes completar este campo");
+			bootstrapValidate("#description","min:10: Debes ingresar al menos 10 caracteres");
 		</script>
 	</body>
 	

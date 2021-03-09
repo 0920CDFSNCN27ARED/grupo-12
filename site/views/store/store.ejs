@@ -42,11 +42,11 @@
 						============================================= -->
 						<ul class="grid-filter style-3 w-100" data-container="#portfolio">
 							<% categories.forEach( category => { %>
-								<li><a href="#" data-filter=".<%= category.id %>" class="link-grid"><i class="icon-beer"></i><span class="ml-1 text-uppercase"><%= category.name %></span></a></li>
+								<li><a href="javascript:void(0)" data-filter=".<%= category.id %>" class="link-grid"><i class="icon-beer"></i><span class="ml-1 text-uppercase"><%= category.name %></span></a></li>
 							<% }) %> 
 
 							<!-- Show All Button -->
-							<li class="activeFilter ml-auto"><a class="button button-small button-rounded button-reset" href="#" data-filter="*">Todas</a></li>
+							<li class="activeFilter ml-auto"><a class="button button-small button-rounded button-reset" href="javascript:void(0)" data-filter="*">Todas</a></li>
 						</ul><!-- .grid-filter end -->
 
 						<!-- Portfolio Items

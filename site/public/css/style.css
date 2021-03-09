@@ -8024,6 +8024,12 @@ body:not(.device-touch) .entry-link {
     right: 4px;
 }
 
+.product-delete-cart {
+	position: relative;
+    top: -35px;
+    left: 0px;
+}
+
 .review-comment-ratings {
 	width: auto;
 	color: #333;
@@ -13820,7 +13826,7 @@ body:not(.device-touch) #gotoTop {
 }
 /*Additional properties for button version
  iOS requires the button element instead of an anchor tag.
- If you want the anchor version, it requires `href="#"`.*/
+ If you want the anchor version, it requires `href="javascript:void(0)"`.*/
 button.toast-close-button {
 	padding: 0;
 	cursor: pointer;

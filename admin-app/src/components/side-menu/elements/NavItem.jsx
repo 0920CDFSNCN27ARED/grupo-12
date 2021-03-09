@@ -1,13 +1,13 @@
 import React from 'react'
 import { Fragment } from 'react';
 
-const NavItem = ({title, icon}) => {
+const NavItem = (props) => {
     return (
         <Fragment>
             <li className="nav-item active">
                 <a className="nav-link" href="/">
-                <i className={icon}></i>
-                <span>{title}</span></a>
+                <i className={props.icon}></i>
+                <span>{props.title}</span></a>
             </li>
         </Fragment>
     )

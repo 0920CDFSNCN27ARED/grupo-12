@@ -18,11 +18,17 @@
 
                 <!-- #cart panel -->
                 <div class="header-misc">
+                    <div class="menu-item">
+                        <a class="menu-link menu-link-space side-panel-trigger">
+                            <i class="icon-line-shopping-cart" style="font-size: 20px;"></i>
+                        </a>
+                    </div>
                     <!-- #cart panel -->
                     <% if (!currentUser) { %>
-                        <div>
-                            <i type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-                                class="button button-small header-button button-rounded button-reveal d-inline-flex tright font-weight-semibold icon-user dropdown-toggle dropdown-login"></i>
+                        <div class="menu-item">
+                            <a class="menu-link menu-link-space" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="icon-line-log-in dropdown-login" style="font-size: 20px;"></i>
+                             </a>
                             <div class="dropdown-menu dropdown-menu-right" style="width: 200px;">
                 
                                 <a href="/users/login" id="login-button" class="button button-small button-reveal d-inline-flex tright">
@@ -55,7 +61,7 @@
                                         <i class="icon-cog"></i><span>Administrador</a>
                                 <% } %>
 
-                                <a href="#" id="login-button" class="button button-small button-reveal d-inline-flex tright bg-cart side-panel-trigger">
+                                <a href="/store/productCart" id="login-button" class="button button-small button-reveal d-inline-flex tright bg-cart">
                                     <i class="icon-line-shopping-cart"></i><span>Carrito</a>
 
                                 <form class="m-0" action="/users/destroy-session?_method=DELETE" method="POST">

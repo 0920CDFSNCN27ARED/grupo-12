@@ -2,21 +2,23 @@ const cart = new Cart();
 const productsStore = document.getElementById('products-list');
 const cartProductsItems = document.getElementById("cart-products-items");
 const destroyProductsCartBtn = document.getElementById('destroy-products-cart');
-    
 
 cartEvents();
 
 function cartEvents(){
 
     cart.updateCart();
+    
+    cart.addProductsCartPage();
 
+    cart.addProductsCheckoutPage();
+    
     destroyOneProduct();
 
     destroyProducts();
     
     addProductStore();
 
-    //addSimpleProduct();
 };
 
 function destroyOneProduct(){
@@ -35,12 +37,6 @@ function addProductStore(){
     });
 }
 
-function addSimpleProduct(){
-    alert(getProduct)
-    getProduct.addEventListener('click', () => {
-        alert(getProduct)
-    });
-}
 
 
 

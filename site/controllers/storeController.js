@@ -1,6 +1,8 @@
 //Require
 const { validationResult } = require("express-validator");
 const bcrypt = require("bcrypt");
+const { createLocalStorage } = require("localstorage-ponyfill");
+const localStorage = createLocalStorage({ mode: "memory" }); 
 
 // Services
 const orderService = require("../services/orderService");
@@ -17,6 +19,7 @@ const storeController = {
         const validateErrors = req.flash('validateErrors')
         const message = req.flash('message');
         let notification = null;
+
         if(validateErrors.length != 0){
             notification = 'error'
         } else if(message.length != 0){
@@ -63,6 +66,10 @@ const storeController = {
         const validateErrors = req.flash('validateErrors')
         const message = req.flash('message');
         let notification = null;
+        localStorage.setItem('pepe', 234);
+        let total = localStorage.getItem("total");
+        console.log(total);
+
         if(validateErrors.length != 0){
             notification = 'error'
         } else if(message.length != 0){
@@ -70,6 +77,7 @@ const storeController = {
         };
 
         res.render("store/checkout",{ 
+                total,
                 notification: notification,
                 message: message,
                 errors: validateErrors, 

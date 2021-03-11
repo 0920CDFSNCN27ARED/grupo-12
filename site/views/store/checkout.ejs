@@ -32,13 +32,6 @@
 			============================================= -->
 			<section id="dark-content" class="dark noborder">
 				<section class="bg-img-register dark noborder parallax pt-3">
-					<% if (typeof errors!="undefined") { %>
-						<ul id="errors" class="container-lg">
-							<% for( let i = 0; i < errors.length; i++ ) { %>
-							<li ><%= errors[i].msg %> </li>
-							<% } %>
-						</ul>
-					   <% } %>
 				<div class="content-wrap">
 					<div class="container clearfix">
 
@@ -191,107 +184,39 @@
 							</div>
 
 							<div class="col-lg-6">
-								<div>
-									<h3>Detalle de Compra</h3>
-
-									<div class="table-responsive">
-										<table class="table cart">
+								
+								<h3 class="mb-5">Detalle de Compra <%= total %>  </h3>
+									<div class="table-responsive mb-0">
+										<table id="table-cart" class="table">
 											<thead>
 												<tr>
-													<th class="cart-product-thumbnail">&nbsp;</th>
+													<th class="cart-product-thumbnail">IMAGEN</th>
 													<th class="cart-product-name">PRODUCTO</th>
+													<th class="cart-product-price center">PRECIO</th>
+													<th class="cart-product-price center">DESC</th>
 													<th class="cart-product-quantity">CANTIDAD</th>
-													<th class="cart-product-shop">TIENDA</th>
-													<th class="cart-product-subtotal">TOTAL</th>
+													<th class="cart-product-subtotal center">TOTAL</th>
 												</tr>
 											</thead>
-											<tbody>
-												<tr class="cart_item">
-													<td class="cart-product-thumbnail">
-														<a href="javascript:void(0)"><img src="/images/products/product-03.png" style="width:80px !important"alt="beer_img"></a>
-													</td>
-
-													<td class="cart-product-name">
-														<a href="javascript:void(0)">Lager Green Beer</a>
-													</td>
-
-													<td class="cart-product-quantity">
-														<div class="quantity clearfix">
-															2
-														</div>
-													</td>
-													
-													<td class="cart-product-shop">
-														<span class="amount">Artis Kraken</span>
-													</td>
-													<td class="cart-product-subtotal">
-														<span class="amount">$500,00</span>
-													</td>
-												</tr>
-												<tr class="cart_item">
-													<td class="cart-product-thumbnail">
-														<a href="javascript:void(0)"><img src="/images/products/product-03.png" style="width:80px !important"alt="beer_img"></a>
-													</td>
-
-													<td class="cart-product-name">
-														<a href="javascript:void(0)">Lager Red Beer</a>
-													</td>
-
-													<td class="cart-product-quantity">
-														<div class="quantity clearfix">
-															1
-														</div>
-													</td>
-
-													<td class="cart-product-shop">
-														<span class="amount">Artis Kraken</span>
-													</td>
-													<td class="cart-product-subtotal">
-														<span class="amount">$300,00</span>
-													</td>
-												</tr>
-												<tr class="cart_item">
-													<td class="cart-product-thumbnail">
-														<a href="javascript:void(0)"><img src="/images/products/product-03.png" style="width:80px !important"alt="beer_img"></a>
-													</td>
-
-													<td class="cart-product-name">
-														<a href="javascript:void(0)">Ipa Beer</a>
-													</td>
-
-													<td class="cart-product-quantity">
-														<div class="quantity clearfix">
-															1
-														</div>
-													</td>
-
-													<td class="cart-product-shop">
-														<span class="amount">Artis Kraken</span>
-													</td>
-													<td class="cart-product-subtotal">
-														<span class="amount">$450,00</span>
-													</td>
-												</tr>
+											<tbody id="checkout-products-items-table">
+												<!-- read tr from localStorage -->
 											</tbody>
-
 										</table>
+										<div id="total-checkout-page" class="table-responsive">
+											<!-- read total checkout page from localStorage -->
+										</div>
 									</div>
-								</div>
-								<div class="col-12 form-group">
-									<label for="orderMessage">Aclaraciones:</label>
-									<textarea class="sm-form-control" id="orderMessage" name="orderMessage" placeholder="Menciona si tienes un requerimiento especifico para tu orden" rows="6" cols="30"></textarea>
-								</div>
 								<div>
 									<hr>
 									<div class="table-responsive">
 										<table class="table cart">
 											<tbody>
 												<tr class="cart_item">
-													<td class="border-top-0 cart-product-name">
+													<td class="border-top-0">
 														<strong>Subtotal</strong>
 													</td>
 
-													<td class="border-top-0 cart-product-name">
+													<td class="border-top-0">
 														<span class="amount">$1.750,00</span>
 													</td>
 												</tr>

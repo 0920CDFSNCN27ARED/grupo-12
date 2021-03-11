@@ -9,6 +9,7 @@
 
 	<!--Cart Panel -->
 	<%- include('../layout/panelCart') %>
+	
 
 	<!-- Notifications -->
 	<%- include('../layout/notifications') %>
@@ -29,56 +30,31 @@
 		<section id="dark-content" class="dark noborder">
             <div class="content-wrap">
 				<div class="container">
-
-					<div class="table-responsive">
-						<table id="table-cart" class="table">
-							<thead>
-								<tr>
-									<th class="cart-product-thumbnail">IMAGEN</th>
-									<th class="cart-product-name">PRODUCTO</th>
-									<th class="cart-product-price center">PRECIO</th>
-									<th class="cart-product-price center">DESC</th>
-									<th class="cart-product-quantity">CANTIDAD</th>
-									<th class="cart-product-subtotal center">TOTAL</th>
-									<th class="cart-product-remove center">OPCIONES</th>
-								</tr>
-							</thead>
-							<tbody>
-								
-								<tr class="cart_item">
-									<td class="">
-										<img class="cart-img-animation" src="/images/products/product-02.png" width="50">
-									</td>
-									<td class="">
-										LAGER GREEN BEER
-									</td>
-									<td class="cart-product-price center">
-										<span class="amount">$500,00</span>
-									</td>
-									<td class="cart-product-desc center">
-										<span class="amount">$500,00</span>
-									</td>
-									<td class="cart-product-quantity">
-										<div class="quantity">
-											<input type="button" value="-" class="minus">
-											<input type="text" name="quantity" value="1" class="qty" />
-											<input type="button" value="+" class="plus">
-										</div>
-									</td>
-									<td class="cart-product-subtotal center">
-										<span class="amount">$500,00</span>
-									</td>
-									<td class="cart-product-remove center">
-										<a href="javascript:void(0)" class="remove" title="Remove this item"><i class="icon-trash1" style="font-size: 20px;"></i></a>
-									</td>
-								</tr>
-								
-							</tbody>
-
-						</table>
+					<div id="products-list">
+						<div class="table-responsive mb-0">
+							<table id="table-cart" class="table">
+								<thead>
+									<tr>
+										<th class="cart-product-thumbnail">IMAGEN</th>
+										<th class="cart-product-name">PRODUCTO</th>
+										<th class="cart-product-price center">PRECIO</th>
+										<th class="cart-product-price center">DESC</th>
+										<th class="cart-product-quantity">CANTIDAD</th>
+										<th class="cart-product-subtotal center">TOTAL</th>
+										<th class="cart-product-remove center">OPCIONES</th>
+									</tr>
+								</thead>
+								<tbody id="cart-products-items-table">
+									<!-- read tr from localStorage -->
+									
+								</tbody>
+							</table>
+							<div id="total-cart-page" class="table-responsive">
+								<!-- read total cart page from localStorage -->
+							</div>
+						</div>
 					</div>
 					
-					<div class="divider"></div>
 					<div class="row mb-5">	
 						<div class="col-lg-3">
 							<input type="text" value="" class="sm-form-control" placeholder="Ingresa tu código.." />
@@ -90,16 +66,14 @@
 						</div>
 							
 						<div class="col-lg-6">
-							<a href="/checkout"
+							<a href="/store/checkout"
 								class="button header-button mt-0 button-rounded button-reveal d-inline-flex float-right">
-								<i class="icon-money-check"></i><span>Finalizar Compra</span></a>
-							<a href="javascript:void(0)"
-								class="button header-button mt-0 button-rounded button-reveal d-inline-flex float-right">
-								<i class="icon-line-reload"></i><span>Actualizar Carrito</span></a>
-						</div>
+								<i class="icon-money-check"></i><span>Finalizar Compra</span>
+							</a>
+						</div>		
 					</div>
 
-					<div class="divider"></div>
+					<!-- <div class="divider"></div>
 					<div class="row">
 						<div class="col-lg-6">
 							<h4>CALCULAR ENVIO</h4>
@@ -122,46 +96,7 @@
 								</div>
 							</form>
 						</div>
-
-						<div class="col-lg-6">
-							<h4>TOTAL</h4>
-
-							<div class="table-responsive">
-								<table class="table cart">
-									<tbody>
-										<tr class="cart_item">
-											<td class="cart-product-name">
-												<strong>Subtotal</strong>
-											</td>
-
-											<td class="cart-product-name">
-												<span class="amount">$1.500,00</span>
-											</td>
-										</tr>
-										<tr class="cart_item">
-											<td class="cart-product-name">
-												<strong>Envío</strong>
-											</td>
-
-											<td class="cart-product-name">
-												<span class="amount">Gratuito</span>
-											</td>
-										</tr>
-										<tr class="cart_item">
-											<td class="cart-product-name">
-												<strong>Total</strong>
-											</td>
-
-											<td class="cart-product-name">
-												<span class="amount color lead"><strong>$1.500,00</strong></span>
-											</td>
-										</tr>
-									</tbody>
-
-								</table>
-							</div>
-						</div>
-					</div>
+					</div> -->
 
 				</div>
 			</div>

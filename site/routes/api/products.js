@@ -5,6 +5,9 @@ const productsController = require("../../controllers/api/productsController");
 /* GET products List */
 router.get('/', productsController.list);
 
+/* GET products Qty */
+router.get('/count', productsController.count);
+
 /* GET one product */
 router.get('/:id', productsController.findOne);
 

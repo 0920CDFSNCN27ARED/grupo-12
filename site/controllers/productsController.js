@@ -1,6 +1,8 @@
 // Require
 const fs = require('fs');
 const { check, validationResult, body } = require("express-validator");
+const { createLocalStorage } = require("localstorage-ponyfill");
+const localStorage = createLocalStorage();
 
 // Services
 const productService = require("../services/productService");
@@ -333,11 +335,28 @@ const productsController = {
         
     },
 
+    // POST product in server localStorage
+    // postOneProduct: (req, res) => {
+    //     try {
+    //         let product = {
+    //             id: req.params.id,
+    //             qty: req.body.qty
+    //         }
+    //         localStorage.setItem(`product${product.id}`,JSON.stringify(product));
+    //         req.flash("message", `El producto fue agregado al carrito.`);
+    //         return res.redirect('/store');
+    //     } catch (error) {
+    //         res.status(400).send(error.message);
+    //     };
+    // },
+
     // Create Comment Form
     postComment: commentsController.create,
 
     // Delete - Delete one comment
     destroyComment: commentsController.destroy,
+
+
 
 };
 

@@ -158,8 +158,6 @@ const usersController = {
         } else if(message.length != 0){
             notification = 'message'
         };
-        
-        console.log(req.url)
 
         try {
             let user = await userService.findOne(req.params.id);

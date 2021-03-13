@@ -99,8 +99,8 @@
 																<td><small><%= order.payments ? order.payments.name : ""%></small></td>
 																<td><small><%= order.shippingMethods ? order.shippingMethods.name : "" %></small></td>
 																<td class="d-flex justify-content-center">
-																	<button class="btn btn-outline btn-sm p-0" data-toggle="modal" data-target="#<%= `viewOrderModal${order.id}` %>">
-																		<i class="m-0 i-rounded i-small icon-line-eye"></i></button>
+																	<a href="/orders/<%= order.id %>/orderDetails" class="btn btn-outline btn-sm p-0">
+																		<i class="m-0 i-rounded i-small icon-line-eye"></i></a>
 																</td>
 															</tr>
 														<% });%>

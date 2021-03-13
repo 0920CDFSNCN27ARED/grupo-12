@@ -62,13 +62,15 @@ class Cart {
     // Actualizar pagina de checkout
     addProductsCheckoutPage() {
         // Agregar o actualizar carrito
+        let index = 0;
         for (let i = 0; i <= localStorage.length - 1; i++) {
             let key = localStorage.key(i);
             if (key.includes("product")) {
                 let product = JSON.parse(localStorage.getItem(key));
-
+                index = index + 1;
+                console.log(index)
                 // Mostrar producto en tabla
-                addOneProductCheckoutPage(product);
+                addOneProductCheckoutPage(product, index);
             }
         }
     }
@@ -200,7 +202,7 @@ function updateAllProducts() {
     //Mostrar total y descuento en pagina de checkout
     const totalCheckout = document.getElementById("total-checkout-page");
     if (totalCheckout != null) {
-        totalCheckoutPage(total, discount);
+        totalCheckoutPage(total, discount, productsQty);
     }
 }
 
@@ -274,10 +276,10 @@ function totalCartPage(total, discount) {
 };
 
 // Mostrar total y descuento en pagina carrito 
-function totalCheckoutPage(total, discount) {
+function totalCheckoutPage(total, discount, productsQty) {
     const totalPage = document.getElementById("total-checkout-page");
     // Agregamos total
-    if(total > 0){ 
+    if (total > 0) {
         const totalTable = document.createElement("table");
         totalTable.setAttribute("id", "checkout-page-table");
         totalTable.classList.add("table", "cart");
@@ -304,7 +306,7 @@ function totalCheckoutPage(total, discount) {
                 </tr>
                 <tr class="cart_item">
                     <td class="cart-product-name" col="3">
-                        <strong>Total Productos</strong>
+                        <strong>Total <span class="color">${productsQty}</span> Productos</strong>
                     </td>
                     <td class="cart-product-name" col="3">
                         <span class="amount color lead">
@@ -312,10 +314,11 @@ function totalCheckoutPage(total, discount) {
                         </span>
                     </td>
                 </tr>
+                <input type="hidden" name="productsQty" value="${productsQty}" style="display: none;"/>
             </tbody>
         `;
         totalPage.appendChild(totalTable);
-    } else if(total == 0) {
+    } else if (total == 0) {
         const emptyCart = document.createElement("div");
         emptyCart.classList.add("text-center", "mb-5", "mt-2");
         emptyCart.innerHTML = `
@@ -442,7 +445,7 @@ function addOneProductCartPage(product) {
 };
 
 // Agregar un producto a la table de la pagina de checkout
-function addOneProductCheckoutPage(product) {
+function addOneProductCheckoutPage(product, index) {
     const checkoutProductsPage = document.getElementById("checkout-products-items-table");
     if(checkoutProductsPage != null){
         const productItemPage = document.createElement("tr");
@@ -464,6 +467,8 @@ function addOneProductCheckoutPage(product) {
             <td class="cart-product-subtotal center">
                 <strong class="color">$${(product.price - product.discount) * product.qty}</strong>
             </td>
+            <input type="hidden" name="product${index}" value="${product.id}" style="display: none;"/>
+            <input type="hidden" name="qty${index}" value="${product.qty}" style="display: none;"/>
             `;
         checkoutProductsPage.appendChild(productItemPage);
     }

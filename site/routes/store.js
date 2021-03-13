@@ -13,16 +13,22 @@ router.get('/productCart', storeController.getCart);
 router.get('/checkout', storeController.getCheckout);
 
 /* POST checkout page. */
-router.post('/checkout', //[
-//     check('name').isEmpty().withMessage('El campo "nombre" no puede estar vacío'),
-//     check('dni').isEmpty().withMessage('El campo "DNI/CUIT" no puede estar vacío'),
-//     check('billingCountry').isEmpty().withMessage('El campo "país" no puede estar vacío'),
-//     check('billingProvince').isEmpty().withMessage('El campo "provincia" no puede estar vacío'),
-//     check('billingCity').isEmpty().withMessage('El campo "ciudad" no puede estar vacío'),
-//     check('billingPostalCode').isInt().withMessage('El campo "código postal" debe ser un número'),
-//     check('billingAddress').isEmpty().withMessage('El campo "dirección" no puede estar vacío'),
-//     check('email').isEmail().withMessage('El email ingresado es inválido'),
-//     check('phone').isMobilePhone().withMessage('El teléfono ingresado es inválido'),]
+router.post('/checkout', 
+[
+    check("name", "El nombre debe tener entre 4 y 50 caracteres de largo").isLength({min:4,max:35}),
+    check("name", "Tu nombre es requerido.").notEmpty(),
+    check('dni', 'El campo "DNI/CUIT" es requerido').notEmpty(),
+    check('billingCountry', 'El campo "país" es requerido').notEmpty(),
+    check('billingProvince', 'El campo "provincia" es requerido').notEmpty(),
+    check('billingCity', 'El campo "ciudad" es requerido').notEmpty(),
+    check('billingPostalCode', 'El campo "código postal" es requerido').notEmpty(),
+    check('billingAddress', 'El campo "dirección" es requerido').notEmpty(),
+    check('email', 'El email ingresado debe ser un email válido').isEmail(),
+    check('phone', 'El teléfono ingresado es inválido').isMobilePhone(),
+    check('shippingCheck', 'Debe decirdir si deseo otro dirección de envío').notEmpty(),
+    check('shippingMethod', 'El método de envío es requerido').notEmpty(),
+    check('paymentMethod', 'El método de pago es requerido').notEmpty(),
+],
 storeController.postCheckout);
 
 module.exports = router;

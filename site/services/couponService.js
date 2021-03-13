@@ -5,15 +5,23 @@ module.exports = {
         return await Coupon.findByPk(id, {
             include: [
                 { association: "coupons" },
-                {association: "shopCoupons"},
+                { association: "shopCoupons" },
             ],
+        });
+    },
+    findCode: async (code) => {
+        return await Coupon.findAll({
+            include: ["coupons", "shopCoupons"],
+            where: {
+                couponCode: code,
+            },
         });
     },
     findAll: async () => {
         return await Coupon.findAll({
             include: [
                 { association: "coupons" },
-                {association: "shopCoupons"},
+                { association: "shopCoupons" },
             ],
         });
     },
@@ -26,8 +34,8 @@ module.exports = {
         });
     },
     update: async (id, attributes) => {
-        return await Coupon.update(attributes, { 
-            where: { id: id }, 
+        return await Coupon.update(attributes, {
+            where: { id: id },
         });
-    }
+    },
 };

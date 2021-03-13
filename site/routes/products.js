@@ -48,6 +48,9 @@ router.post(
     productsController.postCreate
 );
 
+/* POST product in server localstorage. */
+//router.post("/:id/add-product", productsController.postOneProduct);
+
 // GET Edit product page
 router.get(
     '/:shop/:id/edit',

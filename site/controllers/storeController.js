@@ -106,7 +106,6 @@ const storeController = {
         try{
             if (errors.isEmpty()) {
                 if( loggedUserId == undefined){
-                    console.log(req.body);
 
                     // Verificamos cupón
                     let couponAmount, coupon, couponId;
@@ -115,9 +114,9 @@ const storeController = {
                         couponId = null;
                     } else {
                         coupon = await couponService.findCode(req.body.couponCode);
-                        if(coupon.length != 0 && coupon.status == 'active'){
-                            couponAmount = coupon.discount;
-                            couponId = coupon.id
+                        if(coupon.length != 0 && coupon[0].status == 'active'){
+                            couponAmount = coupon[0].discount;
+                            couponId = coupon[0].id
                         };
                     };
 
@@ -137,7 +136,7 @@ const storeController = {
                         let order = await orderService.create({
                             date: fecha,
                             email: req.body.email,
-                            totalProducts: req.body.productsQty,
+                            totalProducts: null,
                             totalShipping: totalShipping,
                             message: req.body.billingMessage,
                             tax: 0,
@@ -182,8 +181,9 @@ const storeController = {
                             shops.push(product.shopId);
                         };
 
-                        // Calculamos total de orden 
-                        let orderTotal = productsTotal - discountsTotal - couponAmount;
+                        // Calculamos total de orden
+                        let orderTotalProducts = productsTotal - discountsTotal;
+                        let orderTotal = productsTotal + totalShipping - discountsTotal - couponAmount;
                         
                         // Creamos el usuario
                         let password =
@@ -240,6 +240,7 @@ const storeController = {
 
                         // Actualizamos Orden
                         await orderService.update(order.id, {
+                            totalProducts: orderTotalProducts,
                             total: orderTotal,
                             userId: user.id,
                             billAddressId: billingAddress.id,
@@ -247,7 +248,7 @@ const storeController = {
                         });
 
                         req.flash("message", "Tu pedido se realizo correctamente.");
-                        return res.redirect(`/orders/${order.id}/orderDetails`);
+                        return res.redirect(`/orders/${order.id}/orderSuccess`);
 
                     } else {
                         req.flash('validateErrors', [{msg: 'El carrito se encuentra vacio, no es posible realizar un pedido.'}]);

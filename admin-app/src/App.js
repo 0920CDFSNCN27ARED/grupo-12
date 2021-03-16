@@ -38,22 +38,17 @@ import {Component} from "react";
       };
     };
 
-    const productCount = async () => {
-        const response = await fetch("http://localhost:3000/api/products/count");
-        const responseCount = await response.json();
-        return responseCount;
-    };
 
     async componentDidMount() {
 
-      const responseCount = await productCount();
-      
-
+        const response = await fetch(`http://localhost:3000/api/products/count`);
+        const countResponse = await response.json();
+        
       const smallCardData = [
           {
             id: 1,
             title: 'Titulo 1',
-            value: responseCount.count.toString(),
+            value: countResponse.count,
             icon: 'fa-clipboard-list'
           },
           {

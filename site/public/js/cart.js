@@ -154,7 +154,7 @@ class Cart {
 
 // Obtener un producto
 async function getOneProduct(id){
-    const response = await fetch(`http://localhost:3000/api/products/${id}`);
+    const response = await fetch(`http://${window.env.DOMAIN}/api/products/${id}`);
     let product = await response.json();
     return product.data;
 };
@@ -395,7 +395,7 @@ function addOneProductCart(product) {
                 ABV ${product.abv}% | IBU ${product.ibu} | OG ${product.og}
             </span>
             <span class="cart-panel-product-price">
-                ${product.qty} x $${product.price} <small class="text-success mt-0">(-$${ product.discount})</small> = $${(product.price - product.discount) * product.qty}
+                ${product.qty} x $${product.price} <small class="text-success mt-0">(-$${ product.discount})</small> = $${((product.price - product.discount) * product.qty).toFixed(2)}
             </span>
         </div>
     `;
@@ -416,10 +416,10 @@ function addOneProductCartPage(product) {
                 ${product.name}
             </td>
             <td class="cart-product-price center">
-                <span class="amount">$${product.price}</span>
+                <span class="amount">$${(product.price.toFixed(2))}</span>
             </td>
             <td class="cart-product-desc center">
-                <span class="amount">$${product.discount}</span>
+                <span class="amount">$${(product.discount.toFixed(2))}</span>
             </td>
             <td class="cart-product-quantity">
                 <div class="quantity">
@@ -429,7 +429,7 @@ function addOneProductCartPage(product) {
                 </div>
             </td>
             <td class="cart-product-subtotal center">
-                <span class="amount">$${(product.price - product.discount) * product.qty}</span>
+                <span class="amount">$${((product.price - product.discount) * product.qty).toFixed(2)}</span>
             </td>
             <td class="cart-product-remove center">
                 <a class="btn btn-outline-warning btn-sm add-product" data-id="${product.id}">
@@ -456,16 +456,16 @@ function addOneProductCheckoutPage(product, index) {
             </td>
             <td class="">${product.name}</td>
             <td class="cart-product-price center">
-                <span class="amount">$${product.price}</span>
+                <span class="amount">$${(product.price.toFixed(2))}</span>
             </td>
             <td class="cart-product-desc center">
-                <span class="amount">$${product.discount}</span>
+                <span class="amount">$${(product.discount.toFixed(2))}</span>
             </td>
             <td class="cart-product-quantity">
                 <span class="amount">${product.qty}</span>
             </td>
             <td class="cart-product-subtotal center">
-                <strong class="color">$${(product.price - product.discount) * product.qty}</strong>
+                <strong class="color">$${((product.price - product.discount) * product.qty).toFixed(2)}</strong>
             </td>
             <input type="hidden" name="product${index}" value="${product.id}" style="display: none;"/>
             <input type="hidden" name="qty${index}" value="${product.qty}" style="display: none;"/>

@@ -1,4 +1,5 @@
 const createError = require('http-errors');
+const cors = require("cors");
 const express = require("express");
 const flash = require('connect-flash-plus');
 const path = require("path");
@@ -25,6 +26,14 @@ const breweryDBApiRouter = require("./routes/api/breweryDB");
 
 
 const app = express();
+app.use(
+    cors({
+        origin: "http://localhost:3001",
+        methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+        preflightContinue: false,
+        optionsSuccessStatus: 204,
+    })
+);
 
 // ************ Template Engine ************
 app.set('views', path.join(__dirname, 'views'));

@@ -169,6 +169,7 @@ const usersController = {
                 errors: validateErrors,
                 comments: userData.comments,
                 orders: userData.orders,
+                addresses: user.addresses,
                 user: user,
             });
         } catch (error) {

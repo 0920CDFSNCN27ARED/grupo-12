@@ -3,12 +3,12 @@ const { User, Comment, Order, Shop } = require("../database/models");
 module.exports = {
     findOne: async (id) => {
         return await User.findByPk(id, {
-            include:["shops", "comments", "orders"],
+            include: ["shops", "comments", "orders", "addresses"],
         });
     },
     findAll: async () => {
         return await User.findAll({
-            include:["shops", "comments", "orders"],
+            include: ["shops", "comments", "orders", "addresses"],
         });
     },
     create: async (attributes) => {

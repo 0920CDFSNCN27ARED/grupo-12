@@ -208,7 +208,7 @@
 																			</td>
 																			<td class="cart-product-name">
 																				<span class="amount">
-																					<%= order.billAddresses.message ? order.billAddresses.message : "Sin aclaraciones"%>
+																					<%= order.message ? order.message : "Sin instrucciones"%>
 																				</span>
 																			</td>
 																		</tr>
@@ -294,7 +294,7 @@
 																			</td>
 
 																			<td class="cart-product-name">
-																				<span class="amount">-$<%= order.coupons == null ? 'Ninguno' : order.coupons.discount %></span>
+																				<span class="amount"><%= order.coupons == null ? 'Ninguno' : '-$' + order.coupons.discount %></span>
 																			</td>
 																		</tr>
 																		<tr class="cart_item">

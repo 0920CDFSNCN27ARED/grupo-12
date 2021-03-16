@@ -13,6 +13,9 @@ router.get('/productCart', storeController.getCart);
 router.get('/checkout', storeController.getCheckout);
 
 /* POST checkout page. */
+router.post('/checkout/current-user', storeController.postCheckout);
+
+/* POST checkout page. */
 router.post('/checkout', 
 [
     check("name", "El nombre debe tener entre 4 y 50 caracteres de largo").isLength({min:4,max:35}),

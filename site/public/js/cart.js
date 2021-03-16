@@ -68,7 +68,6 @@ class Cart {
             if (key.includes("product")) {
                 let product = JSON.parse(localStorage.getItem(key));
                 index = index + 1;
-                console.log(index)
                 // Mostrar producto en tabla
                 addOneProductCheckoutPage(product, index);
             }
@@ -224,7 +223,6 @@ function totalCart(total, discount) {
 // Mostrar total y descuento en pagina carrito 
 function totalCartPage(total, discount) {
     const totalPage = document.getElementById("total-cart-page");
-    console.log(totalPage)
 
     // Agregamos total
     if(total > 0){ 
@@ -315,6 +313,7 @@ function totalCheckoutPage(total, discount, productsQty) {
                     </td>
                 </tr>
                 <input type="hidden" name="productsQty" value="${productsQty}" style="display: none;"/>
+                <input type="text" id="productsTotal" name="productsTotal" value="${total}" style="display: none;"/>
             </tbody>
         `;
         totalPage.appendChild(totalTable);

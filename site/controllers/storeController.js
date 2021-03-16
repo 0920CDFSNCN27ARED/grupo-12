@@ -98,28 +98,46 @@ const storeController = {
 
     postCheckout: async (req, res) => {
         let errors = validationResult(req);
-        let loggedUserId = req.session.loggedUserId;
         const hoy = new Date();
         const fecha = hoy.getFullYear() + '-' + ( hoy.getMonth() + 1 ) + '-' + (hoy.getDate());
         const expireDate = hoy.getFullYear() + '-' + ( hoy.getMonth() + 1 ) + '-' + (hoy.getDate() + 15);
         const hora = hoy.getHours() + ':' + hoy.getMinutes() + ':' + hoy.getSeconds();
-        try{
-            if (errors.isEmpty()) {
-                if( loggedUserId == undefined){
+        let loggedUserId = req.session.loggedUserId;
+        let currentUser;
+        try {
+            if (loggedUserId == undefined) {
+                currentUser = null;
+            } else {
+                currentUser = await userService.findOne(loggedUserId);
+            };
 
-                    // Verificamos cupón
-                    let couponAmount, coupon, couponId;
-                    if(req.body.couponCode == ''){
+            if (errors.isEmpty()) {
+
+                // Verificamos cupón
+                let couponAmount, coupon, couponId;
+                if(req.body.couponCode == ''){
+                    couponAmount = 0;
+                    couponId = null;
+                } else {
+                    coupon = await couponService.findCode(req.body.couponCode);
+                    if(coupon.length != 0 && coupon[0].status == 'active'){
+                        couponAmount = coupon[0].discount;
+                        couponId = coupon[0].id
+                    } else {
                         couponAmount = 0;
                         couponId = null;
-                    } else {
-                        coupon = await couponService.findCode(req.body.couponCode);
-                        if(coupon.length != 0 && coupon[0].status == 'active'){
-                            couponAmount = coupon[0].discount;
-                            couponId = coupon[0].id
-                        };
                     };
+                };
+                // Obtenemos valor de envío
+                let shippingMethod = await shippingMethodService.findOne(req.body.shippingMethod);
+                let totalShipping = shippingMethod.amount;
 
+                if(req.body.productsQty == 0){
+                    req.flash('validateErrors', [{msg: 'El carrito se encuentra vacio, no es posible realizar un pedido.'}]);
+                    return res.redirect(`/store/checkout`);
+                };
+
+                if( currentUser == null){
                     // Verificamos si el usuario existe
                     let checkEmail = await userService.checkUserEmail(req.body.email);
                     if(checkEmail == 'used'){
@@ -127,142 +145,207 @@ const storeController = {
                         return res.redirect("/store/checkout");
                     };
                     
-                    // Obtenemos valor de envío
-                    let shippingMethod = await shippingMethodService.findOne(req.body.shippingMethod);
-                    let totalShipping = shippingMethod.amount;
-                    
-                    if(req.body.productsQty > 0){
-                        // creamos pedido general
-                        let order = await orderService.create({
-                            date: fecha,
-                            email: req.body.email,
-                            totalProducts: null,
-                            totalShipping: totalShipping,
-                            message: req.body.billingMessage,
-                            tax: 0,
-                            total: null,
-                            userId: null,
-                            shopId: 1,
-                            statusId: 1,
-                            paymentId: req.body.paymentMethod,
-                            couponId: couponId,
-                            shippingMethodId: req.body.shippingMethod,
-                            billAddressId: null,
-                            shippingAddressId: null,
-                        });
+                    // Creamos el usuario
+                    let password =
+                        req.body.password != ""
+                            ? bcrypt.hashSync(req.body.password, 10)
+                            : bcrypt.hashSync(req.body.email, 10);
 
-                        // Creamos lineas de pedido y las asignamos a la orden
-                        let productId,
-                            productQty,
-                            product,
-                            subtotal = 0,
-                            productsTotal = 0,
-                            discountsTotal = 0,
-                            shops = [];
-                        for (let i = 1; i <= req.body.productsQty; i++) {
-                            productId = eval(`req.body.product${i}`);
-                            productQty = eval(`req.body.qty${i}`);
-                            product = await productService.findOne(productId);
-                            subtotal =
-                                (product.price - product.discount) * productQty;
-                            
-                            await cartItemService.create({
-                                subtotal: subtotal,
-                                quantity: productQty,
-                                price: product.price,
-                                discount: product.discount,
-                                expireTime: `${expireDate} ${hora}`,
-                                productId: productId,
-                                orderId: order.id,
-                            });
+                    let user = await userService.create({
+                        name: req.body.name,
+                        userName: req.body.email,
+                        phone: req.body.phone,
+                        email: req.body.email,
+                        dni: parseInt(req.body.dni),
+                        password: password,
+                        avatar: "default-avatar.png",
+                        admin: false,
+                        status: "active",
+                        role: "buyer",
+                        bio: "",
+                        facebook: "",
+                        instagram: "",
+                        twitter: "",
+                        shopId: null,
+                    });
 
-                            productsTotal = productsTotal + product.price * productQty;
-                            discountsTotal = discountsTotal + product.discount * productQty
-                            shops.push(product.shopId);
-                        };
+                    // Creamos direccion de facturación
+                    let billingAddress = await addressService.create({
+                        fullName: req.body.name,
+                        address: req.body.billingAddress,
+                        city: req.body.billingCity,
+                        province: req.body.billingProvince,
+                        postalCode: req.body.billingPostalCode,
+                        country: req.body.billingCountry,
+                        message: req.body.billingMessage,
+                        userId: user.id,
+                    });
 
-                        // Calculamos total de orden
-                        let orderTotalProducts = productsTotal - discountsTotal;
-                        let orderTotal = productsTotal + totalShipping - discountsTotal - couponAmount;
-                        
-                        // Creamos el usuario
-                        let password =
-                            req.body.password != ""
-                                ? bcrypt.hashSync(req.body.password, 10)
-                                : bcrypt.hashSync(req.body.email, 10);
-
-                        let user = await userService.create({
-                            name: req.body.name,
-                            userName: req.body.email,
-                            phone: req.body.phone,
-                            email: req.body.email,
-                            dni: parseInt(req.body.dni),
-                            password: password,
-                            avatar: "default-avatar.png",
-                            admin: false,
-                            status: "active",
-                            role: "buyer",
-                            bio: "",
-                            facebook: "",
-                            instagram: "",
-                            twitter: "",
-                            shopId: null,
-                        });
-
-                        // Creamos direccion de facturación
-                        let billingAddress = await addressService.create({
+                    // Creamos direccion de envio en caso de estar verificada
+                    let shippingAddressId;
+                    if (req.body.shippingCheck == 1) {
+                        let shippingAddress = await addressService.create({
                             fullName: req.body.name,
-                            address: req.body.billingAddress,
-                            city: req.body.billingCity,
-                            province: req.body.billingProvince,
-                            postalCode: req.body.billingPostalCode,
-                            country: req.body.billingCountry,
-                            message: req.body.billingMessage,
+                            address: req.body.shippingAddress,
+                            city: req.body.shippingCity,
+                            province: req.body.shippingProvince,
+                            postalCode: req.body.shippingPostalCode,
+                            country: req.body.shippingCountry,
                             userId: user.id,
                         });
-
-                        // Creamos direccion de envio en caso de estar verificada
-                        let shippingAddressId;
-                        if (req.body.shippingCheck == 1) {
-                            let shippingAddress = await addressService.create({
-                                fullName: req.body.name,
-                                address: req.body.shippingAddress,
-                                city: req.body.shippingCity,
-                                province: req.body.shippingProvince,
-                                postalCode: req.body.shippingPostalCode,
-                                country: req.body.shippingCountry,
-                                userId: user.id,
-                            });
-                            shippingAddressId = shippingAddress.id
-                        } else {
-                            shippingAddressId = null;
-                        };
-
-                        // Actualizamos Orden
-                        await orderService.update(order.id, {
-                            totalProducts: orderTotalProducts,
-                            total: orderTotal,
-                            userId: user.id,
-                            billAddressId: billingAddress.id,
-                            shippingAddressId: shippingAddressId,
-                        });
-
-                        req.flash("message", "Tu pedido se realizo correctamente.");
-                        return res.redirect(`/orders/${order.id}/orderSuccess`);
-
+                        shippingAddressId = shippingAddress.id
                     } else {
-                        req.flash('validateErrors', [{msg: 'El carrito se encuentra vacio, no es posible realizar un pedido.'}]);
-                        return res.redirect(`/store/checkout`);
+                        shippingAddressId = null;
                     };
-                    
-                } else {
-                    let currentUser = userService.findOne(loggedUserId);
-                    
-                    
+
+                    // creamos pedido general
+                    let order = await orderService.create({
+                        date: fecha,
+                        email: req.body.email,
+                        totalProducts: null,
+                        totalShipping: totalShipping,
+                        message: req.body.billingMessage,
+                        tax: 0,
+                        total: null,
+                        userId: user.id,
+                        shopId: 1,
+                        statusId: 1,
+                        paymentId: req.body.paymentMethod,
+                        couponId: couponId,
+                        shippingMethodId: req.body.shippingMethod,
+                        billAddressId: billingAddress.id,
+                        shippingAddressId: shippingAddressId,
+                    });
+
+                    // Creamos lineas de pedido y las asignamos a la orden
+                    let productId,
+                        productQty,
+                        product,
+                        subtotal = 0,
+                        productsTotal = 0,
+                        discountsTotal = 0,
+                        shops = [];
+                    for (let i = 1; i <= req.body.productsQty; i++) {
+                        productId = eval(`req.body.product${i}`);
+                        productQty = eval(`req.body.qty${i}`);
+                        product = await productService.findOne(productId);
+                        subtotal =
+                            (product.price - product.discount) * productQty;
+                        
+                        await cartItemService.create({
+                            subtotal: subtotal,
+                            quantity: productQty,
+                            price: product.price,
+                            discount: product.discount,
+                            expireTime: `${expireDate} ${hora}`,
+                            productId: productId,
+                            orderId: order.id,
+                        });
+
+                        productsTotal = productsTotal + product.price * productQty;
+                        discountsTotal = discountsTotal + product.discount * productQty
+                        shops.push(product.shopId);
+                    };
+
+                    // Calculamos total de orden
+                    let orderTotalProducts = productsTotal - discountsTotal;
+                    let orderTotal = productsTotal + totalShipping - discountsTotal - couponAmount;
+
+                    await orderService.update(order.id, {
+                        totalProducts: orderTotalProducts,
+                        total: orderTotal,
+                    });
+
                     req.flash("message", "Tu pedido se realizo correctamente.");
-                    return res.redirect(
-                        `/users/${currentUser.id}/profile#tab-orders`
-                    );
+                    return res.redirect(`/orders/${order.id}/orderSuccess`);
+
+                } else if (currentUser) {
+
+                    // Creamos direccion de envio en caso de estar verificada
+                    let shippingAddressId;
+                    if (req.body.shippingCheck == 1) {
+                        let shippingAddress = await addressService.create({
+                            fullName: currentUser.name,
+                            address: req.body.shippingAddress,
+                            city: req.body.shippingCity,
+                            province: req.body.shippingProvince,
+                            postalCode: req.body.shippingPostalCode,
+                            country: req.body.shippingCountry,
+                            userId: currentUser.id,
+                        });
+                        shippingAddressId = shippingAddress.id;
+                    } else {
+                        shippingAddressId = req.body.shippingAddressId;
+                    }
+
+                    // creamos pedido general
+                    let order = await orderService.create({
+                        date: fecha,
+                        email: currentUser.email,
+                        totalProducts: null,
+                        totalShipping: totalShipping,
+                        message: req.body.billingMessage,
+                        tax: 0,
+                        total: null,
+                        userId: currentUser.id,
+                        shopId: 1,
+                        statusId: 1,
+                        paymentId: req.body.paymentMethod,
+                        couponId: couponId,
+                        shippingMethodId: req.body.shippingMethod,
+                        billAddressId: req.body.billAddressId,
+                        shippingAddressId: shippingAddressId,
+                    });
+                    console.log(currentUser);
+
+                    // Creamos lineas de pedido y las asignamos a la orden
+                    let productId,
+                        productQty,
+                        product,
+                        subtotal = 0,
+                        productsTotal = 0,
+                        discountsTotal = 0,
+                        shops = [];
+                    for (let i = 1; i <= req.body.productsQty; i++) {
+                        productId = eval(`req.body.product${i}`);
+                        productQty = eval(`req.body.qty${i}`);
+                        product = await productService.findOne(productId);
+                        subtotal =
+                            (product.price - product.discount) * productQty;
+
+                        await cartItemService.create({
+                            subtotal: subtotal,
+                            quantity: productQty,
+                            price: product.price,
+                            discount: product.discount,
+                            expireTime: `${expireDate} ${hora}`,
+                            productId: productId,
+                            orderId: order.id,
+                        });
+
+                        productsTotal =
+                            productsTotal + product.price * productQty;
+                        discountsTotal =
+                            discountsTotal + product.discount * productQty;
+                        shops.push(product.shopId);
+                    }
+
+                    // Calculamos total de orden
+                    let orderTotalProducts = productsTotal - discountsTotal;
+                    let orderTotal =
+                        productsTotal +
+                        totalShipping -
+                        discountsTotal -
+                        couponAmount;
+
+                    await orderService.update(order.id, {
+                        totalProducts: orderTotalProducts,
+                        total: orderTotal,
+                    });
+                     console.log(order);
+
+                    req.flash("message", "Tu pedido se realizo correctamente.");
+                    return res.redirect(`/orders/${order.id}/orderSuccess`);
                 }
             } else {
                 req.flash('validateErrors', errors.errors);

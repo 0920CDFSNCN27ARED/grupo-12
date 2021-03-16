@@ -185,10 +185,10 @@ var SEMICOLON = SEMICOLON || {};
 					}).done(function() {
 						SEMICOLON.initialize.execPlugin( element, settings );
 					}).fail(function() {
-						console.log( settings.error );
+						//console.log( settings.error );
 					});
 				} else {
-					console.log( settings.error );
+					//console.log( settings.error );
 				}
 			}
 		},

@@ -19,8 +19,8 @@
                                     <div class="invalid-feedback">Complete este campo</div>
                                 </div>
                                 <div class="col-lg-12 col-md-12 form-group">
-                                    <label for="count">* Cantidad de productos:</label>
-                                    <input type="text" name="count" value="<%= order.count %>" class="form-control" required/>
+                                    <label for="count">* Total Productos:</label>
+                                    <input type="text" name="count" value="<%= order.totalProducts %>" class="form-control" required/>
                                     <div class="valid-feedback">Ok válido!</div>
                                     <div class="invalid-feedback">Complete este campo</div>
                                 </div>
@@ -44,7 +44,7 @@
                                 </div>
                                 <div class="col-lg-12 col-md-12 form-group">
                                     <label for="status">* Status:</label>
-                                    <input type="text" name="status" value="<%= order.total %>" class="form-control" required/>
+                                    <input type="text" name="status" value="<%= order.status.name %>" class="form-control" required/>
                                     <div class="valid-feedback">Ok válido!</div>
                                     <div class="invalid-feedback">Complete este campo</div>
                                 </div>

@@ -29,7 +29,6 @@ const ordersController = {
                 currentUser = await userService.findOne(loggedUserId);
             }
             let order = await orderService.findOne(req.params.id);
-            console.log(order);
             res.render("orders/orderDetails", {
                 notification: notification,
                 message: message,
@@ -64,7 +63,6 @@ const ordersController = {
                 currentUser = await userService.findOne(loggedUserId);
             }
             let order = await orderService.findOne(req.params.id);
-            console.log(order);
             res.render("orders/orderSuccess", {
                 notification: notification,
                 message: message,

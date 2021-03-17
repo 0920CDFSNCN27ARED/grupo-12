@@ -4,8 +4,8 @@ import NavItem from './elements/NavItem';
 
 const SideMenu = () => {
     return (
-        <div>
-            <ul className="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+        <div className="bg-gradient-primary">
+            <ul className="navbar-nav sidebar sidebar-dark accordion" id="accordionSidebar">
 
                 <Logo />
 

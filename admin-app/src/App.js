@@ -6,6 +6,7 @@ import DataCard from './components/cards/data-card/DataCard';
 import DataCardCategories from './components/cards/data-card-categories/DataCardCategories';
 import Footer from './components/footer/Footer';
 import {Component} from "react";
+import ProductsTable from './components/tables/products-table/ProductsTable';
 
 
 
@@ -16,54 +17,73 @@ import {Component} from "react";
         smallCardData: [
           {
             id: 1,
-            title: 'Titulo 1',
-            value: 123,
+            title: 'Cantidad de Productos',
+            color: 'primary',
+            value: 0,
             icon: 'fa-clipboard-list'
           },
           {
             id: 2,
-            title: 'Titulo 2',
-            color: 'danger',
-            value: 679.45,
-            icon: 'fa-clipboard-list'
+            title: 'Cantidad de Comercios',
+            color: 'success',
+            value: 0,
+            icon: 'fa-store'
           },
           {
             id: 3,
-            title: 'Titulo 3',
+            title: 'Cantidad de Usuarios',
             color: 'warning',
-            value: 456,
-            icon: 'fa-clipboard-list'
+            value: 0,
+            icon: 'fa-users'
           },
         ],
       };
     };
 
+    async productsCounter(){
+      const response = await fetch(`http://localhost:3000/api/products`);
+      const count = await response.json();
+      return parseInt(count.meta.totalCount);
+    };
+
+    async shopsCounter(){
+      const response = await fetch(`http://localhost:3000/api/shops`);
+      const count = await response.json();
+      return parseInt(count.meta.totalCount);
+    };
+
+    async usersCounter(){
+      const response = await fetch(`http://localhost:3000/api/users`);
+      const count = await response.json();
+      return parseInt(count.meta.totalCount);
+    };
 
     async componentDidMount() {
 
-        const response = await fetch(`http://localhost:3000/api/products/count`);
-        const countResponse = await response.json();
-        
+      const productsCounter = await this.productsCounter();
+      const usersCounter = await this.usersCounter();
+      const shopsCounter = await this.shopsCounter();
+
       const smallCardData = [
           {
             id: 1,
-            title: 'Titulo 1',
-            value: countResponse.count,
+            title: 'Cantidad de Productos',
+            value: productsCounter,
             icon: 'fa-clipboard-list'
           },
           {
             id: 2,
-            title: 'Titulo 2',
-            color: 'danger',
-            value: 679.45,
-            icon: 'fa-clipboard-list'
+            title: 'Cantidad de Comercios',
+            color: 'success',
+            value: shopsCounter,
+            icon: 'fa-store'
           },
           {
             id: 3,
-            title: 'Titulo 3',
+            title: 'Cantidad de Usuarios',
             color: 'warning',
-            value: 456,
-            icon: 'fa-clipboard-list'
+            value: usersCounter,
+            icon: 'fa-users'
           },
         ];
 
@@ -101,14 +121,14 @@ import {Component} from "react";
                       )
                     })
                   }
-                  
                 </div>
 
                 <div className="row">
                   <DataCard />
                   <DataCardCategories />
                 </div>
-
+                <h1 className="h3 mb-2 text-gray-800">All the products in the Database</h1>
+                <ProductsTable />
               </div>
             </div>
             <Footer />

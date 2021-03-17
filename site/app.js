@@ -20,20 +20,14 @@ const adminRouter = require("./routes/admin");
 
 // ******************** API ********************//
 const productsApiRouter = require("./routes/api/products");
+const shopsApiRouter = require("./routes/api/shops");
+const usersApiRouter = require("./routes/api/users");
 
 // *************** EXTERNAL API ****************//
 const breweryDBApiRouter = require("./routes/api/breweryDB");
 
-
 const app = express();
-app.use(
-    cors({
-        origin: "http://localhost:3001",
-        methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-        preflightContinue: false,
-        optionsSuccessStatus: 204,
-    })
-);
+app.use(cors());
 
 // ************ Template Engine ************
 app.set('views', path.join(__dirname, 'views'));
@@ -64,6 +58,8 @@ app.use('/admin', adminRouter);
 
 // ******************** API ********************//
 app.use('/api/products', productsApiRouter);
+app.use('/api/shops', shopsApiRouter);
+app.use('/api/users', usersApiRouter);
 
 // *************** EXTERNAL API ****************//
 app.use('/api/breweryDB', breweryDBApiRouter);

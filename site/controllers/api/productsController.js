@@ -1,24 +1,18 @@
-// Require
-const fs = require('fs');
-const { check, validationResult, body } = require("express-validator");
-let beerResource = require("../../requests/beerResource");
-
 // Services
 const productService = require("../../services/productService");
 const { Product } = require("../../database/models")
-const userService = require("../../services/userService");
-const { send } = require('process');
 
 // Controller
 const productsController = {
-    list: async (req, res) => {
-        let page = req.query.page ? req.query.page : 0;
+    findAll: async (req, res) => {
+        // let page = req.query.page ? req.query.page : 0;
+        // let products = await Product.findAll({
+        //     order: [["createdAt", "DESC"]],
+        //     offset: page * 2,
+        //     limit: 2,
+        // });
         let count = await Product.count();
-        let products = await Product.findAll({
-            order: [["createdAt", "DESC"]],
-            offset: page * 2,
-            limit: 2,
-        });
+        let products = await productService.findAll();
 
         res.json({
             meta: {
@@ -30,7 +24,7 @@ const productsController = {
         });
     },
 
-    count: async (req, res) => {
+    productCount: async (req, res) => {
         let count = await Product.count();
         res.send({
             count,
@@ -50,6 +44,19 @@ const productsController = {
         } catch (error) {
             res.status(400).send(error.message);
         }
+    },
+
+    findLast: async (req, res) => {
+        let lastId = await Product.count();
+        let lastProduct = await productService.findOne(lastId);
+
+        res.json({
+            meta: {
+                status: 200,
+                url: req.originalUrl,
+            },
+            data: lastProduct,
+        });
     },
 };
 

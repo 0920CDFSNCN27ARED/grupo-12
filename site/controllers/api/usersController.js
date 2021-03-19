@@ -19,8 +19,12 @@ const usersController = {
 
     userCount: async (req, res) => {
         let count = await User.count();
-        res.send({
-            count,
+        res.json({
+            meta: {
+                status: 200,
+                url: req.originalUrl,
+            },
+            data: count,
         });
     },
 

@@ -26,8 +26,12 @@ const productsController = {
 
     productCount: async (req, res) => {
         let count = await Product.count();
-        res.send({
-            count,
+        res.json({
+            meta: {
+                status: 200,
+                url: req.originalUrl,
+            },
+            data: count,
         });
     },
 
@@ -49,6 +53,7 @@ const productsController = {
     findLast: async (req, res) => {
         let lastId = await Product.count();
         let lastProduct = await productService.findOne(lastId);
+        console.log(lastProduct);
 
         res.json({
             meta: {

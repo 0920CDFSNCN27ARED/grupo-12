@@ -5,10 +5,10 @@ const usersController = require("../../controllers/api/usersController");
 /* GET products */
 router.get("/", usersController.findAll);
 
-/* GET one product */
-router.get("/:id", usersController.findOne);
-
 /* GET products Qty */
 router.get("/count", usersController.userCount);
+
+/* GET one product */
+router.get("/:id", usersController.findOne);
 
 module.exports = router;

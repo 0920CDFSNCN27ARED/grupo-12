@@ -22,6 +22,8 @@ const adminRouter = require("./routes/admin");
 const productsApiRouter = require("./routes/api/products");
 const shopsApiRouter = require("./routes/api/shops");
 const usersApiRouter = require("./routes/api/users");
+const categoriesApiRouter = require("./routes/api/categories");
+const typesApiRouter = require("./routes/api/types");
 
 // *************** EXTERNAL API ****************//
 const breweryDBApiRouter = require("./routes/api/breweryDB");
@@ -60,6 +62,8 @@ app.use('/admin', adminRouter);
 app.use('/api/products', productsApiRouter);
 app.use('/api/shops', shopsApiRouter);
 app.use('/api/users', usersApiRouter);
+app.use("/api/categories", categoriesApiRouter);
+app.use("/api/types", typesApiRouter);
 
 // *************** EXTERNAL API ****************//
 app.use('/api/breweryDB', breweryDBApiRouter);

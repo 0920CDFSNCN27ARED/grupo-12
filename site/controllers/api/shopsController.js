@@ -5,14 +5,14 @@ const { Shop } = require("../../database/models")
 // Controller
 const shopsController = {
     findAll: async (req, res) => {
-        //let page = req.query.page ? req.query.page : 0;
-        // let shops = await Shop.findAll({
-        //     order: [["createdAt", "DESC"]],
-        //     offset: page * 2,
-        //     limit: 2,
-        // });
+        let page = req.query.page ? req.query.page : 0;
+        let shops = await Shop.findAll({
+            include: ["products", "users", "orders", "shopCoupons"],
+            order: [["createdAt", "DESC"]],
+            offset: page * 6,
+            limit: 6,
+        });
         let count = await Shop.count();
-        let shops = await shopService.findAll()
 
         res.json({
             meta: {
@@ -26,8 +26,12 @@ const shopsController = {
 
     shopsCount: async (req, res) => {
         let count = await Shop.count();
-        res.send({
-            count,
+        res.json({
+            meta: {
+                status: 200,
+                url: req.originalUrl,
+            },
+            data: count,
         });
     },
 

@@ -4,22 +4,12 @@ const { queryTypes } = require("sequelize")
 module.exports = {
     findOne: async (id) => {
         return await Shop.findByPk(id, {
-            include:[
-                {association: "products"},
-                {association: "users"},
-                {association: "orders"},
-                {association: "shopCoupons"},
-            ],
+            include:["products", "users", "orders", "shopCoupons"],
         });
     },
     findAll: async () => {
         return await Shop.findAll({
-            include:[
-                {association: "products"},
-                {association: "users"},
-                {association: "orders"},
-                {association: "shopCoupons"},
-            ],
+            include:["products", "users", "orders", "shopCoupons"],
         });
     },
     create: async (attributes) => {

@@ -1,62 +1,133 @@
-import React from 'react';
-import './data-card-categories.css';
+import React, { Component } from 'react';
+import CategoryInfo from './elements/CategoryInfo';
+import TypeButton from './elements/TypeButton';
 
-const DataCardCategories = () => {
-    return (
-        <div className="col-lg-6 mb-4">						
+class DataCardCategories extends Component {
+    constructor(props){
+        super(props);
+        this.state = {
+            categoriesData: [
+                {   
+                    id: 1,
+                    name: 'N/D',
+                    description: 'N/D',
+                    count: 0
+                },
+                {   
+                    id: 2,
+                    name: 'N/D',
+                    description: 'N/D',
+                    count: 0
+                }
+            ],
+            typesData: [
+                {   
+                    id: 1,
+                    name: 'N/D',
+                    description: 'N/D',
+                    count: 0
+                },
+                {   
+                    id: 2,
+                    name: 'N/D',
+                    description: 'N/D',
+                    count: 0
+                }
+            ],
+            categoriesCount:  0,
+        }
+        this.filterButton = this.filterButton.bind(this)
+    }
+
+    async allTypes(){
+        const response = await fetch(`http://localhost:3000/api/types`);
+        const types = await response.json();
+        return types.data;
+    };
+
+    async categoriesCount(){
+        const response = await fetch(`http://localhost:3000/api/categories`);
+        const categories = await response.json();
+        return categories.count;
+    };
+
+    async allCategories(){
+        const response = await fetch(`http://localhost:3000/api/categories/`);
+        const categories = await response.json();
+        return categories.data;
+    };
+
+    async filterButton(typeId){
+        const response = await fetch(`http://localhost:3000/api/categories/types/${typeId}`);
+        const categories = await response.json();
+        const filterCategories =  categories.data;
+      this.setState(() => {
+        return {categoriesData: filterCategories}
+      })
+    }
+
+    async componentDidMount(){
+        const categoriesData = await this.allCategories();
+        const typesData = await this.allTypes();
+        const categoriesCount = await this.categoriesCount();
+        console.log(categoriesCount)
+
+        this.setState({
+          categoriesData,
+          typesData,
+          categoriesCount
+        });
+    }
+
+    render() {
+
+        return (			
             <div className="card shadow mb-4">
                 <div className="card-header py-3">
-                    <h6 className="m-0 font-weight-bold text-primary">Categories in Data Base</h6>
+                    <h6 className="m-0 font-weight-bold text-uppercase text-primary">Categorias de Cervezas {this.state.counter}</h6>
+                    <hr/>
+                    <div className="d-flex justify-content-center align-items-center m-0">
+                        {
+                            this.state.typesData.map((type) => {
+                                return(
+                                    <TypeButton 
+                                        key={type.id}
+                                        name={type.name}
+                                        description={type.description}
+                                        count={type.count}
+                                        filterButton={() => this.filterButton(type.id)}
+                                    />
+                                )
+                            })
+                        }
+                        <button 
+                            type="button" 
+                            className="btn btn-outline-primary mr-2 ml-2 mt-0 mb-0"
+                            onClick = {() => this.filterButton(0)}
+                        >
+                            <span className="badge badge-pill badge-success">{this.state.categoriesCount}</span> <small>Todas</small>
+                        </button>
+                    </div> 
                 </div>
                 <div className="card-body">
                     <div className="row">
-                        <div className="col-lg-6 mb-4">
-                            <div className="card bg-info text-white shadow">
-                                <div className="card-body">
-                                    Category 01
-                                </div>
-                            </div>
-                        </div>
-                        <div className="col-lg-6 mb-4">
-                            <div className="card bg-info text-white shadow">
-                                <div className="card-body">
-                                    Category 02
-                                </div>
-                            </div>
-                        </div>
-                        <div className="col-lg-6 mb-4">
-                            <div className="card bg-info text-white shadow">
-                                <div className="card-body">
-                                    Category 03
-                                </div>
-                            </div>
-                        </div>
-                        <div className="col-lg-6 mb-4">
-                            <div className="card bg-info text-white shadow">
-                                <div className="card-body">
-                                    Category 04
-                                </div>
-                            </div>
-                        </div>
-                        <div className="col-lg-6 mb-4">
-                            <div className="card bg-info text-white shadow">
-                                <div className="card-body">
-                                    Category 05
-                                </div>
-                            </div>
-                        </div>
-                        <div className="col-lg-6 mb-4">
-                            <div className="card bg-info text-white shadow">
-                                <div className="card-body">
-                                    Category 06
-                                </div>
-                            </div>
-                        </div>
+                        {
+                            this.state.categoriesData.map((cat) => {
+                                return(
+                                    <CategoryInfo 
+                                        key={cat.id}
+                                        name={cat.name}
+                                        description={cat.description}
+                                        count={cat.count}
+                                    />
+                                )
+                            })
+                        }
                     </div>
                 </div>
             </div>
-        </div>
-    )
+        )
+    }  
 }
 
 export default DataCardCategories;

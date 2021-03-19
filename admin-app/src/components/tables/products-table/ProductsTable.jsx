@@ -1,6 +1,6 @@
 import React, {Component} from "react";
-import HeaderFooTable from './HeaderFooTable';
-import ProductTable from './ProductTable';
+import HeaderFooTable from './elements/HeaderFooTable';
+import ProductTable from './elements/ProductTable';
 
 class ProductsTable extends Component {
     constructor(props){
@@ -8,11 +8,19 @@ class ProductsTable extends Component {
         this.state = {
             productsData: [
                 {
+                    id: 1,
+                    avatar: 'without-image.png',
                     name: 'N/D',
                     description: 'N/D',
                     price: 0,
-                    category: 'N/D',
-                    type: 'N/D',
+                    categories: {
+                        id: 1,
+                        name: 'N/D',
+                    },
+                    types: {
+                        id: 1,
+                        name: 'N/D',
+                    },
                     stock: 0,
                 }
             ]
@@ -26,9 +34,7 @@ class ProductsTable extends Component {
     };
 
     async componentDidMount(){
-
         const productsData = await this.allProducts();
-        console.log(productsData)
         
         this.setState({
           productsData,
@@ -68,10 +74,11 @@ class ProductsTable extends Component {
                                             <ProductTable
                                                 key={product.id} 
                                                 name={product.name}
+                                                avatar={product.avatar}
                                                 description={product.description}
                                                 price={product.price}
-                                                category={product.categoryId}
-                                                type={product.typeId}
+                                                category={product.categories.name}
+                                                type={product.types.name}
                                                 stock={product.stock}
                                             />
                                         )

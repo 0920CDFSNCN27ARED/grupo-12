@@ -1,3 +1,6 @@
+# Project Config
+
+This project use .env config https://rosolutions.com.mx/blog/index.php/2018/12/03/uso-de-variables-de-entorno-en-react/#:~:text=Las%20variables%20de%20entorno%20se,inicien%20con%20el%20prefijo%20REACT_APP_%20.
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

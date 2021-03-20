@@ -1,13 +1,16 @@
 import React, {Component} from "react";
-import Header from './components/header/Header';
-import SideMenu from './components/side-menu/SideMenu';
-import DataCardsSmallContainer from './components/cards/data-card-small/DataCardsSmallContainer'
-import DataCardShops from './components/cards/data-card-shops/DataCardShops';
-import DataCardLastProduct from './components/cards/data-card-last-product/DataCardLastProduct';
-import DataCardTypes from './components/cards/data-card-types/DataCardTypes';
-import DataCardCategories from './components/cards/data-card-categories/DataCardCategories';
-import ProductsTable from './components/tables/products-table/ProductsTable';
-import Footer from './components/footer/Footer';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import Dashboard from './components/dashboard/Dashboard';
+import Products from './components/products/Products';
+import CategoriesTypes from './components/categories-types/CategoriesTypes';
+import Shops from './components/shops/Shops';
+import Users from './components/users/Users';
+import Login from './components/auth/Login';
+import Header from './components/layout/header/Header';
+import SideMenu from './components/layout/side-menu/SideMenu';
+import Footer from './components/layout/footer/Footer';
+import ProductEdit from "./components/products/ProductEdit";
+import ProductDetails from "./components/products/ProductDetails";
 class App extends Component {
   
   render() {
@@ -18,23 +21,18 @@ class App extends Component {
           <div id="content">
             <Header />
             <div className="container-fluid">
-
-              <div className="d-sm-flex align-items-center justify-content-between mb-4">
-                <h1 className="h3 mb-0 text-gray-800">ArtisKaken Dashboard</h1>
-              </div>
-              <DataCardsSmallContainer />
-              <div className="row">
-                <div className="col-lg-6 mb-4">	
-                  <DataCardShops />
-                  <DataCardLastProduct />
-                </div>
-                <div className="col-lg-6 mb-4">	
-                  <DataCardTypes />
-                  <DataCardCategories />
-                </div>
-              </div>
-              <h1 className="h3 mb-2 text-gray-800">Productos Publicados</h1>
-              <ProductsTable />
+              <Router>
+                <Switch>
+                  <Route exact path="/" component={Dashboard} />
+                  <Route exact path="/productos" component={Products} />
+                  <Route path="/productos/detalles/:id" component={ProductDetails} />
+                  <Route path="/productos/editar/:id" component={ProductEdit} />
+                  <Route exact path="/usuarios" component={Users} />
+                  <Route exact path="/comercios" component={Shops} />
+                  <Route exact path="/categorias-tipos" component={CategoriesTypes} />
+                  <Route exact path="/login" component={Login} />
+                </Switch>
+              </Router>
             </div>
           </div>
           <Footer />

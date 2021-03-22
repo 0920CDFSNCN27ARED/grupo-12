@@ -5,14 +5,14 @@ const { Product } = require("../../database/models")
 // Controller
 const productsController = {
     findAll: async (req, res) => {
-        // let page = req.query.page ? req.query.page : 0;
-        // let products = await Product.findAll({
-        //     order: [["createdAt", "DESC"]],
-        //     offset: page * 2,
-        //     limit: 2,
-        // });
+        let page = req.query.page ? req.query.page : 0;
         let count = await Product.count();
-        let products = await productService.findAll();
+        let products = await Product.findAll({
+            include:["shops", "categories", "types", "orders", "cartItems", "comments"],
+            order: [["id", "ASC"]],
+            offset: page * 10,
+            limit: 10,
+        });
 
         res.json({
             meta: {

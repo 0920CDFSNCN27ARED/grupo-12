@@ -3,26 +3,12 @@ const { Category, Type, Product, Comment } = require("../database/models");
 module.exports = {
     findOne: async (id) => {
         return await Product.findByPk(id, {
-            include:[
-                {association: "shops"},
-                {association: "categories"},
-                {association: "types"},
-                {association: "orders"},
-                {association: "cartItems"},
-                {association: "comments"},
-            ],
+            include:["shops", "categories", "types", "orders", "cartItems", "comments"],
         });
     },
     findAll: async () => {
         return await Product.findAll({
-            include:[
-                {association: "shops"},
-                {association: "categories"},
-                {association: "types"},
-                {association: "orders"},
-                {association: "cartItems"},
-                {association: "comments"},
-            ],
+            include:["shops", "categories", "types", "orders", "cartItems", "comments"],
         });
     },
     create: async (attributes) => {

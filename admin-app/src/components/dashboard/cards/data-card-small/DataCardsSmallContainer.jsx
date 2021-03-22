@@ -1,5 +1,6 @@
 import React, {Component} from "react";
 import DataCardSmall from './elements/DataCardSmall'
+import SkeletonSmall from '../../../../assets/images/skeleton-small.gif'
 import * as env from '../../../../environment';
 const { API_URL } = env[process.env.NODE_ENV];
 
@@ -7,6 +8,7 @@ const { API_URL } = env[process.env.NODE_ENV];
     constructor(props){
       super(props);
       this.state = {
+        loading: true,
         smallCardData: [
           {
             id: 1,
@@ -82,11 +84,21 @@ const { API_URL } = env[process.env.NODE_ENV];
 
         this.setState({
           smallCardData,
+          loading: false,
         });
       
     };
 
     render(){
+      if(this.state.loading){
+        return (
+          <div className="d-flex justify-content-center">
+            <img alt="loading" src={SkeletonSmall} width="30%" className="mr-5 mb-3"/>
+            <img alt="loading" src={SkeletonSmall} width="30%"className="mr-5 mb-3"/>
+            <img alt="loading" src={SkeletonSmall} width="30%" className="mb-3"/>
+          </div>
+        );
+      }
       
       return (
         <div className="row">

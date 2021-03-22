@@ -78,13 +78,13 @@
 															<th>#</th>
 															<th>ID</th>
 															<th>Nombre</th>
-															<th>User Name</th>
+															<th>UserName</th>
 															<th>Email</th>
 															<th>Télefono</th>
 															<th>Admin</th>
 															<th>Estado</th>
 															<th>Rol</th>
-															<th>Shop Id</th>
+															<th>Tienda</th>
 															<th class="text-center">Opciones</th>
 														</tr>
 													</thead>
@@ -94,12 +94,15 @@
 																<td><small><%= index +1 %></small></td>
 																<td><small><%= user.id %></small></td>
 																<td>
+																	<div class="d-flex justify-content-left align-items-center">
 																	<img alt='Image' src='/images/users/<%= user.avatar%>'
 																		class='avatar img-circle img-thumbnail' height='35' width='35' />
 																	<small><%= user.name %></small>
+																	</div>
 																</td>
+																
 																<td><small><%= user.userName %></small></td>
-																<td><small><%= user.email %></small></td>
+																<td width="10%"><small><%= user.email %></small></td>
 																<td><small><%= user.phone %></small></td>
 																<td><small><%= user.admin == 1 ? "SI" : "NO" %></small></td>
 																<td>
@@ -116,7 +119,7 @@
 																		<small><span class="badge badge-pill badge-info">COMPRADOR</span></small>
 																	<% } %>
 																</td>
-																<td><small><%= user.shopId != null ? user.shops.name : "Sin Negocio" %></small></td>
+																<td width="20%"><small><%= user.shopId != null ? user.shops.name : "Sin Negocio" %></small></td>
 																<td class="d-flex justify-content-center">
 																	<a href="/users/<%= user.id %>/profile" class="btn btn-outline btn-sm p-0"><i class="m-0 i-rounded i-small icon-line-eye"></i></a>
 																	<a href="/users/<%= user.id %>/profile#tab-data" class="btn btn-outline btn-sm p-0"><i class="m-0 i-rounded i-small icon-line2-pencil"></i></a>

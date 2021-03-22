@@ -8,9 +8,9 @@ const shopsController = {
         let page = req.query.page ? req.query.page : 0;
         let shops = await Shop.findAll({
             include: ["products", "users", "orders", "shopCoupons"],
-            order: [["createdAt", "DESC"]],
-            offset: page * 6,
-            limit: 6,
+            order: [["createdAt", "ASC"]],
+            offset: page * 5,
+            limit: 5,
         });
         let count = await Shop.count();
 

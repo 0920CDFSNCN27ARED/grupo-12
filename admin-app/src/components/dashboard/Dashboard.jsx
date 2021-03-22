@@ -15,11 +15,12 @@ const Dashboard = () => {
             <div className="row">
                 <div className="col-lg-6 mb-4">	
                     <DataCardShops />
-                    <DataCardLastProduct />
+
                 </div>
                 <div className="col-lg-6 mb-4">	
                   <DataCardTypes />
                   <DataCardCategories />
+                  <DataCardLastProduct />
                 </div>
             </div>
         </div>

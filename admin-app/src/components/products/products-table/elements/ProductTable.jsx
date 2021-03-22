@@ -17,7 +17,7 @@ const ProductTable = (props) => {
                 <td align="center">{props.category}</td>
                 <td align="center">{props.type}</td>
                 <td align="center">{props.stock}</td>
-                <td align="center">
+                <td align="center" width='150'>
                     <Link to={`/productos/detalles/${props.id}`} className="btn btn-outline-primary btn-sm rounded mr-1"><i className="fa fa-eye"></i></Link>
                     <Link to={`/productos/editar/${props.id}`} className="btn btn-outline-warning btn-sm rounded mr-1"><i className="fa fa-pencil"></i></Link>
                     <button type="submit" className="btn btn-outline-danger btn-sm rounded"><i className="fa fa-trash-o"></i></button>

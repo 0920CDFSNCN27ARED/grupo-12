@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import TypeInfo from './elements/TypeInfo';
+import SkeletonCard from '../../../../assets/images/skeleton-card.gif'
 import * as env from '../../../../environment';
 const { API_URL } = env[process.env.NODE_ENV];
 
@@ -7,6 +8,7 @@ class DataCardTypes extends Component {
     constructor(props){
         super(props);
         this.state = {
+            loading: true,
             typesData: [
                 {   
                     id: 1,
@@ -34,11 +36,19 @@ class DataCardTypes extends Component {
         const typesData = await this.allTypes()
         this.setState({
           typesData,
+          loading: false
         });
 
     }
 
     render() {
+        if(this.state.loading){
+            return (
+                <div className="d-flex justify-content-center flex-column">
+                    <img alt="loading" src={SkeletonCard} width="100%" className="mb-3"/>
+                </div>
+            );
+        }
         return (			
             <div className="card shadow mb-4">
                 <div className="card-header py-3">

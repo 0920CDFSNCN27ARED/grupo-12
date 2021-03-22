@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import CategoryInfo from './elements/CategoryInfo';
 import TypeButton from './elements/TypeButton';
+import SkeletonCard from '../../../../assets/images/skeleton-card.gif'
 import * as env from '../../../../environment';
 const { API_URL } = env[process.env.NODE_ENV];
 
@@ -8,6 +9,7 @@ class DataCardCategories extends Component {
     constructor(props){
         super(props);
         this.state = {
+            loading:true,
             categoriesData: [
                 {   
                     id: 1,
@@ -77,11 +79,19 @@ class DataCardCategories extends Component {
         this.setState({
           categoriesData,
           typesData,
-          categoriesCount
+          categoriesCount,
+          loading: false
         });
     }
 
     render() {
+        if(this.state.loading){
+            return (
+                <div className="d-flex justify-content-center flex-column">
+                    <img alt="loading" src={SkeletonCard} width="100%" className="mb-3"/>
+                </div>
+            );
+        }
 
         return (			
             <div className="card shadow mb-4">

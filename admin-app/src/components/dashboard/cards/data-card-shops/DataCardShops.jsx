@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import ShopInfo from './elements/ShopInfo';
+import SkeletonCard from '../../../../assets/images/skeleton-card.gif'
 import * as env from '../../../../environment';
 const { API_URL, SERVER_URL } = env[process.env.NODE_ENV];
 
@@ -7,6 +8,7 @@ class DataCardShops extends Component {
     constructor(props){
         super(props);
         this.state = {
+            loading: true,
             shopsData: [
                 {   
                     id: 1,
@@ -43,15 +45,23 @@ class DataCardShops extends Component {
 
         this.setState({
           shopsData,
+          loading: false,
         });
 
     }
 
     render() {
+        if(this.state.loading){
+            return (
+                <div className="d-flex justify-content-center flex-column">
+                    <img alt="loading" src={SkeletonCard} width="100%" className="mb-3"/>
+                </div>
+            );
+        }
         return (			
             <div className="card shadow mb-4">
                 <div className="card-header py-3">
-                    <h6 className="m-0 font-weight-bold text-uppercase text-primary">ULTIMOS COMERCIOS REGISTRADOS</h6>
+                    <h6 className="m-0 font-weight-bold text-uppercase text-primary">ULTIMOS 5 COMERCIOS REGISTRADOS</h6>
                 </div>
                 <div className="card-body">
                     <div className="row">

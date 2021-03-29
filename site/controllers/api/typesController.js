@@ -24,6 +24,18 @@ const typesController = {
             count: count,
         });
     },
+
+    findOne: async (req, res) => {
+        let type = await typeService.findOne(req.params.id);
+        res.json({
+            meta: {
+                status: 200,
+                url: req.originalUrl,
+            },
+            data: type,
+        });
+    },
+    
 };
 
 module.exports = typesController;

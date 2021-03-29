@@ -1,8 +1,8 @@
 //Require
 const { validationResult } = require("express-validator");
 const bcrypt = require("bcrypt");
-const { createLocalStorage } = require("localstorage-ponyfill");
-const localStorage = createLocalStorage();
+const Sequelize = require("sequelize");
+const Op = Sequelize.Op;
 
 // Services
 const orderService = require("../services/orderService");
@@ -10,55 +10,320 @@ const productService = require("../services/productService");
 const userService = require("../services/userService");
 const addressService = require("../services/addressService");
 const categoryService = require("../services/categoryService");
+const typeService = require("../services/typeService");
 const cartItemService = require("../services/cartItemService");
 const shippingMethodService = require("../services/shippingMethodService");
 const paymentService = require("../services/paymentService");
 const couponService = require("../services/couponService");
+const { Product } = require("../database/models");
 
 const storeController = {
     getStore: async function (req, res) {
         // Notifications
-        const validateErrors = req.flash('validateErrors')
-        const message = req.flash('message');
+        const validateErrors = req.flash("validateErrors");
+        const message = req.flash("message");
         let notification = null;
 
-        if(validateErrors.length != 0){
-            notification = 'error'
-        } else if(message.length != 0){
-            notification = 'message'
-        };
+        if (validateErrors.length != 0) {
+            notification = "error";
+        } else if (message.length != 0) {
+            notification = "message";
+        }
 
         try {
-            let products = await productService.findAll();
+            let url = req.route.path;
+            let page = req.query.page ? req.query.page : 0;
+            let products = await Product.findAll({
+                include: ["shops", "categories", "types"],
+                where: { status: "active" },
+                order: [["id", "ASC"]],
+                offset: page * 20,
+                limit: 20,
+            });
+
+            let activeProducts = await Product.findAll({
+                where: { status: "active" },
+            });
+            let totalPages =
+                (activeProducts.length - (activeProducts.length % 20)) / 20;
+
             let categories = await categoryService.findAll();
+            let types = await typeService.findAll();
+
             res.render("store/store", {
                 notification: notification,
                 message: message,
                 errors: validateErrors,
                 products,
                 categories,
+                types,
+                totalPages,
+                page,
+                url,
+                selectedType: null,
+                selectedCategory: null,
             });
         } catch (error) {
             res.status(404).send(error.message);
         }
     },
 
-    getCart: function (req, res) {  
+    getQuerySearch: async function (req, res) {
         // Notifications
-        const validateErrors = req.flash('validateErrors')
-        const message = req.flash('message');
+        const validateErrors = req.flash("validateErrors");
+        const message = req.flash("message");
         let notification = null;
-        if(validateErrors.length != 0){
-            notification = 'error'
-        } else if(message.length != 0){
-            notification = 'message'
-        };
 
-        res.render("store/productCart",{ 
+        if (validateErrors.length != 0) {
+            notification = "error";
+        } else if (message.length != 0) {
+            notification = "message";
+        }
+
+        try {
+            let url = req.route.path;
+            let search = req.query.search;
+            let page = req.query.page ? req.query.page : 0;
+            let products = await Product.findAll({
+                include: ["shops", "categories", "types"],
+                where: {
+                    status: "active",
+                    name: {
+                        [Op.like]: `%${search}%`,
+                    },
+                },
+                order: [["name", "ASC"]],
+                offset: page * 20,
+                limit: 20,
+            });
+
+            let activeProducts = await Product.findAll({
+                where: {
+                    status: "active",
+                    name: {
+                        [Op.like]: `%${search}%`,
+                    },
+                },
+            });
+            let totalPages =
+                (activeProducts.length - (activeProducts.length % 20)) / 20;
+
+            let categories = await categoryService.findAll();
+            let types = await typeService.findAll();
+
+            res.render("store/store", {
                 notification: notification,
                 message: message,
                 errors: validateErrors,
+                products,
+                categories,
+                types,
+                totalPages,
+                page,
+                url,
+                productsSearched: activeProducts.length,
+                search,
+                selectedType: null,
+                selectedCategory: null,
             });
+        } catch (error) {
+            res.status(404).send(error.message);
+        }
+    },
+
+    postQuerySearch: async function (req, res) {
+        if (req.body.search == "") {
+            return res.redirect("/store");
+        }
+        let searched = req.body.search;
+        try {
+            let products = await Product.findAll({
+                where: {
+                    status: "active",
+                    name: {
+                        [Op.like]: `%${searched}%`,
+                    },
+                },
+            });
+
+            if (products.length == 0) {
+                req.flash("validateErrors", [
+                    {
+                        msg: `No se encontraron productos que contengan "${searched}", por favor intenta con otra búsqueda`,
+                    },
+                ]);
+                return res.redirect("/store/search");
+            }
+
+            req.flash("message", "Perfecto, tenemos algunos resultados!");
+            return res.redirect(`/store/search?search=${searched}`);
+        } catch (error) {
+            res.status(404).send(error.message);
+        }
+    },
+
+    getQueryCategory: async function (req, res) {
+        // Notifications
+        const validateErrors = req.flash("validateErrors");
+        const message = req.flash("message");
+        let notification = null;
+
+        if (validateErrors.length != 0) {
+            notification = "error";
+        } else if (message.length != 0) {
+            notification = "message";
+        }
+
+        try {
+            let page = req.query.page ? req.query.page : 0;
+            let url = req.route.path;
+            let categoryQuery = req.query.category ? req.query.category : "all";
+
+            let products;
+            let activeProducts;
+            let selectedCategory;
+            if (categoryQuery == "all") {
+                products = await Product.findAll({
+                    include: ["shops", "categories", "types"],
+                    where: { status: "active" },
+                    order: [["id", "ASC"]],
+                    offset: page * 20,
+                    limit: 20,
+                });
+                activeProducts = await Product.findAll({
+                    where: { status: "active" },
+                });
+                selectedCategory = null;
+            } else {
+                products = await Product.findAll({
+                    include: ["shops", "categories", "types"],
+                    where: { status: "active", categoryId: categoryQuery },
+                    order: [["id", "ASC"]],
+                    offset: page * 20,
+                    limit: 20,
+                });
+                activeProducts = await Product.findAll({
+                    where: { status: "active", categoryId: categoryQuery },
+                });
+                let findCategory = await categoryService.findOne(categoryQuery);
+                selectedCategory = {
+                    name: findCategory.name,
+                    id: findCategory.id,
+                };
+            }
+
+            let totalPages =
+                (activeProducts.length - (activeProducts.length % 20)) / 20;
+
+            let categories = await categoryService.findAll();
+            let types = await typeService.findAll();
+            let selectedType = null;
+
+            res.render("store/store", {
+                notification: notification,
+                message: message,
+                errors: validateErrors,
+                products,
+                categories,
+                types,
+                totalPages,
+                page,
+                url,
+                selectedType,
+                selectedCategory,
+            });
+        } catch (error) {
+            res.status(404).send(error.message);
+        }
+    },
+
+    getQueryType: async function (req, res) {
+        // Notifications
+        const validateErrors = req.flash("validateErrors");
+        const message = req.flash("message");
+        let notification = null;
+
+        if (validateErrors.length != 0) {
+            notification = "error";
+        } else if (message.length != 0) {
+            notification = "message";
+        }
+
+        try {
+            let page = req.query.page ? req.query.page : 0;
+            let url = req.route.path;
+            let typeQuery = req.query.type ? req.query.type : "all";
+
+            let products;
+            let activeProducts;
+            let selectedType;
+            if (typeQuery == "all") {
+                products = await Product.findAll({
+                    include: ["shops", "categories", "types"],
+                    where: { status: "active" },
+                    order: [["id", "ASC"]],
+                    offset: page * 20,
+                    limit: 20,
+                });
+                activeProducts = await Product.findAll({
+                    where: { status: "active" },
+                });
+                selectedType = null;
+            } else {
+                products = await Product.findAll({
+                    include: ["shops", "categories", "types"],
+                    where: { status: "active", typeId: typeQuery },
+                    order: [["id", "ASC"]],
+                    offset: page * 20,
+                    limit: 20,
+                });
+                activeProducts = await Product.findAll({
+                    where: { status: "active", typeId: typeQuery },
+                });
+                let findType = await typeService.findOne(typeQuery);
+                selectedType = { name: findType.name, id: findType.id };
+            }
+
+            let totalPages =
+                (activeProducts.length - (activeProducts.length % 20)) / 20;
+
+            let categories = await categoryService.findAll();
+            let types = await typeService.findAll();
+
+            res.render("store/store", {
+                notification: notification,
+                message: message,
+                errors: validateErrors,
+                products,
+                categories,
+                types,
+                totalPages,
+                page,
+                url,
+                selectedCategory: null,
+                selectedType,
+            });
+        } catch (error) {
+            res.status(404).send(error.message);
+        }
+    },
+
+    getCart: function (req, res) {
+        // Notifications
+        const validateErrors = req.flash("validateErrors");
+        const message = req.flash("message");
+        let notification = null;
+        if (validateErrors.length != 0) {
+            notification = "error";
+        } else if (message.length != 0) {
+            notification = "message";
+        }
+
+        res.render("store/productCart", {
+            notification: notification,
+            message: message,
+            errors: validateErrors,
+        });
     },
 
     getCheckout: async (req, res) => {
@@ -98,10 +363,12 @@ const storeController = {
 
     postCheckout: async (req, res) => {
         let errors = validationResult(req);
-        const hoy = new Date();
-        const fecha = hoy.getFullYear() + '-' + ( hoy.getMonth() + 1 ) + '-' + (hoy.getDate());
-        const expireDate = hoy.getFullYear() + '-' + ( hoy.getMonth() + 1 ) + '-' + (hoy.getDate() + 15);
-        const hora = hoy.getHours() + ':' + hoy.getMinutes() + ':' + hoy.getSeconds();
+        let f = new Date();
+        let date =
+            f.getFullYear() + "-" + (f.getMonth() + 1) + "-" + f.getDate();
+        let expireDate =
+            f.getFullYear() + "-" + (f.getMonth() + 2) + "-" + f.getDate();
+        const time = f.getHours() + ":" + f.getMinutes() + ":" + f.getSeconds();
         let loggedUserId = req.session.loggedUserId;
         let currentUser;
         try {
@@ -109,42 +376,55 @@ const storeController = {
                 currentUser = null;
             } else {
                 currentUser = await userService.findOne(loggedUserId);
-            };
+            }
 
             if (errors.isEmpty()) {
-
                 // Verificamos cupón
                 let couponAmount, coupon, couponId;
-                if(req.body.couponCode == ''){
+                if (req.body.couponCode == "") {
                     couponAmount = 0;
                     couponId = null;
                 } else {
                     coupon = await couponService.findCode(req.body.couponCode);
-                    if(coupon.length != 0 && coupon[0].status == 'active'){
+                    if (coupon.length != 0 && coupon[0].status == "active") {
                         couponAmount = coupon[0].discount;
-                        couponId = coupon[0].id
+                        couponId = coupon[0].id;
                     } else {
                         couponAmount = 0;
                         couponId = null;
-                    };
-                };
+                    }
+                }
                 // Obtenemos valor de envío
-                let shippingMethod = await shippingMethodService.findOne(req.body.shippingMethod);
+                let shippingMethod = await shippingMethodService.findOne(
+                    req.body.shippingMethod
+                );
                 let totalShipping = shippingMethod.amount;
 
-                if(req.body.productsQty == 0){
-                    req.flash('validateErrors', [{msg: 'El carrito se encuentra vacio, no es posible realizar un pedido.'}]);
+                if (req.body.productsQty == 0) {
+                    req.flash("validateErrors", [
+                        {
+                            msg:
+                                "El carrito se encuentra vacio, no es posible realizar un pedido.",
+                        },
+                    ]);
                     return res.redirect(`/store/checkout`);
-                };
+                }
 
-                if( currentUser == null){
+                if (currentUser == null) {
                     // Verificamos si el usuario existe
-                    let checkEmail = await userService.checkUserEmail(req.body.email);
-                    if(checkEmail == 'used'){
-                        req.flash('validateErrors', [{msg: 'El email ingresado ya pertenece a un usuario registrado.'}]);
+                    let checkEmail = await userService.checkUserEmail(
+                        req.body.email
+                    );
+                    if (checkEmail == "used") {
+                        req.flash("validateErrors", [
+                            {
+                                msg:
+                                    "El email ingresado ya pertenece a un usuario registrado.",
+                            },
+                        ]);
                         return res.redirect("/store/checkout");
-                    };
-                    
+                    }
+
                     // Creamos el usuario
                     let password =
                         req.body.password != ""
@@ -193,14 +473,14 @@ const storeController = {
                             country: req.body.shippingCountry,
                             userId: user.id,
                         });
-                        shippingAddressId = shippingAddress.id
+                        shippingAddressId = shippingAddress.id;
                     } else {
                         shippingAddressId = null;
-                    };
+                    }
 
                     // creamos pedido general
                     let order = await orderService.create({
-                        date: fecha,
+                        date: date.toString(),
                         email: req.body.email,
                         totalProducts: null,
                         totalShipping: totalShipping,
@@ -231,25 +511,31 @@ const storeController = {
                         product = await productService.findOne(productId);
                         subtotal =
                             (product.price - product.discount) * productQty;
-                        
+
                         await cartItemService.create({
                             subtotal: subtotal,
                             quantity: productQty,
                             price: product.price,
                             discount: product.discount,
-                            expireTime: `${expireDate} ${hora}`,
+                            expireTime: expireDate.toString(),
                             productId: productId,
                             orderId: order.id,
                         });
 
-                        productsTotal = productsTotal + product.price * productQty;
-                        discountsTotal = discountsTotal + product.discount * productQty
+                        productsTotal =
+                            productsTotal + product.price * productQty;
+                        discountsTotal =
+                            discountsTotal + product.discount * productQty;
                         shops.push(product.shopId);
-                    };
+                    }
 
                     // Calculamos total de orden
                     let orderTotalProducts = productsTotal - discountsTotal;
-                    let orderTotal = productsTotal + totalShipping - discountsTotal - couponAmount;
+                    let orderTotal =
+                        productsTotal +
+                        totalShipping -
+                        discountsTotal -
+                        couponAmount;
 
                     await orderService.update(order.id, {
                         totalProducts: orderTotalProducts,
@@ -258,9 +544,7 @@ const storeController = {
 
                     req.flash("message", "Tu pedido se realizo correctamente.");
                     return res.redirect(`/orders/${order.id}/orderSuccess`);
-
                 } else if (currentUser) {
-
                     // Creamos direccion de envio en caso de estar verificada
                     let shippingAddressId;
                     if (req.body.shippingCheck == 1) {
@@ -280,7 +564,7 @@ const storeController = {
 
                     // creamos pedido general
                     let order = await orderService.create({
-                        date: fecha,
+                        date: date.toString(),
                         email: currentUser.email,
                         totalProducts: null,
                         totalShipping: totalShipping,
@@ -318,7 +602,7 @@ const storeController = {
                             quantity: productQty,
                             price: product.price,
                             discount: product.discount,
-                            expireTime: `${expireDate} ${hora}`,
+                            expireTime: expireDate.toString(),
                             productId: productId,
                             orderId: order.id,
                         });
@@ -342,16 +626,16 @@ const storeController = {
                         totalProducts: orderTotalProducts,
                         total: orderTotal,
                     });
-                     console.log(order);
+                    console.log(order);
 
                     req.flash("message", "Tu pedido se realizo correctamente.");
                     return res.redirect(`/orders/${order.id}/orderSuccess`);
                 }
             } else {
-                req.flash('validateErrors', errors.errors);
+                req.flash("validateErrors", errors.errors);
                 return res.redirect("/store/checkout");
             }
-        }catch(error){
+        } catch (error) {
             res.status(400).send(error.message);
         }
     },

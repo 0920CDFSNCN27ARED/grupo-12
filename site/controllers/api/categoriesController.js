@@ -25,10 +25,42 @@ const categoriesController = {
         });
     },
 
+    findOne: async (req, res) => {
+        let category = await categoryService.findOne(req.params.id);
+        res.json({
+            meta: {
+                status: 200,
+                url: req.originalUrl,
+            },
+            data: category,
+        });
+    },
+
+    tableList: async (req, res) => {
+        let page = req.query.page ? req.query.page : 0;
+        let count = await Category.count();
+
+        let categories = await Category.findAll({
+            include: ["products", "types"],
+            order: [["id", "ASC"]],
+            offset: page * 10,
+            limit: 10,
+        });
+
+        res.json({
+            meta: {
+                status: 200,
+                url: req.originalUrl,
+                totalCount: count,
+            },
+            data: categories,
+        });
+    },
+
     filterType: async (req, res) => {
         let count;
         let filterCategories;
-        if(req.params.id > 0) {
+        if (req.params.id > 0) {
             filterCategories = await Category.findAll({
                 include: ["products", "types"],
                 where: { typeId: req.params.id },
@@ -39,8 +71,8 @@ const categoriesController = {
                 include: ["products", "types"],
             });
             count = filterCategories.length;
-        };
-        
+        }
+
         res.json({
             meta: {
                 status: 200,
@@ -48,6 +80,22 @@ const categoriesController = {
                 totalCount: count,
             },
             data: filterCategories,
+        });
+    },
+
+    update: async (req, res) => {
+        let category = await categoryService.update(req.params.id, {
+            name: req.body.name,
+            description: req.body.description,
+            typeId: req.body.typeId
+        });
+
+        res.json({
+            meta: {
+                status: 200,
+                url: req.originalUrl,
+            },
+            data: category,
         });
     },
 };

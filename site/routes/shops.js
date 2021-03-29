@@ -12,18 +12,30 @@ const uploadShop = multerOneImage('shops');
 // Middlewares
 const assertSignedIn = require('../middlewares/assert-signed-in');
 
-// GET shop profile
-router.get('/:id/profile', assertSignedIn, shopsController.getShop);
+// GET shops page
+router.get('/shopping', shopsController.getShops);
 
-// PUT Profile shop data
-router.put(
-  '/:id/edit-data',
-  uploadShop.single("avatar"),
-  [
-    check("name").isLength({min:4,max:30}).withMessage("El nombre debe tener entre 4 y 30 caracteres de largo"),
-    check("email").isEmail().withMessage("Email inválido"),
-  ],
-  shopsController.putShopData);
+/* GET shops searching page. */
+router.get("/shopping/search", shopsController.getQuerySearch);
+
+/* Post shops searching page. */
+router.post("/shopping/search", shopsController.postQuerySearch);
+
+// GET shop details page
+router.get('/shop-details/:id', shopsController.getShopDetails);
+
+// GET shops details categories filter page
+router.get('/shop-details/:id/categories', shopsController.getQueryShopDetailsCategory);
+
+// GET shops details types filter page
+router.get('/shop-details/:id/types', shopsController.getQueryShopDetailsTypes);
+
+/* GET shop details searching page. */
+router.get("/shop-details/:id/search", shopsController.getQueryShopDetailsSearch);
+
+/* Post shop details searching page. */
+router.post("/shop-details/:id/search", shopsController.postQueryShopDetailsSearch);
+
 
 // POST create shop modal
 router.post(
@@ -37,6 +49,20 @@ router.post(
     check("bio", "Una pequeña descripcion de la tienda es requerida.").notEmpty(),
   ],
   shopsController.postShopCreate);
+
+// GET shop profile
+router.get('/:id/profile', assertSignedIn, shopsController.getShop);
+
+// PUT Profile shop data
+router.put(
+  '/:id/edit-data',
+  uploadShop.single("avatar"),
+  [
+    check("name").isLength({min:4,max:30}).withMessage("El nombre debe tener entre 4 y 30 caracteres de largo"),
+    check("email").isEmail().withMessage("Email inválido"),
+  ],
+  shopsController.putShopData);
+
 
 //******************* Coupons Routes *******************//
 

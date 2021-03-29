@@ -11,7 +11,7 @@
                         </ul>
                         <div class="tab-container">
                             <div class="tab-content clearfix" id="tab-search">
-                                <form action="/store/search" method="POST">
+                                <form action="/shops/shop-details/<%= shop.id %>/search" method="POST">
                                     <div class="input-group col-md-12 mt-2">
                                         <input class="form-control border-warning py-2" type="search" name="search" value="" placeholder="Busca un producto...">
                                         <span class="input-group-append">
@@ -30,9 +30,9 @@
                                         </button>
                                         <div class="dropdown-menu btn-block" aria-labelledby="dropdownMenuButton">
                                             <% categories.forEach( category => { %>
-                                                <a class="dropdown-item" href="http://localhost:3000/store/categories?category=<%= category.id %>#tab-categories"><%= category.name %></a>
+                                                <a class="dropdown-item" href="http://localhost:3000/shops/shop-details/<%= shop.id %>/categories?category=<%= category.id %>#tab-categories"><%= category.name %></a>
                                             <% }) %>
-                                            <a class="dropdown-item" href="http://localhost:3000/store/">Todas</a>
+                                            <a class="dropdown-item" href="http://localhost:3000/shops/shop-details/<%= shop.id %>">Todas</a>
                                         </div>
                                     </div>
                                 </div>
@@ -45,9 +45,9 @@
                                         </button>
                                         <div class="dropdown-menu btn-block" aria-labelledby="dropdownMenuButton">
                                             <% types.forEach( type => { %>
-                                                <a class="dropdown-item" href="http://localhost:3000/store/types?type=<%= type.id %>#tab-types"><%= type.name %></a>
+                                                <a class="dropdown-item" href="http://localhost:3000/shops/shop-details/<%= shop.id %>/types?type=<%= type.id %>#tab-types"><%= type.name %></a>
                                             <% }) %>
-                                            <a class="dropdown-item" href="http://localhost:3000/store/">Todos</a>
+                                            <a class="dropdown-item" href="http://localhost:3000/shops/shop-details/<%= shop.id %>">Todos</a>
                                         </div>
                                     </div>
                                 </div>

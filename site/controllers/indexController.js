@@ -1,6 +1,7 @@
 // Services
 const productService = require("../services/productService");
 const typeService = require("../services/typeService");
+const { Product } = require("../database/models");
 
 // Index controller
 const indexController = {
@@ -19,7 +20,13 @@ const indexController = {
         };
 
         try {
-            const products = await productService.findAll();
+            const products = await Product.findAll({
+                include: ["shops", "categories", "types"],
+                where: { status: "active" },
+                order: [["id", "ASC"]],
+                offset: 40,
+                limit: 40,
+            });
             const types = await typeService.findAll();
             for (const type of types) {
                 type.count = type.products.length;

@@ -29,7 +29,7 @@
                 <del class="mr-2">$<%= product.price %></del> 
                 <h3 class="color">$<%= (product.price - product.discount).toFixed(2) %></h3>
             </div>
-            <!-- <form action="/products/<%= product.id %>/add-product" method="POST"> -->
+
                 <div class=" d-flex justify-content-between align-items-center">							
                     <div class="quantity">
                         <input type="button" value="-" class="minus rounded-left border">
@@ -38,12 +38,11 @@
                     </div>
                     <button class="button button-rounded mt-2 mb-2 add-product" data-id="<%= product.id %>">Comprar</button>
                 </div>
-            <!-- </form> -->
-            <% categories.forEach(category => { %>
-                <% if (category.id == product.categoryId) { %>
-                    <span class="text-center text-uppercase p-1">Categoria: <%= category.name %></span>
-                <% } %>
-            <% }) %>
+                <div class=" d-flex justify-content-center align-items-center">
+                    <span class="text-center small text-uppercase p-1">Categoria: <%= product.categories.name %></span> -
+                    <span class="text-center small text-uppercase p-1">Tipo: <%= product.types.name %></span>
+                </div>
+
             <div class="d-flex mt-2 justify-content-center">
                 <span class="white-color mr-2">ABV: <%= product.abv %>%</span>
                 <span class="white-color mr-2">IBU: <%= product.ibu %></span>

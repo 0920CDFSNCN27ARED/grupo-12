@@ -22,16 +22,31 @@
 	</header>
 
 	<!-- Page Title -->
-	<section id="page-title" class="store-page-title page-title-parallax page-title-dark"
+	<!-- <section id="page-title" class="store-page-title page-title-parallax page-title-dark"
 		data-bottom-top="background-position:0px 0px;" data-top-bottom="background-position:0px 0px;">
-		<%- include('../pages/pageTitle' , { title: "Cervezas", page: "Nuestras Cervezas" }) %>
-	</section>
+		<%- include('../pages/pageTitle' , { title: "Tienda", page: "Tienda" }) %>
+	</section> -->
 
 		<!-- Content -->
 		<section id="dark-content" class="dark noborder parallax pt-3">
-			<div class="content-wrap pt-0" style="overflow: visible;">
-				
-				<%- include('./searcher', {categories, types, selectedType, selectedCategory}) %>
+			<div class="content-wrap pt-4">
+
+				<div class="container">
+					<div class="row">
+						<div class="col-12">
+							<img src= "/images/shops/<%= shop.avatar%>" class="alignleft img-circle img-thumbnail my-0" alt="Avatar"
+								style="max-width: 84px;">
+							<div class="heading-block border-0">
+								<h3><%= shop.name %></h3>
+								<small><span class="m-0"><%= shop.email %></span></small><br>
+								<small class="m-0"><span class="badge badge-pill badge-warning">Perfil Público</span></small>
+							</div>
+						</div>
+						<div class="col-12">
+						<%- include('./shop-details/shop-searcher', {categories, types, selectedType, selectedCategory}) %>
+						</div>
+					</div>
+				</div>
 					
 				<div class="section mb-0 pt-0 pb-0 dark-background">
 					<div class="container">
@@ -41,7 +56,7 @@
 						
 						<!-- Grid Filter
 						============================================= -->
-						<% if(url == '/'){ %>
+						<% if(url == '/shop-details/:id'){ %>
 							<h3>Todas las Categorías </h3>
 							<ul class="grid-filter style-3 w-100" data-container="#portfolio">
 								<% categories.forEach( category => { %>
@@ -50,9 +65,9 @@
 								<!-- Show All Button -->
 								<li class="activeFilter ml-auto"><a class="button button-small button-rounded button-reset" href="javascript:void(0)" data-filter="*">Todas</a></li>
 							</ul><!-- .grid-filter end -->
-						<% }else if(url == '/categories'){ %> 
+						<% }else if(url == '/shop-details/:id/categories'){ %> 
 							<h3>Categoría <%= selectedCategory.name %> </h3>
-						<% } else if(url == '/types'){ %>
+						<% } else if(url == '/shop-details/:id/types'){ %>
 							<ul class="grid-filter style-3 w-100" data-container="#portfolio">
 								
 								<li class="activeFilter"> <a href="javascript:void(0)" 
@@ -68,7 +83,7 @@
 								<!-- Show All Button -->
 								<li class="activeFilter ml-auto"><a class="button button-small button-rounded button-reset" href="javascript:void(0)" data-filter="*">Todas</a></li>
 							</ul><!-- .grid-filter end -->
-						<% } else if(url == '/search'){ %>
+						<% } else if(url == '/shop-details/:id/search'){ %>
 							<h3>Se encontraron <%= productsSearched %> resultados para <span class="text-uppercase">"<%= search %>"</span></h3>
 							<ul class="grid-filter style-3 w-100" data-container="#portfolio">
 								<% categories.forEach( category => { %>
@@ -86,7 +101,7 @@
 							<div id="portfolio" class="portfolio row gutter-30 grid-container" data-layout="fitRows">
 								<% products.forEach( product => { %>
 									<% if(product.status == 'active'){ %>
-										<%- include('./productStore', { product: product, categories:categories }) %>
+										<%- include('./shop-details/product-shop', { product: product, categories:categories }) %>
 									<% } %> 
 								<% }) %>
 							</div>
@@ -95,14 +110,14 @@
 							<ul class="pagination pagination-inside-transparent pagination-pill">
 								<% if(page > 0){ %>
 									<li class="page-item">
-										<% if(url == '/'){ %>
-											<a class="page-link btn-outline-warning" href="http://localhost:3000/store?page=<%= parseInt(page) -1 %>">Anterior</a>
-										<% }else if(url == '/types'){ %>
-											<a class="page-link btn-outline-warning" href="http://localhost:3000/store/types?type=<%= selectedType.id %>&page=<%= parseInt(page) -1 %>#tab-types">Anterior</a>
-										<% } else if(url == '/categories'){ %>
-											<a class="page-link btn-outline-warning" href="http://localhost:3000/store/categories?category=<%= selectedCategory.id %>&page=<%= parseInt(page) -1 %>#tab-categories">Anterior</a>
-										<% } else if(url == '/search'){ %>
-											<a class="page-link btn-outline-warning" href="http://localhost:3000/store/search?page=<%= parseInt(page) -1 %>&search=<%= search %>">Siguiente</a>
+										<% if(url == '/shop-details/:id'){ %>
+											<a class="page-link btn-outline-warning" href="http://localhost:3000/shops/shop-details/<%= shop.id %>?page=<%= parseInt(page) -1 %>">Anterior</a>
+										<% }else if(url == '/shop-details/:id/types'){ %>
+											<a class="page-link btn-outline-warning" href="http://localhost:3000/shops/shop-details/<%= shop.id %>/types?type=<%= selectedType.id %>&page=<%= parseInt(page) -1 %>#tab-types">Anterior</a>
+										<% } else if(url == '/shop-details/:id/categories'){ %>
+											<a class="page-link btn-outline-warning" href="http://localhost:3000/shops/shop-details/<%= shop.id %>/categories?category=<%= selectedCategory.id %>&page=<%= parseInt(page) -1 %>#tab-categories">Anterior</a>
+										<% } else if(url == '/shop-details/:id/search'){ %>
+											<a class="page-link btn-outline-warning" href="http://localhost:3000/shops/shop-details/<%= shop.id %>/search?page=<%= parseInt(page) -1 %>&search=<%= search %>">Siguiente</a>
 										<% } %>
 									</li>
 								<% } else if(page == 0) { %>
@@ -119,14 +134,14 @@
 										</button>
 										<div class="dropdown-menu">
 											<% for(let i = 0; i <= totalPages; i++) { %>
-												<% if(url == '/'){ %>
-													<a class="dropdown-item <%= i == page ? 'active' : null%>" href="http://localhost:3000/store?page=<%= i %>">Página <%= i %></a>
-												<% }else if(url == '/types'){ %> 
-													<a class="dropdown-item <%= i == page ? 'active' : null%>" href="http://localhost:3000/store/types?type=<%= selectedType.id %>&page=<%= i %>#tab-types">Página <%= i %></a>
-												<% } else if(url == '/categories'){ %>
-													<a class="dropdown-item <%= i == page ? 'active' : null%>" href="http://localhost:3000/store/categories?category=<%= selectedCategory.id %>&page=<%= i %>#tab-categories">Página <%= i %></a>
-												<% } else if(url == '/search'){ %>
-													<a class="dropdown-item <%= i == page ? 'active' : null%>" href="http://localhost:3000/store/search?page=<%= i %>&search=<%= search %>">Página <%= i %></a>
+												<% if(url == '/shop-details/:id'){ %>
+													<a class="dropdown-item <%= i == page ? 'active' : null%>" href="http://localhost:3000/shops/shop-details/<%= shop.id %>?page=<%= i %>">Página <%= i %></a>
+												<% }else if(url == '/shop-details/:id/types'){ %> 
+													<a class="dropdown-item <%= i == page ? 'active' : null%>" href="http://localhost:3000/shops/shop-details/<%= shop.id %>/types?type=<%= selectedType.id %>&page=<%= i %>#tab-types">Página <%= i %></a>
+												<% } else if(url == '/shop-details/:id/categories'){ %>
+													<a class="dropdown-item <%= i == page ? 'active' : null%>" href="http://localhost:3000/shops/shop-details/<%= shop.id %>/categories?category=<%= selectedCategory.id %>&page=<%= i %>#tab-categories">Página <%= i %></a>
+												<% } else if(url == '/shop-details/:id/search'){ %>
+													<a class="dropdown-item <%= i == page ? 'active' : null%>" href="http://localhost:3000/shops/shop-details/<%= shop.id %>/search?page=<%= i %>&search=<%= search %>">Página <%= i %></a>
 												<% } %>
 											<% } %>
 											
@@ -136,14 +151,14 @@
 
 								<% if(page < totalPages){ %>
 									<li class="page-item">
-										<% if(url == '/'){ %>
-											<a class="page-link btn-outline-warning" href="http://localhost:3000/store?page=<%= parseInt(page) +1 %>">Siguiente</a>
-										<% }else if(url == '/types'){ %>
-											<a class="page-link btn-outline-warning" href="http://localhost:3000/store/types?type=<%= selectedType.id %>&page=<%= parseInt(page) +1 %>#tab-types">Siguiente</a>
-										<% } else if(url == '/categories'){ %>
-											<a class="page-link btn-outline-warning" href="http://localhost:3000/store/categories?category=<%= selectedCategory.id %>&page=<%= parseInt(page) +1 %>#tab-categories">Siguiente</a>
-										<% } else if(url == '/search'){ %>
-											<a class="page-link btn-outline-warning" href="http://localhost:3000/store/search?page=<%= parseInt(page) +1 %>&search=<%= search %>">Siguiente</a>
+										<% if(url == '/shop-details/:id'){ %>
+											<a class="page-link btn-outline-warning" href="http://localhost:3000/shops/shop-details/<%= shop.id %>?page=<%= parseInt(page) +1 %>">Siguiente</a>
+										<% }else if(url == '/shop-details/:id/types'){ %>
+											<a class="page-link btn-outline-warning" href="http://localhost:3000/shops/shop-details/<%= shop.id %>/types?type=<%= selectedType.id %>&page=<%= parseInt(page) +1 %>#tab-types">Siguiente</a>
+										<% } else if(url == '/shop-details/:id/categories'){ %>
+											<a class="page-link btn-outline-warning" href="http://localhost:3000/shops/shop-details/<%= shop.id %>/categories?category=<%= selectedCategory.id %>&page=<%= parseInt(page) +1 %>#tab-categories">Siguiente</a>
+										<% } else if(url == '/shop-details/:id/search'){ %>
+											<a class="page-link btn-outline-warning" href="http://localhost:3000/shops/shop-details/<%= shop.id %>/search?page=<%= parseInt(page) +1 %>&search=<%= search %>">Siguiente</a>
 										<% } %>
 									</li>	
 								<% } else if(page == totalPages) { %>

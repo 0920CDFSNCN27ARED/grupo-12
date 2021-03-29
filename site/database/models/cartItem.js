@@ -20,18 +20,21 @@ module.exports = (sequelize, DataTypes) => {
       });
     }
   };
-  CartItem.init({
-    subtotal: DataTypes.FLOAT(10,2),
-    quantity: DataTypes.INTEGER,
-    price: DataTypes.FLOAT(10,2),
-    discount: DataTypes.FLOAT(10,2),
-    expireTime: DataTypes.DATE,
-    productId: DataTypes.INTEGER,
-    orderId: DataTypes.INTEGER
-  }, {
-    sequelize,
-    modelName: 'CartItem',
-    tableName: 'CartItems',
-  });
+  CartItem.init(
+      {
+          subtotal: DataTypes.FLOAT(10, 2),
+          quantity: DataTypes.INTEGER,
+          price: DataTypes.FLOAT(10, 2),
+          discount: DataTypes.FLOAT(10, 2),
+          expireTime: DataTypes.DATEONLY,
+          productId: DataTypes.INTEGER,
+          orderId: DataTypes.INTEGER,
+      },
+      {
+          sequelize,
+          modelName: "CartItem",
+          tableName: "CartItems",
+      }
+  );
   return CartItem;
 };

@@ -1,35 +1,16 @@
 <article id="product-item-<%= product.id %>" class="portfolio-item col-12 col-sm-6 col-md-3 <%= product.categoryId %>">
     <div class="grid-inner">
         <div class="portfolio-image br-5">
-            <a href="javascript:void(0)">
-                <img src="/images/products/<%= product.avatar ? product.avatar : "without-image.png" %>" alt="<%= product.name %>">
-            </a>
-            <!-- Overlay: Start -->
-            <div class="bg-overlay">
-                <div class="bg-overlay-content dark" data-hover-animate="fadeIn">
-                    <a href="/images/products/<%= product.avatar ? product.avatar : "without-image.png" %>" class="overlay-trigger-icon bg-light text-dark"
-                        data-hover-animate="fadeInDownSmall" data-hover-animate-out="fadeOutUpSmall"
-                        data-hover-speed="350" data-lightbox="image" title="<%= product.name %>"><i
-                            class="icon-line-search"></i></a>
-                    <a href="/products/<%= product.id %>/productDetails" class="overlay-trigger-icon bg-light text-dark portfolio-ajax-trigger"
-                        data-hover-animate="fadeInDownSmall" data-hover-animate-out="fadeOutUpSmall"
-                        data-hover-speed="350"><i class="icon-line-eye"></i></a>
-                    <!-- <a href="javascript:void(0)"                                                                                                                                                                                                    class=" overlay-trigger-icon bg-light text-dark portfolio-ajax-trigger side-panel-trigger"
-                        data-hover-animate="fadeInDownSmall" data-hover-animate-out="fadeOutUpSmall"
-                        data-hover-speed="350"><i class="icon-line-shopping-cart"></i></a> -->
-                </div>
-                <div class="bg-overlay-bg dark" data-hover-animate="fadeIn"></div>
-            </div>
-            <!-- Overlay: End -->
+            <img src="/images/products/<%= product.avatar ? product.avatar : "without-image.png" %>" alt="<%= product.name %>">
         </div>
-        <div class="portfolio-desc">
+        <div class="portfolio-desc border-desc-product">
             <h3 class="text-center text-uppercase"><a href="/products/<%= product.id %>/productDetails" class="white-color"><%= product.name %></a></h3>
+            <a href="/shops/shop-details/<%= product.shops.id %>"><small class="m-0"><span class="badge badge-pill badge-warning-outline"><%= product.shops.name %></span></small></a>
             <div class="line line-sm my-3"></div>
             <div class="d-flex mt-2 justify-content-center align-items-center product-price font-weight-bold">
                 <del class="mr-2">$<%= product.price %></del> 
                 <h3 class="color">$<%= (product.price - product.discount).toFixed(2) %></h3>
             </div>
-            <!-- <form action="/products/<%= product.id %>/add-product" method="POST"> -->
                 <div class=" d-flex justify-content-between align-items-center">							
                     <div class="quantity">
                         <input type="button" value="-" class="minus rounded-left border">
@@ -38,12 +19,10 @@
                     </div>
                     <button class="button button-rounded mt-2 mb-2 add-product" data-id="<%= product.id %>">Comprar</button>
                 </div>
-            <!-- </form> -->
-            <% categories.forEach(category => { %>
-                <% if (category.id == product.categoryId) { %>
-                    <span class="text-center text-uppercase p-1">Categoria: <%= category.name %></span>
-                <% } %>
-            <% }) %>
+                <div class=" d-flex justify-content-center align-items-center">
+                    <span class="text-center small text-uppercase p-1">Categoria: <%= product.categories.name %></span> -
+                    <span class="text-center small text-uppercase p-1">Tipo: <%= product.types.name %></span>
+                </div>
             <div class="d-flex mt-2 justify-content-center">
                 <span class="white-color mr-2">ABV: <%= product.abv %>%</span>
                 <span class="white-color mr-2">IBU: <%= product.ibu %></span>

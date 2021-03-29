@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Dashboard from './components/dashboard/Dashboard';
 import Products from './components/products/Products';
 import CategoriesTypes from './components/categories-types/CategoriesTypes';
+import CategoryEdit from "./components/categories-types/CategoryEdit";
 import Shops from './components/shops/Shops';
 import Users from './components/users/Users';
 import Login from './components/auth/Login';
@@ -30,6 +31,7 @@ class App extends Component {
                   <Route exact path="/usuarios" component={Users} />
                   <Route exact path="/comercios" component={Shops} />
                   <Route exact path="/categorias-tipos" component={CategoriesTypes} />
+                  <Route path="/categorias/editar/:id" component={CategoryEdit} />
                   <Route exact path="/login" component={Login} />
                 </Switch>
               </Router>

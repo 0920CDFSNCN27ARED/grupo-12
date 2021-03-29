@@ -1,37 +1,31 @@
 import React, {Component} from "react";
 import HeaderFooTable from './elements/HeaderFooTable';
-import ProductTable from './elements/ProductTable';
+import CategoryRecord from './elements/CategoryRecord';
 import SkeletonProducts from '../../../assets/images/skeleton-products.gif'
 import * as env from '../../../environment';
 const { API_URL } = env[process.env.NODE_ENV];
 
-class ProductsTable extends Component {
+class CategoriesTable extends Component {
     constructor(props){
         super(props);
         this.state = {
             page: 0,
             totalPages: 0,
             loading:true,
-            productsData: [
+            categoriesData: [
                 {
                     id: 1,
-                    avatar: 'without-image.png',
                     name: 'N/D',
                     description: 'N/D',
-                    price: 0,
-                    categories: {
-                        id: 1,
-                        name: 'N/D',
-                    },
-                    shops: {
-                        id: 1,
-                        name: 'N/D',
-                    },
+                    count: 0,
                     types: {
                         id: 1,
                         name: 'N/D',
                     },
-                    stock: 0,
+                    products: {
+                        id: 1,
+                        name: 'N/D',
+                    },
                 }
             ]
         };
@@ -39,50 +33,50 @@ class ProductsTable extends Component {
         this.prevPage = this.prevPage.bind(this); 
     };
 
-    async allProducts(){
-      const response = await fetch(`${API_URL}/products?page=0`);
-      const products = await response.json();
-      return products.data;
+    async allCategories(){
+      const response = await fetch(`${API_URL}/categories/list?page=0`);
+      const categories = await response.json();
+      return categories.data;
     };
 
     async totalPages(){
-      const response = await fetch(`${API_URL}/products`);
-      const products = await response.json();
-      return products.meta.totalCount;
+      const response = await fetch(`${API_URL}/categories/list`);
+      const categories = await response.json();
+      return categories.meta.totalCount;
     };
 
     async nextPage(page){  
-      const response = await fetch(`${API_URL}/products?page=${page}`);
-      const products = await response.json();
-      const productsData = products.data;
+      const response = await fetch(`${API_URL}/categories/list?page=${page}`);
+      const categories = await response.json();
+      const categoriesData = categories.data;
       this.setState(() => {
           return {
-              productsData: productsData,
+              categoriesData: categoriesData,
               page: page
             }
       })
     };
 
     async prevPage(page){  
-      const response = await fetch(`${API_URL}/products?page=${page}`);
-      const products = await response.json();
-      const productsData = products.data;
+      const response = await fetch(`${API_URL}/categories/list?page=${page}`);
+      const categories = await response.json();
+      const categoriesData = categories.data;
       this.setState(() => {
           return {
-              productsData: productsData,
+              categoriesData: categoriesData,
               page: page
             }
       })
     };
 
     async componentDidMount(){
-        const productsData = await this.allProducts();
+        const categoriesData = await this.allCategories();
         let totalPages = await this.totalPages();
         totalPages = totalPages / 10;
         
         this.setState({
           loading: false,  
-          productsData,
+          categoriesData,
           totalPages
         });
     }
@@ -102,42 +96,35 @@ class ProductsTable extends Component {
                         <table className="table table-bordered" id="dataTable" width="100%" cellSpacing="0">
                             <thead>
                                 <HeaderFooTable
-                                    image={'Imagen'}
+                                    id={'#'}
                                     name={'Nombre'}
-                                    shop={'Tienda'}
-                                    price={'Precio'}
-                                    category={'Categoria'}
+                                    description={'Descripción'}
+                                    products={'Productos'}
                                     type={'Tipo'}
-                                    stock={'Stock'}
                                     options={'Opciones'}
                                 />
                             </thead>
                             <tfoot>
                                 <HeaderFooTable
-                                    image={'Imagen'}
+                                    id={'#'}
                                     name={'Nombre'}
-                                    shop={'Tienda'}
-                                    price={'Precio'}
-                                    category={'Categoria'}
+                                    description={'Descripción'}
+                                    products={'Productos'}
                                     type={'Tipo'}
-                                    stock={'Stock'}
                                     options={'Opciones'}
                                 />
                             </tfoot>
                             <tbody>
                                 {
-                                    this.state.productsData.map((product) => {
+                                    this.state.categoriesData.map((category) => {
                                         return(
-                                            <ProductTable
-                                                key={product.id}
-                                                id={product.id}
-                                                name={product.name}
-                                                avatar={product.avatar}
-                                                shop={product.shops.name}
-                                                price={product.price}
-                                                category={product.categories.name}
-                                                type={product.types.name}
-                                                stock={product.stock}
+                                            <CategoryRecord
+                                                key={category.id}
+                                                id={category.id}
+                                                name={category.name}
+                                                description={category.description}
+                                                products={category.products.length}
+                                                type={category.types.name}
                                             />
                                         )
                                     })
@@ -168,10 +155,11 @@ class ProductsTable extends Component {
                             </nav>
                         </div>
                     : null}
+                    
                 </div>
             </div>
         )
     }
 }
 
-export default ProductsTable;
+export default CategoriesTable;

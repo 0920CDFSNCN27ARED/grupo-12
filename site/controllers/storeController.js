@@ -4,6 +4,13 @@ const bcrypt = require("bcrypt");
 const Sequelize = require("sequelize");
 const Op = Sequelize.Op;
 
+// Configuración mercado pago
+const mercadopago = require ('mercadopago');
+const ACCESS_TOKEN = process.env.ACCESS_TOKEN;
+mercadopago.configure({
+    access_token: ACCESS_TOKEN
+  });
+
 // Services
 const orderService = require("../services/orderService");
 const productService = require("../services/productService");
@@ -541,9 +548,49 @@ const storeController = {
                         totalProducts: orderTotalProducts,
                         total: orderTotal,
                     });
+                    if (req.body.paymentMethod == 4) {
+                        let items =[]
+                            for (let i = 1; i <= req.body.productsQty; i++) {
+                                let productId = eval(`req.body.product${i}`);
+                                let productQty = eval(`req.body.qty${i}`);
+                                let product = await productService.findOne(productId);
+                                subtotal =
+                                (product.price - product.discount) * productQty;
+                                item ={
+                                    title: product.name,
+                                    unit_price: Number(product.price),
+                                    quantity: Number(productQty)
+                                }
+                                items.push(item);
+                            }
+                            const preference = {
+                                items: items,
+                                back_urls:{
+                                    success:`${process.env.DOMAIN}/mercadopago/success/${order.id}`,
+                                    pending:`${process.env.DOMAIN}/mercadopago/pending/${order.id}`,
+                                    failure:`${process.env.DOMAIN}/mercadopago/failure/${order.id}`
+                                },
+                                payment_methods:{
+                                    excluded_payment_types:[
+                                        {
+                                            id:"ticket"
+                                        },
+                                        {
+                                            id:"atm"
+                                        },
+                                        {
+                                            id:"prepaid_card"
+                                        }
+                                    ]
+                                }
+                            };
+                            let result = await mercadopago.preferences.create(preference);
+                            return res.redirect(result.body.init_point);
+                    }else{
+                        req.flash("message", "Tu pedido se realizo correctamente.");
+                        return res.redirect(`/orders/${order.id}/orderSuccess`);    
+                    }
 
-                    req.flash("message", "Tu pedido se realizo correctamente.");
-                    return res.redirect(`/orders/${order.id}/orderSuccess`);
                 } else if (currentUser) {
                     // Creamos direccion de envio en caso de estar verificada
                     let shippingAddressId;
@@ -627,9 +674,48 @@ const storeController = {
                         total: orderTotal,
                     });
                     console.log(order);
-
-                    req.flash("message", "Tu pedido se realizo correctamente.");
-                    return res.redirect(`/orders/${order.id}/orderSuccess`);
+                    if (req.body.paymentMethod == 4) {
+                        let items =[]
+                            for (let i = 1; i <= req.body.productsQty; i++) {
+                                let productId = eval(`req.body.product${i}`);
+                                let productQty = eval(`req.body.qty${i}`);
+                                let product = await productService.findOne(productId);
+                                subtotal =
+                                (product.price - product.discount) * productQty;
+                                item ={
+                                    title: product.name,
+                                    unit_price: Number(product.price),
+                                    quantity: Number(productQty)
+                                }
+                                items.push(item);
+                            }
+                            const preference = {
+                                items: items,
+                                back_urls:{
+                                    success:`${process.env.DOMAIN}/mercadopago/success/${order.id}`,
+                                    pending:`${process.env.DOMAIN}/mercadopago/pending/${order.id}`,
+                                    failure:`${process.env.DOMAIN}/mercadopago/failure/${order.id}`
+                                },
+                                payment_methods:{
+                                    excluded_payment_types:[
+                                        {
+                                            id:"ticket"
+                                        },
+                                        {
+                                            id:"atm"
+                                        },
+                                        {
+                                            id:"prepaid_card"
+                                        }
+                                    ]
+                                }
+                            };
+                            let result = await mercadopago.preferences.create(preference);
+                            return res.redirect(result.body.init_point);
+                    }else{
+                        req.flash("message", "Tu pedido se realizo correctamente.");
+                        return res.redirect(`/orders/${order.id}/orderSuccess`);    
+                    }
                 }
             } else {
                 req.flash("validateErrors", errors.errors);

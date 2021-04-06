@@ -13,15 +13,25 @@ module.exports = (sequelize, DataTypes) => {
          as: "orders",
          foreignKey:"paymentId"
         });
+        Payment.belongsTo(models.Shop, {
+            as: "shopPayments",
+            foreignKey: "shopId",
+        });
       }
     };
-  Payment.init({
-    name: DataTypes.STRING,
-    description: DataTypes.STRING,
-  }, {
-    sequelize,
-    modelName: 'Payment',
-    tableName: 'Payments'
-  });
+  Payment.init(
+      {
+          name: DataTypes.STRING,
+          description: DataTypes.STRING,
+          type: DataTypes.STRING,
+          status: DataTypes.STRING,
+          shopId: DataTypes.INTEGER,
+      },
+      {
+          sequelize,
+          modelName: "Payment",
+          tableName: "Payments",
+      }
+  );
   return Payment;
 };

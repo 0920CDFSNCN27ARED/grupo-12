@@ -3,6 +3,8 @@ const express = require('express');
 const router = express.Router();
 const shopsController = require('../controllers/shopsController');
 const couponsController = require("../controllers/couponsController");
+const shippingMethodsController = require("../controllers/shippingMethodsController");
+const paymentsController = require("../controllers/paymentsController");
 const {check,validationResult, body}= require("express-validator");
 
 // Utils
@@ -98,5 +100,78 @@ router.post('/:shop/:id/coupon-activate', assertSignedIn, couponsController.acti
 
 // DELETE coupon 
 router.delete('/:shop/:id/coupon-destroy', assertSignedIn, couponsController.destroyCoupon);
+
+
+//******************* ShippingMethods Routes *******************//
+
+// POST create ShippingMethods
+router.post(
+    "/:shop/create-shipping-method",
+    assertSignedIn,
+    [
+        check("name", "El nombre es requerido.").notEmpty(),
+        check("description", "La descripción es requerida.").notEmpty(),
+        check("location", "La ubicación es requerida.").notEmpty(),
+        check("status", "El estado es requerido.").notEmpty(),
+        check("amount", "La cantidad e requerida es requerido.").notEmpty(),
+    ],
+    shippingMethodsController.create
+);
+
+// PUT edit ShippingMethods
+router.put(
+    "/:shop/:id/edit-shipping-method",
+    assertSignedIn,
+    [
+        check("name", "El nombre es requerido.").notEmpty(),
+        check("description", "La descripción es requerida.").notEmpty(),
+        check("location", "La ubicación es requerida.").notEmpty(),
+        check("status", "El estado es requerido.").notEmpty(),
+        check("amount", "La cantidad e requerida es requerido.").notEmpty(),
+    ],
+    shippingMethodsController.update
+);
+
+// DELETE ShippingMethods 
+router.delete(
+    "/:shop/:id/destroy-shipping-method",
+    assertSignedIn,
+    shippingMethodsController.destroy
+);
+
+//******************* Payments Routes *******************//
+
+// POST create Payments
+router.post(
+    "/:shop/create-payment",
+    assertSignedIn,
+    [
+        check("name", "El nombre es requerido.").notEmpty(),
+        check("description", "La descripción es requerida.").notEmpty(),
+        check("type", "El tipo de pago es requerido.").notEmpty(),
+        check("status", "El estado es requerido.").notEmpty(),
+    ],
+    paymentsController.create
+);
+
+// PUT edit Payments
+router.put(
+    "/:shop/:id/edit-payment",
+    assertSignedIn,
+    [
+        check("name", "El nombre es requerido.").notEmpty(),
+        check("description", "La descripción es requerida.").notEmpty(),
+        check("type", "El tipo de pago es requerido.").notEmpty(),
+        check("status", "El estado es requerido.").notEmpty(),
+    ],
+    paymentsController.update
+);
+
+// DELETE Payments 
+router.delete(
+    "/:shop/:id/destroy-payment",
+    assertSignedIn,
+    paymentsController.destroy
+);
 
 module.exports = router;

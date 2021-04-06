@@ -331,6 +331,7 @@
   border-radius: 0.5rem !important;
 }
 
+/* Responsive product shop image */
 @media (max-width: 575px) {
   .portfolio-responsive-image {
     position: relative;
@@ -346,6 +347,7 @@
   }
 }
 
+/* Responsive product shop card */
 @media (min-width: 1200px) {
 .quantity-lg {
     padding-right: 0px;

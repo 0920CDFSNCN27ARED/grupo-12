@@ -19,7 +19,7 @@ const shopsController = {
                 let avatar = req.file ? req.file.filename : "default.jpg";
 
                 // Crear tienda
-                let shop = await shopService.create({ 
+                let shop = await shopService.create({
                     name: req.body.name,
                     phone: req.body.phone,
                     email: req.body.email,
@@ -30,7 +30,11 @@ const shopsController = {
                     bio: req.body.bio,
                     facebook: req.body.facebook,
                     instagram: req.body.instagram,
-                    twitter: req.body.twitter
+                    twitter: req.body.twitter,
+                    tokenKey: null,
+                    publicKey: null,
+                    marketplaceLink: null,
+                    marketplaceApp: null,
                 });
 
                 // Actualizar propietario

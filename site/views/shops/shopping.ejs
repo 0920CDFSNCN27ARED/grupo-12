@@ -58,9 +58,9 @@
 								<% if(page > 0){ %>
 									<li class="page-item">
 										<% if(url == '/shopping'){ %>
-											<a class="page-link btn-outline-warning" href="http://localhost:3000/shops/shopping?page=<%= parseInt(page) -1 %>">Anterior</a>
+											<a class="page-link btn-outline-warning" href="<%= process.env.DOMAIN %>/shops/shopping?page=<%= parseInt(page) -1 %>">Anterior</a>
 										<% } else if(url == '/shopping/search'){ %>
-											<a class="page-link btn-outline-warning" href="http://localhost:3000/shops/shopping/search?page=<%= parseInt(page) -1 %>&search=<%= search %>">Siguiente</a>
+											<a class="page-link btn-outline-warning" href="<%= process.env.DOMAIN %>/shops/shopping/search?page=<%= parseInt(page) -1 %>&search=<%= search %>">Siguiente</a>
 										<% } %>
 									</li>
 								<% } else if(page == 0) { %>
@@ -78,9 +78,9 @@
 										<div class="dropdown-menu">
 											<% for(let i = 0; i <= totalPages; i++) { %>
 												<% if(url == '/shopping'){ %>
-													<a class="dropdown-item <%= i == page ? 'active' : null%>" href="http://localhost:3000/shops/shopping?page=<%= i %>">Página <%= i %></a>
+													<a class="dropdown-item <%= i == page ? 'active' : null%>" href="<%= process.env.DOMAIN %>/shops/shopping?page=<%= i %>">Página <%= i %></a>
 												<% } else if(url == '/shopping/search'){ %>
-													<a class="dropdown-item <%= i == page ? 'active' : null%>" href="http://localhost:3000/shops/shopping/search?page=<%= i %>&search=<%= search %>">Página <%= i %></a>
+													<a class="dropdown-item <%= i == page ? 'active' : null%>" href="<%= process.env.DOMAIN %>/shops/shopping/search?page=<%= i %>&search=<%= search %>">Página <%= i %></a>
 												<% } %>
 											<% } %>
 											
@@ -91,9 +91,9 @@
 								<% if(page < totalPages){ %>
 									<li class="page-item">
 										<% if(url == '/shopping'){ %>
-											<a class="page-link btn-outline-warning" href="http://localhost:3000/shops/shopping?page=<%= parseInt(page) +1 %>">Siguiente</a>
+											<a class="page-link btn-outline-warning" href="<%= process.env.DOMAIN %>/shops/shopping?page=<%= parseInt(page) +1 %>">Siguiente</a>
 										<% } else if(url == '/shopping/search'){ %>
-											<a class="page-link btn-outline-warning" href="http://localhost:3000/shops/shopping/search?page=<%= parseInt(page) +1 %>&search=<%= search %>">Siguiente</a>
+											<a class="page-link btn-outline-warning" href="<%= process.env.DOMAIN %>/shops/shopping/search?page=<%= parseInt(page) +1 %>&search=<%= search %>">Siguiente</a>
 										<% } %>
 									</li>	
 								<% } else if(page == totalPages) { %>

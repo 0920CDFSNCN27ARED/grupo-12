@@ -3,16 +3,12 @@ const { ShippingMethod } = require("../database/models");
 module.exports = {
     findOne: async (id) => {
         return await ShippingMethod.findByPk(id, {
-            include: [
-                { association: "orders" }
-            ],
+            include: [ "orders", "shopShippingMethods" ],
         });
     },
     findAll: async () => {
         return await ShippingMethod.findAll({
-            include: [
-                { association: "orders" },
-            ],
+            include: ["orders", "shopShippingMethods"],
         });
     },
     create: async (attributes) => {

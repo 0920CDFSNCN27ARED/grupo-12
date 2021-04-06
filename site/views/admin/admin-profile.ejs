@@ -445,6 +445,8 @@
 															<th>Monto</th>
 															<th>Descripción</th>
 															<th>Ubicación</th>
+															<th>Tienda</th>
+															<th>Estado</th>
 															<th class="text-center">Opciones</th>
 														</tr>
 													</thead>
@@ -457,6 +459,14 @@
 																<td><small><%= shippingMethod.amount %></small></td>
 																<td><small><%= shippingMethod.description %></small></td>
 																<td><small><%= shippingMethod.location %></small></td>
+																<td><small><%= shippingMethod.shopShippingMethods.name %></small></td>
+																<td>
+																	<% if(shippingMethod.status == "active") { %>
+																		<small><span class="badge badge-pill badge-success">ACTIVO</span></small>
+																	<% } else if(shippingMethod.status == "blocked"){ %>  
+																		<small><span class="badge badge-pill badge-danger">BLOQUEDO</span></small>
+																	<% } %>
+																</td>
 																<td class="d-flex justify-content-center">
 																	<button class="btn btn-outline btn-sm p-0" data-toggle="modal" data-target="#<%= `editShippingMethodModal${shippingMethod.id}` %>">
 																		<i class="m-0 i-rounded i-small icon-line2-pencil"></i></button>
@@ -480,6 +490,9 @@
 															<th>ID</th>
 															<th>Nombre</th>
 															<th>Descripción</th>
+															<th>Tienda</th>
+															<th>Tipo</th>
+															<th>Estado</th>
 															<th class="text-center">Opciones</th>
 														</tr>
 													</thead>
@@ -490,6 +503,21 @@
 																<td><small><%= payment.id %></small></td>
 																<td><small><%= payment.name %></small></td>
 																<td><small><%= payment.description %></small></td>
+																<td><small><%= payment.shopPayments.name %></small></td>
+																<td>
+																	<% if(payment.type == "cash") { %>
+																		<small><span class="badge badge-pill badge-warning">EFECTIVO</span></small>
+																	<% } else if(payment.type == "mercadopago"){ %>  
+																		<small><span class="badge badge-pill badge-info">ONLINE</span></small>
+																	<% } %>
+																</td>
+																<td>
+																	<% if(payment.status == "active") { %>
+																		<small><span class="badge badge-pill badge-success">ACTIVO</span></small>
+																	<% } else if(payment.status == "blocked"){ %>  
+																		<small><span class="badge badge-pill badge-danger">BLOQUEDO</span></small>
+																	<% } %>
+																</td>
 																<td class="d-flex justify-content-center">
 																	<button class="btn btn-outline btn-sm p-0" data-toggle="modal" data-target="#<%= `editPaymentModal${payment.id}` %>">
 																		<i class="m-0 i-rounded i-small icon-line2-pencil"></i></button>

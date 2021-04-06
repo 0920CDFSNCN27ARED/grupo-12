@@ -30,9 +30,9 @@
                                         </button>
                                         <div class="dropdown-menu btn-block" aria-labelledby="dropdownMenuButton">
                                             <% categories.forEach( category => { %>
-                                                <a class="dropdown-item" href="http://localhost:3000/store/categories?category=<%= category.id %>#tab-categories"><%= category.name %></a>
+                                                <a class="dropdown-item" href="<%= process.env.DOMAIN %>/store/categories?category=<%= category.id %>#tab-categories"><%= category.name %></a>
                                             <% }) %>
-                                            <a class="dropdown-item" href="http://localhost:3000/store/">Todas</a>
+                                            <a class="dropdown-item" href="<%= process.env.DOMAIN %>/store/">Todas</a>
                                         </div>
                                     </div>
                                 </div>
@@ -45,9 +45,9 @@
                                         </button>
                                         <div class="dropdown-menu btn-block" aria-labelledby="dropdownMenuButton">
                                             <% types.forEach( type => { %>
-                                                <a class="dropdown-item" href="http://localhost:3000/store/types?type=<%= type.id %>#tab-types"><%= type.name %></a>
+                                                <a class="dropdown-item" href="<%= process.env.DOMAIN %>/store/types?type=<%= type.id %>#tab-types"><%= type.name %></a>
                                             <% }) %>
-                                            <a class="dropdown-item" href="http://localhost:3000/store/">Todos</a>
+                                            <a class="dropdown-item" href="<%= process.env.DOMAIN %>/store/">Todos</a>
                                         </div>
                                     </div>
                                 </div>

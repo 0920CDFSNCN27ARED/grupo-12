@@ -13,18 +13,27 @@ module.exports = (sequelize, DataTypes) => {
       ShippingMethod.hasMany(models.Order,{
         as:'orders',
         foreignKey:"shippingMethodId"
-      })
+      });
+      ShippingMethod.belongsTo(models.Shop, {
+          as: "shopShippingMethods",
+          foreignKey: "shopId",
+      });
     }
   };
-  ShippingMethod.init({
-    name: DataTypes.STRING,
-    amount: DataTypes.FLOAT(10,2),
-    description: DataTypes.STRING,
-    location: DataTypes.STRING
-  }, {
-    sequelize,
-    modelName: 'ShippingMethod',
-    tableName: 'ShippingMethods'
-  });
+  ShippingMethod.init(
+      {
+          name: DataTypes.STRING,
+          amount: DataTypes.FLOAT(10, 2),
+          description: DataTypes.STRING,
+          location: DataTypes.STRING,
+          status: DataTypes.STRING,
+          shopId: DataTypes.INTEGER,
+      },
+      {
+          sequelize,
+          modelName: "ShippingMethod",
+          tableName: "ShippingMethods",
+      }
+  );
   return ShippingMethod;
 };

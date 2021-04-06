@@ -30,9 +30,9 @@
                                         </button>
                                         <div class="dropdown-menu btn-block" aria-labelledby="dropdownMenuButton">
                                             <% categories.forEach( category => { %>
-                                                <a class="dropdown-item" href="http://localhost:3000/shops/shop-details/<%= shop.id %>/categories?category=<%= category.id %>#tab-categories"><%= category.name %></a>
+                                                <a class="dropdown-item" href="<%= process.env.DOMAIN %>/shops/shop-details/<%= shop.id %>/categories?category=<%= category.id %>#tab-categories"><%= category.name %></a>
                                             <% }) %>
-                                            <a class="dropdown-item" href="http://localhost:3000/shops/shop-details/<%= shop.id %>">Todas</a>
+                                            <a class="dropdown-item" href="<%= process.env.DOMAIN %>/shops/shop-details/<%= shop.id %>">Todas</a>
                                         </div>
                                     </div>
                                 </div>
@@ -45,9 +45,9 @@
                                         </button>
                                         <div class="dropdown-menu btn-block" aria-labelledby="dropdownMenuButton">
                                             <% types.forEach( type => { %>
-                                                <a class="dropdown-item" href="http://localhost:3000/shops/shop-details/<%= shop.id %>/types?type=<%= type.id %>#tab-types"><%= type.name %></a>
+                                                <a class="dropdown-item" href="<%= process.env.DOMAIN %>/shops/shop-details/<%= shop.id %>/types?type=<%= type.id %>#tab-types"><%= type.name %></a>
                                             <% }) %>
-                                            <a class="dropdown-item" href="http://localhost:3000/shops/shop-details/<%= shop.id %>">Todos</a>
+                                            <a class="dropdown-item" href="<%= process.env.DOMAIN %>/shops/shop-details/<%= shop.id %>">Todos</a>
                                         </div>
                                     </div>
                                 </div>

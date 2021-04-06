@@ -561,6 +561,10 @@ const shopsController = {
                     facebook: req.body.facebook,
                     instagram: req.body.instagram,
                     twitter: req.body.twitter,
+                    tokenKey: null,
+                    publicKey: null,
+                    marketplaceLink: null,
+                    marketplaceApp: null,
                 });
 
                 // Actualizar propietario

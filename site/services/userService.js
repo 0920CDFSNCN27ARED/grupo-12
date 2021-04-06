@@ -75,7 +75,14 @@ module.exports = {
 
         // user Shop
         let shop = await Shop.findByPk(currentUser.id, {
-            include:["products", "users", "orders", "shopCoupons"],
+            include: [
+                "products",
+                "users",
+                "orders",
+                "shopCoupons",
+                "shopPayments",
+                "shopShippingMethods",
+            ],
         });
 
         //user data

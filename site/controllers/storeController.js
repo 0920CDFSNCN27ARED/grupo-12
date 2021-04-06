@@ -433,10 +433,12 @@ const storeController = {
                     }
 
                     // Creamos el usuario
-                    let password =
-                        req.body.password != ""
-                            ? bcrypt.hashSync(req.body.password, 10)
-                            : bcrypt.hashSync(req.body.email, 10);
+                    let password;
+                    if(req.body.password != ""){
+                        password = bcrypt.hashSync(req.body.password, 10);
+                    } else {
+                        password = bcrypt.hashSync(req.body.email, 10);
+                    }
 
                     let user = await userService.create({
                         name: req.body.name,
@@ -548,7 +550,7 @@ const storeController = {
                         totalProducts: orderTotalProducts,
                         total: orderTotal,
                     });
-                    if (req.body.paymentMethod == 4) {
+                    if (req.body.paymentMethod == 1) {
                         let items =[]
                             for (let i = 1; i <= req.body.productsQty; i++) {
                                 let productId = eval(`req.body.product${i}`);
@@ -592,6 +594,23 @@ const storeController = {
                     }
 
                 } else if (currentUser) {
+                    let billingAddressId;
+                    if (currentUser.addresses.length == 0){
+                        // Creamos direccion de facturación
+                        let billingAddress = await addressService.create({
+                            fullName: currentUser.name,
+                            address: req.body.billingAddress,
+                            city: req.body.billingCity,
+                            province: req.body.billingProvince,
+                            postalCode: req.body.billingPostalCode,
+                            country: req.body.billingCountry,
+                            message: req.body.billingMessage,
+                            userId: currentUser.id,
+                        });
+                        billingAddressId = billingAddress.id;
+                    } else {
+                        billingAddressId = req.body.billAddressId;
+                    }
                     // Creamos direccion de envio en caso de estar verificada
                     let shippingAddressId;
                     if (req.body.shippingCheck == 1) {
@@ -606,7 +625,11 @@ const storeController = {
                         });
                         shippingAddressId = shippingAddress.id;
                     } else {
-                        shippingAddressId = req.body.shippingAddressId;
+                        if (currentUser.addresses.length == 0){
+                            shippingAddressId = billingAddressId;
+                        } else {
+                            shippingAddressId = req.body.shippingAddressId;
+                        }
                     }
 
                     // creamos pedido general
@@ -624,7 +647,7 @@ const storeController = {
                         paymentId: req.body.paymentMethod,
                         couponId: couponId,
                         shippingMethodId: req.body.shippingMethod,
-                        billAddressId: req.body.billAddressId,
+                        billAddressId: billingAddressId,
                         shippingAddressId: shippingAddressId,
                     });
                     console.log(currentUser);
@@ -674,7 +697,7 @@ const storeController = {
                         total: orderTotal,
                     });
                     console.log(order);
-                    if (req.body.paymentMethod == 4) {
+                    if (req.body.paymentMethod == 1) {
                         let items =[]
                             for (let i = 1; i <= req.body.productsQty; i++) {
                                 let productId = eval(`req.body.product${i}`);

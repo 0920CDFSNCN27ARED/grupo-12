@@ -3,16 +3,12 @@ const { Payment } = require("../database/models");
 module.exports = {
     findOne: async (id) => {
         return await Payment.findByPk(id, {
-            include: [
-                { association: "orders" }
-            ],
+            include: ["orders", "shopPayments"],
         });
     },
     findAll: async () => {
         return await Payment.findAll({
-            include: [
-                { association: "orders" },
-            ],
+            include: ["orders", "shopPayments"],
         });
     },
     create: async (attributes) => {

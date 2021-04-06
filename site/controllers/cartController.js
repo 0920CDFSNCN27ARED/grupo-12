@@ -1,6 +1,5 @@
 //Require
 const { validationResult } = require("express-validator");
-const bcrypt = require("bcrypt");
 
 // Services
 const productService = require("../services/productService");

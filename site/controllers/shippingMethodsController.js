@@ -2,7 +2,7 @@
 const { check, validationResult, body } = require("express-validator");
 
 // Services
-const shippingMethodService = require("../../services/shippingMethodService");
+const shippingMethodService = require("../services/shippingMethodService");
 
 // Controller
 const shippingMethodsController = {
@@ -10,6 +10,7 @@ const shippingMethodsController = {
     //POST create Shipping Method
     create: async (req, res, next) => {
         let errors = validationResult(req);
+        let shopId = req.params.shop;
         try { 
             if (errors.isEmpty()) {
                 await shippingMethodService.create({
@@ -18,13 +19,13 @@ const shippingMethodsController = {
                     description: req.body.description,
                     location: req.body.location,
                     status: req.body.status,
-                    shopId: req.body.shopId,
+                    shopId: shopId,
                 });
                 req.flash('message', 'El método de envío fue creado correctamente.');
-                res.redirect("/admin#tab-shippingMethods");
+                res.redirect(`/shops/${shopId}/profile#tab-shippingMethods`);
             } else {
                 req.flash('validateErrors', errors.errors);
-                res.redirect("/admin#tab-shippingMethods");
+                res.redirect(`/shops/${shopId}/profile#tab-shippingMethods`);
             }
         } catch (error) {
             res.status(400).send(error.message);
@@ -34,21 +35,23 @@ const shippingMethodsController = {
     //PUT Edit Shipping Method
     update: async (req, res, next) => {
         let errors = validationResult(req);
+        let shopId = req.params.shop;
+        let shippingMethodId = req.params.id;
         try { 
             if (errors.isEmpty()) {
-                await shippingMethodService.update(req.params.id, {
+                await shippingMethodService.update(shippingMethodId, {
                     name: req.body.name,
                     amount: req.body.amount,
                     description: req.body.description,
                     location: req.body.location,
                     status: req.body.status,
-                    shopId: req.body.shopId,
+                    shopId: shopId,
                 });
                 req.flash('message', 'El método de envío fue actualizado correctamente.');
-                res.redirect("/admin#tab-shippingMethods");
+                res.redirect(`/shops/${shopId}/profile#tab-shippingMethods`);
             } else {
                 req.flash('validateErrors', errors.errors);
-                res.redirect("/admin#tab-shippingMethods");
+                res.redirect(`/shops/${shopId}/profile#tab-shippingMethods`);
             }
         } catch (error) {
             res.status(400).send(error.message);
@@ -57,10 +60,11 @@ const shippingMethodsController = {
 
     // DELETE ShippingMethod
     destroy: async (req, res, next) => {
+        let shopId = req.params.shop;
         try {
             await shippingMethodService.destroy(req.params.id);
             req.flash('message', 'El método de envío fue eliminado correctamente.');
-            res.redirect("/admin#tab-shippingMethods");
+            res.redirect(`/shops/${shopId}/profile#tab-shippingMethods`);
         } catch (error) {
             res.status(400).send(error.message);
         }

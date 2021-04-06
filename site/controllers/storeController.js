@@ -565,24 +565,24 @@ const storeController = {
                             }
                             const preference = {
                                 items: items,
-                                back_urls:{
-                                    success:`${process.env.DOMAIN}/mercadopago/success/${order.id}`,
-                                    pending:`${process.env.DOMAIN}/mercadopago/pending/${order.id}`,
-                                    failure:`${process.env.DOMAIN}/mercadopago/failure/${order.id}`
+                                back_urls: {
+                                    success: `${process.env.DOMAIN}/orders/${order.id}/orderSuccess/`,
+                                    pending: `${process.env.DOMAIN}/orders/${order.id}/orderPending/`,
+                                    failure: `${process.env.DOMAIN}/orders/${order.id}/orderFailure/`,
                                 },
-                                payment_methods:{
-                                    excluded_payment_types:[
+                                payment_methods: {
+                                    excluded_payment_types: [
                                         {
-                                            id:"ticket"
+                                            id: "ticket",
                                         },
                                         {
-                                            id:"atm"
+                                            id: "atm",
                                         },
                                         {
-                                            id:"prepaid_card"
-                                        }
-                                    ]
-                                }
+                                            id: "prepaid_card",
+                                        },
+                                    ],
+                                },
                             };
                             let result = await mercadopago.preferences.create(preference);
                             return res.redirect(result.body.init_point);
@@ -691,24 +691,24 @@ const storeController = {
                             }
                             const preference = {
                                 items: items,
-                                back_urls:{
-                                    success:`${process.env.DOMAIN}/mercadopago/success/${order.id}`,
-                                    pending:`${process.env.DOMAIN}/mercadopago/pending/${order.id}`,
-                                    failure:`${process.env.DOMAIN}/mercadopago/failure/${order.id}`
+                                back_urls: {
+                                    success: `${process.env.DOMAIN}/orders/${order.id}/orderSuccess/`,
+                                    pending: `${process.env.DOMAIN}/orders/${order.id}/orderPending/`,
+                                    failure: `${process.env.DOMAIN}/orders/${order.id}/orderFailure/`,
                                 },
-                                payment_methods:{
-                                    excluded_payment_types:[
+                                payment_methods: {
+                                    excluded_payment_types: [
                                         {
-                                            id:"ticket"
+                                            id: "ticket",
                                         },
                                         {
-                                            id:"atm"
+                                            id: "atm",
                                         },
                                         {
-                                            id:"prepaid_card"
-                                        }
-                                    ]
-                                }
+                                            id: "prepaid_card",
+                                        },
+                                    ],
+                                },
                             };
                             let result = await mercadopago.preferences.create(preference);
                             return res.redirect(result.body.init_point);

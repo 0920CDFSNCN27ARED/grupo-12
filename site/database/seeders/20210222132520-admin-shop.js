@@ -17,8 +17,9 @@ module.exports = {
                 bio: "Tienda administradora de sitio",
                 facebook: "https://www.facebook.com/",
                 instagram: "https://www.instagram.com/",
-                tokenKey: null,
-                publicKey: null,
+                tokenKey:
+                    "TEST-3427457278487920-040812-e748dbb3b0df38859deb13d94806b239-738956078",
+                publicKey: "TEST-44ec7572-89fa-4a49-8bca-322540114415",
                 marketplaceLink: null,
                 marketplaceApp: null,
                 twitter: "https://www.twitter.com/",

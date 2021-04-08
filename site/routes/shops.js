@@ -161,10 +161,17 @@ router.put(
     [
         check("name", "El nombre es requerido.").notEmpty(),
         check("description", "La descripción es requerida.").notEmpty(),
-        check("type", "El tipo de pago es requerido.").notEmpty(),
-        check("status", "El estado es requerido.").notEmpty(),
+        // check("type", "El tipo de pago es requerido.").notEmpty(),
+        // check("status", "El estado es requerido.").notEmpty(),
     ],
     paymentsController.update
+);
+
+// PUT edit Payments
+router.put(
+    "/:shop/:id/config-mp-payment",
+    assertSignedIn,
+    paymentsController.updateMercadoPago
 );
 
 // DELETE Payments 

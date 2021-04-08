@@ -8,7 +8,7 @@ module.exports = {
             {
                 id: 1,
                 name: "Envío a domicilio",
-                amount: 300.2,
+                amount: 300.50,
                 description: "Envio al domicilio del cliente.",
                 location: "Dirección del cliente",
                 status: "active",

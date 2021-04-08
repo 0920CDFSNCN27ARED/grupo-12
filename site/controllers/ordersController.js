@@ -95,6 +95,8 @@ const ordersController = {
                 currentUser = await userService.findOne(loggedUserId);
             }
             let order = await orderService.findOne(req.params.id);
+            await userService.destroy(order.userId);
+            await orderService.destroy(order.id);
             res.render("orders/orderPending", {
                 notification: notification,
                 message: message,
@@ -129,6 +131,8 @@ const ordersController = {
                 currentUser = await userService.findOne(loggedUserId);
             }
             let order = await orderService.findOne(req.params.id);
+            await userService.destroy(order.userId);
+            await orderService.destroy(order.id);
             res.render("orders/orderFailure", {
                 notification: notification,
                 message: message,

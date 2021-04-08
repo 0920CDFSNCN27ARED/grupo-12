@@ -323,12 +323,19 @@
 																<td><small><%= index +1 %></small></td>
 																<td><small><%= payment.id %></small></td>
 																<td><small><%= payment.name %></small></td>
-																<td><small><%= payment.description %></small></td>
+																<td>
+																	<small>
+																		<%= payment.description %>
+																		<% if(payment.type == "mercadopago" && payment.status == "blocked") {%> 
+																		<br/><span class="color">"ATENCION: PARA USAR ESTE METODO DE PAGO ANTES DEBES CONFIGURARLO"</span>
+																		<% } %> 
+																	</small>
+																</td>
 																<td>
 																	<% if(payment.type == "cash") { %>
 																		<small><span class="badge badge-pill badge-warning">EFECTIVO</span></small>
 																	<% } else if(payment.type == "mercadopago"){ %>  
-																		<small><span class="badge badge-pill badge-info">ONLINE</span></small>
+																		<small><span class="badge badge-pill badge-primary">MERCADOPAGO</span></small>
 																	<% } %>
 																</td>
 																<td>
@@ -341,8 +348,14 @@
 																<td class="d-flex justify-content-center">
 																	<button class="btn btn-outline btn-sm p-0" data-toggle="modal" data-target="#<%= `editPaymentModal${payment.id}` %>">
 																		<i class="m-0 i-rounded i-small icon-line2-pencil"></i></button>
+																	<% if(payment.type != "mercadopago") {%> 
 																	<button class="btn btn-outline btn-sm p-0" data-toggle="modal" data-target="#<%= `destroyPaymentModal${payment.id}` %>">
 																		<i class="m-0 i-rounded i-small icon-line-trash-2"></i></button>
+																	<% } %>
+																	<% if(payment.type == "mercadopago") {%> 
+																		<button class="btn btn-outline btn-sm p-0" data-toggle="modal" data-target="#<%= `configMPModal${payment.id}` %>">
+																		<i class="m-0 i-rounded i-small icon-line-cog"></i></button>
+																	<% } %>
 																</td>
 															</tr>
 														<% });%>
@@ -573,6 +586,9 @@
 	<!-- Destroy Payment Modal -->
 	<%- include('./payments/destroy-payment-modal') %>
 
+	<!-- Config MP Modal-->
+	<%- include('./payments/config-mp-modal') %>
+
 	<!-- Create Shipping Method Modal-->
 	<%- include('./shippingMethods/create-shipping-modal') %>
 
@@ -593,6 +609,7 @@
 
 	<!-- Footer -->
 	<%- include('../layout/footer') %>
+	
 	<script src="/js/components/bs-datatable.js"></script>
 	<script>
 		$(document).ready(function () {
@@ -604,7 +621,15 @@
 			$('#coupons').dataTable();
 		});
 	</script>
-
+	<script>
+		jQuery(window).on( 'pluginTabsReady', function(){
+			$( "#processTabs" ).tabs({ show: { effect: "fade", duration: 400 } });
+			$( ".tab-linker" ).click(function() {
+				$( "#processTabs" ).tabs("option", "active", $(this).attr('rel') - 1);
+				return false;
+			});
+		});
+	</script>
 </body>
 
 </html>

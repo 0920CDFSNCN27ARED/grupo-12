@@ -24,15 +24,17 @@
                                     <div class="valid-feedback">Ok válido!</div>
                                     <div class="invalid-feedback">Complete este campo</div>
                                 </div>
+                                <% if (payment.type != 'mercadopago') { %> 
                                 <div class="col-lg-12 col-md-12 form-group">
-                                    <label for="type">Estado:</label>
+                                    <label for="type">Tipo:</label>
                                     <select class="custom-select" name="type" id="type" required>
                                         <option <%=payment.type=='cash' ? "selected" :null %> value="cash">Pago en Efectivo</option>
-                                        <option <%=payment.type=='mercadopago' ? "selected" :null %> value="mercadopago">Pago Online</option>
+                                        <option <%=payment.type=='mercadopago' ? "selected" :null %> value="mercadopago">Mercado Pago</option>
                                     </select>
                                     <div class="valid-feedback">Ok válido!</div>
                                     <div class="invalid-feedback">Complete este campo</div>
                                 </div>
+                                
                                 <div class="col-lg-12 col-md-12 form-group">
                                     <label for="status">Estado:</label>
                                     <select class="custom-select" name="status" id="status" required>
@@ -42,6 +44,7 @@
                                     <div class="valid-feedback">Ok válido!</div>
                                     <div class="invalid-feedback">Complete este campo</div>
                                 </div>
+                                <% } %> 
                             </div>
                         </div>
                         <div class="modal-footer">

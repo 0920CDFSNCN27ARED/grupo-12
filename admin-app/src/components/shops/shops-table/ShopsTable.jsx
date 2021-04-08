@@ -1,37 +1,22 @@
 import React, {Component} from "react";
 import HeaderFooTable from './elements/HeaderFooTable';
-import ProductTable from './elements/ProductTable';
+import ShopRecord from './elements/ShopRecord';
 import SkeletonProducts from '../../../assets/images/skeleton-products.gif'
 import * as env from '../../../environment';
 const { API_URL } = env[process.env.NODE_ENV];
 
-class ProductsTable extends Component {
+class ShopsTable extends Component {
     constructor(props){
         super(props);
         this.state = {
             page: 0,
             totalPages: 0,
             loading:true,
-            productsData: [
+            shopsData: [
                 {
                     id: 1,
-                    avatar: 'without-image.png',
                     name: 'N/D',
                     description: 'N/D',
-                    price: 0,
-                    categories: {
-                        id: 1,
-                        name: 'N/D',
-                    },
-                    shops: {
-                        id: 1,
-                        name: 'N/D',
-                    },
-                    types: {
-                        id: 1,
-                        name: 'N/D',
-                    },
-                    stock: 0,
                 }
             ]
         };
@@ -39,50 +24,51 @@ class ProductsTable extends Component {
         this.prevPage = this.prevPage.bind(this); 
     };
 
-    async allProducts(){
-      const response = await fetch(`${API_URL}/products?page=0`);
-      const products = await response.json();
-      return products.data;
+    async allShops(){
+      const response = await fetch(`${API_URL}/shops/list?page=0`);
+      const shops = await response.json();
+      return shops.data;
     };
 
     async totalPages(){
-      const response = await fetch(`${API_URL}/products`);
-      const products = await response.json();
-      return products.meta.totalCount;
+      const response = await fetch(`${API_URL}/shops/list`);
+      const shops = await response.json();
+      return shops.meta.totalCount;
     };
 
     async nextPage(page){  
-      const response = await fetch(`${API_URL}/products?page=${page}`);
-      const products = await response.json();
-      const productsData = products.data;
+      const response = await fetch(`${API_URL}/shops/list?page=${page}`);
+      const shops = await response.json();
+      const shopsData = shops.data;
       this.setState(() => {
           return {
-              productsData: productsData,
+              shopsData: shopsData,
               page: page
             }
       })
     };
 
     async prevPage(page){  
-      const response = await fetch(`${API_URL}/products?page=${page}`);
-      const products = await response.json();
-      const productsData = products.data;
+      const response = await fetch(`${API_URL}/shops/list?page=${page}`);
+      const shops = await response.json();
+      const shopsData = shops.data;
       this.setState(() => {
           return {
-              productsData: productsData,
+              shopsData: shopsData,
               page: page
             }
       })
     };
 
     async componentDidMount(){
-        const productsData = await this.allProducts();
+        const shopsData = await this.allShops();
+        console.log(shopsData);
         let totalPages = await this.totalPages();
         totalPages = parseInt(totalPages / 10);
         
         this.setState({
           loading: false,  
-          productsData,
+          shopsData,
           totalPages
         });
     }
@@ -102,42 +88,41 @@ class ProductsTable extends Component {
                         <table className="table table-bordered" id="dataTable" width="100%" cellSpacing="0">
                             <thead>
                                 <HeaderFooTable
-                                    image={'Imagen'}
+                                    id={'#'}
+                                    avatar={'Imagen'}
                                     name={'Nombre'}
-                                    shop={'Tienda'}
-                                    price={'Precio'}
-                                    category={'Categoria'}
-                                    type={'Tipo'}
-                                    stock={'Stock'}
+                                    bio={'Descripción'}
+                                    products={'Productos'}
+                                    ranking={'Puntuación'}
+                                    sales={'Ventas'}
                                     options={'Opciones'}
                                 />
                             </thead>
                             <tfoot>
                                 <HeaderFooTable
-                                    image={'Imagen'}
+                                    id={'#'}
+                                    avatar={'Imagen'}
                                     name={'Nombre'}
-                                    shop={'Tienda'}
-                                    price={'Precio'}
-                                    category={'Categoria'}
-                                    type={'Tipo'}
-                                    stock={'Stock'}
+                                    bio={'Descripción'}
+                                    products={'Productos'}
+                                    ranking={'Puntuación'}
+                                    sales={'Ventas'}
                                     options={'Opciones'}
                                 />
                             </tfoot>
                             <tbody>
                                 {
-                                    this.state.productsData.map((product) => {
+                                    this.state.shopsData.map((shop) => {
                                         return(
-                                            <ProductTable
-                                                key={product.id}
-                                                id={product.id}
-                                                name={product.name}
-                                                avatar={product.avatar}
-                                                shop={product.shops.name}
-                                                price={product.price}
-                                                category={product.categories.name}
-                                                type={product.types.name}
-                                                stock={product.stock}
+                                            <ShopRecord
+                                                key={shop.id}
+                                                id={shop.id}
+                                                avatar={shop.avatar}
+                                                name={shop.name}
+                                                bio={shop.bio}
+                                                products={shop.products.length}
+                                                ranking={shop.ranking}
+                                                sales={shop.sales}
                                             />
                                         )
                                     })
@@ -145,7 +130,7 @@ class ProductsTable extends Component {
                             </tbody>
                         </table>
                     </div>
-                    { this.state.totalPages > 1 ?
+                    { this.state.totalPages <= 10 ?
                         <div className="d-flex justify-content-center">
                             <nav>
                                 <ul className="pagination">
@@ -168,10 +153,11 @@ class ProductsTable extends Component {
                             </nav>
                         </div>
                     : null}
+                    
                 </div>
             </div>
         )
     }
 }
 
-export default ProductsTable;
+export default ShopsTable;

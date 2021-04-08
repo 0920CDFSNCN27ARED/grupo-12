@@ -8,25 +8,37 @@ class ProductEdit extends Component {
         this.state ={
             productData: {
                 id:4,
-                name:"N/D",
-                description:"Las mejores cervecerías artesanas del mundo.",
-                brewery:"N/D",
-                price:0,
-                discount:0,
-                stock:4,
-                ibu:0,
-                og:0,
-                abv:0,
                 avatar:"without-image.png",
                 gallery01:"product-gallery-10.jpg",
                 gallery02:"product-gallery-01.jpg",
                 gallery03:"product-gallery-02.jpg",
                 status:"active",
-                shops: {name:"N/D"},
+                shops: {id:1},
                 categories: {name:"N/D"},
                 types: {name:"N/D"},
                 orders:[],
-            }
+            },
+            categoriesData: [
+                {
+                    id: 1,
+                    name: 'N/D',
+                    description: 'N/D',
+                    types: {
+                        id: 1,
+                        name: 'N/D',
+                    },
+                    products: [{
+                        id: 1,
+                        name: 'N/D',
+                    }],
+                }
+            ],
+            typesData: [
+                {
+                    id: 1,
+                    name: 'N/D',
+                }
+            ]
         }
     }
 
@@ -37,13 +49,28 @@ class ProductEdit extends Component {
       return product.data;
     };
 
+    getCategories = async () => {
+        const response = await fetch(`${API_URL}/categories`);
+        const categories = await response.json();
+        return categories.data;
+    };
+
+    getTypes = async () => {
+        const response = await fetch(`${API_URL}/types`);
+        const types = await response.json();
+        return types.data;
+    };
+
     async componentDidMount(){
         let id = this.props.match.params.id;
         const productData = await this.getProduct(id);
-        console.log(productData)
-
+        const categoriesData= await this.getCategories();
+        const typesData = await this.getTypes();
+        console.log(categoriesData);
         this.setState({
             productData,
+            categoriesData,
+            typesData
         })
     }
 
@@ -65,49 +92,46 @@ class ProductEdit extends Component {
                     <form action="/:id/edit-product" method="POST" encType="multipart/form-data" className="needs-validation" noValidate>
                         <div className="modal-body">
                             <div className="row p-3">
-                                <div className="col-12 form-group">
-                                    <label className="text-xs font-weight-bold text-primary text-uppercase" htmlFor="category">Tienda Propietaria:</label>
-                                    <select className="custom-select" name="shopId" id="shopId"required>
-                                        
-                                            <option value="shop.id">shop.name</option>
-                                        
-                                    </select>
-                                    <div className="invalid-feedback">Seleccione un shop</div>
+                            <div className="col-lg-12 col-md-12 form-group">
+                                    <label  className="text-xs font-weight-bold text-primary text-uppercase" htmlFor="shop">Tienda Propietaria:</label>
+                                    <input type="text" name="shop" className="form-control required"  defaultValue={this.state.productData.shops.name} placeholder="Nombre de la tienda" required/>
+                                    <div className="valid-feedback">Ok válido!</div>
+                                    <div className="invalid-feedback">Complete este campo</div>
                                 </div>
                                 <div className="col-lg-6 col-md-6 form-group">
                                     <label  className="text-xs font-weight-bold text-primary text-uppercase" htmlFor="name">Nombre de Producto:</label>
-                                    <input type="text" name="name" className="form-control required"  placeholder="Cerveza IPA" required/>
+                                    <input type="text" name="name" className="form-control required"  defaultValue={this.state.productData.name} placeholder="Nombre.." required/>
                                     <div className="valid-feedback">Ok válido!</div>
                                     <div className="invalid-feedback">Complete este campo</div>
                                 </div>
                                 <div className="col-lg-6 col-md-6 form-group">
                                     <label className="text-xs font-weight-bold text-primary text-uppercase" htmlFor="brewery">Cervería de Origen:</label>
-                                    <input type="text" name="brewery" className="form-control"  placeholder="Quién fabrica el producto..."required/>
+                                    <input type="text" name="brewery" className="form-control"  defaultValue={this.state.productData.brewery} placeholder="Quién fabrica el producto..."required/>
                                     <div className="valid-feedback">Ok válido!</div>
                                     <div className="invalid-feedback">Complete este campo</div>
                                 </div>
                                 <div className="col-lg-6 col-md-6 form-group">
                                     <label className="text-xs font-weight-bold text-primary text-uppercase" htmlFor="price">Precio:</label>
-                                    <input type="text" name="price" className="form-control required" placeholder="Ingrese un valor"required/>
+                                    <input type="text" name="price" className="form-control required" defaultValue={this.state.productData.price} placeholder="Ingrese un valor"required/>
                                     <div className="valid-feedback">Ok válido!</div>
                                     <div className="invalid-feedback">Complete este campo</div>
                                 </div>
                                 <div className="col-lg-6 col-md-6 form-group">
                                     <label className="text-xs font-weight-bold text-primary text-uppercase" htmlFor="discount">Descuento:</label>
-                                    <input type="text" name="discount" className="form-control required"  placeholder="Ingrese un valor"required/>
+                                    <input type="text" name="discount" className="form-control required"  defaultValue={this.state.productData.discount} placeholder="Ingrese un valor"required/>
                                     <div className="valid-feedback">Ok válido!</div>
                                     <div className="invalid-feedback">Complete este campo</div>
                                 </div>
                                 <div className="col-lg-6 col-md-6 form-group">
                                     <label className="text-xs font-weight-bold text-primary text-uppercase" htmlFor="description">Stock:</label>
-                                    <input type="stock" name="stock" className="form-control"  placeholder="Cantidad de inventario..."required/>
+                                    <input type="stock" name="stock" className="form-control"  defaultValue={this.state.productData.stock} placeholder="Cantidad de inventario..."required/>
                                     <div className="valid-feedback">Ok válido!</div>
                                     <div className="invalid-feedback">Complete este campo</div>
                                 </div>
                                 <div className="col-lg-6 col-md-6 form-group">
                                     <label className="text-xs font-weight-bold text-primary text-uppercase" htmlFor="description">Descripción Corta:</label>
                                     <input type="text" name="description" className="form-control required" 
-                                        placeholder="Describa brevemente el producto..."required/>
+                                        defaultValue={this.state.productData.description} placeholder="Describa brevemente el producto..."required/>
                                     <div className="valid-feedback">Ok válido!</div>
                                     <div className="invalid-feedback">Complete este campo</div>
                                 </div>
@@ -120,33 +144,41 @@ class ProductEdit extends Component {
                                     <div className="invalid-feedback">Seleccione un estado</div>
                                 </div>
                                 <div className="col-lg-4 col-md-4 form-group">
-                                    <label className="text-xs font-weight-bold text-primary text-uppercase" htmlFor="type">Tipo:</label>
+                                    <label className="text-xs font-weight-bold text-primary text-uppercase" htmlFor="typeId">Tipo:</label>
                                     <select className="custom-select" name="typeId" id="typeId"required>
-                                        
-                                            <option value="type.id">type.name</option>
-                                        
+                                    {
+                                        this.state.typesData.map((type) => {
+                                            return(
+                                                <option key={type.id} value={type.id}>{type.name}</option>
+                                            )
+                                        })
+                                    }
                                     </select>
                                     <div className="invalid-feedback">Seleccione un tipo</div>
                                 </div>
                                 <div className="col-lg-4 col-md-4 form-group">
                                     <label className="text-xs font-weight-bold text-primary text-uppercase" htmlFor="category">Categoría:</label>
                                     <select className="custom-select" name="categoryId" id="categoryId"required>
-                                        
-                                            <option value="category.id">category.name</option>
-                                        
+                                    {
+                                        this.state.categoriesData.map((category) => {
+                                            return(
+                                                <option key={category.id} value={category.id}>{category.name}</option>
+                                            )
+                                        })
+                                    }
                                     </select>
                                 </div>
                                 <div className="col-lg-4 col-md-4 form-group">
                                     <label className="text-xs font-weight-bold text-primary text-uppercase" htmlFor="abv">ABV (% DE ALCOHOL):</label>
-                                    <input id="abv" name="abv" className="form-control" />
+                                    <input id="abv" name="abv" className="form-control" value={this.state.productData.abv}/>
                                 </div>
                                 <div className="col-lg-4 col-md-4 form-group">
                                     <label className="text-xs font-weight-bold text-primary text-uppercase" htmlFor="ibu">IBU (AMARGOR):</label>
-                                    <input name="ibu" id="ibu" className="form-control" />
+                                    <input name="ibu" id="ibu" className="form-control" value={this.state.productData.ibu}/>
                                 </div>
                                 <div className="col-lg-4 col-md-4 form-group">
                                     <label className="text-xs font-weight-bold text-primary text-uppercase" htmlFor="og">OG (Gravedad Original):</label>
-                                    <input name="og" id="og" className="form-control" />
+                                    <input name="og" id="og" className="form-control" value={this.state.productData.og}/>
                                 </div>
                             
                                 <div className="col-lg-6 col-md-6 form-group mt-3">

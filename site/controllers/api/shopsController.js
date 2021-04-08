@@ -49,6 +49,26 @@ const shopsController = {
             res.status(400).send(error.message);
         }
     },
+    tableList: async (req, res) => {
+        let page = req.query.page ? req.query.page : 0;
+        let count = await Shop.count();
+
+        let shops = await Shop.findAll({
+            include: ["products", "users", "orders", "shopCoupons"],
+            order: [["id", "ASC"]],
+            offset: page * 10,
+            limit: 10,
+        });
+
+        res.json({
+            meta: {
+                status: 200,
+                url: req.originalUrl,
+                totalCount: count,
+            },
+            data: shops,
+        });
+    },
 };
 
 module.exports = shopsController;

@@ -72,7 +72,7 @@ class CategoriesTable extends Component {
     async componentDidMount(){
         const categoriesData = await this.allCategories();
         let totalPages = await this.totalPages();
-        totalPages = totalPages / 10;
+        totalPages = parseInt(totalPages / 10);
         
         this.setState({
           loading: false,  
@@ -132,7 +132,7 @@ class CategoriesTable extends Component {
                             </tbody>
                         </table>
                     </div>
-                    { this.state.totalPages >= 10 ?
+                    { this.state.totalPages > 1 ?
                         <div className="d-flex justify-content-center">
                             <nav>
                                 <ul className="pagination">

@@ -28,44 +28,50 @@ class ProductEdit extends Component {
                 }
             ]
         }
+        this.onInputchange = this.onInputchange.bind(this);
     }
-
+    
     getCategory = async (id) => {
-      const response = await fetch(`${API_URL}/categories/${id}`);
-      const category = await response.json();
-      return category.data;
+        const response = await fetch(`${API_URL}/categories/${id}`);
+        const category = await response.json();
+        return category.data;
     };
-
+    
     updateCategory = async (id, data) => {
-      const response = await fetch(`${API_URL}/categories/${id}`,{
-          method: "post",
-          headers: {
-              "Content-type": "application/json"
-          },
-          body: data,
-      });
-      return await response.json();
+        const response = await fetch(`${API_URL}/categories/${id}`,{
+            method: "post",
+            headers: {
+                "Content-type": "application/json"
+            },
+            body: data,
+        });
+        return await response.json();
     };  
-
+    
     getTypes = async (id) => {
-      const response = await fetch(`${API_URL}/types`);
-      const types = await response.json();
-      return types.data;
+        const response = await fetch(`${API_URL}/types`);
+        const types = await response.json();
+        return types.data;
     };
-
+    
     async componentDidMount(){
         let id = this.props.match.params.id;
         const categoryData = await this.getCategory(id);
         const typesData = await this.getTypes();
         console.log(categoryData)
-
-
+        
+        
         this.setState({
             categoryData,
             typesData
         })
     }
-
+    onInputchange(event) {
+        this.setState({
+          [event.target.name]: event.target.value
+        });
+      }
+    
     
     render() {
         return (
@@ -82,7 +88,7 @@ class ProductEdit extends Component {
                                
                                 <div className="col-lg-6 col-md-6 form-group">
                                     <label  className="text-xs font-weight-bold text-primary text-uppercase" htmlFor="name">Nombre:</label>
-                                    <input type="text" name="name" className="form-control" value={this.state.categoryData.name} placeholder="Nombre" required/>
+                                    <input type="text" name="name" className="form-control"  defaultValue={this.state.categoryData.name} onChange={this.onInputchange}placeholder="Nombre" required/>
                                     <div className="valid-feedback">Ok válido!</div>
                                     <div className="invalid-feedback">Complete este campo</div>
                                 </div>
@@ -101,7 +107,7 @@ class ProductEdit extends Component {
                                 </div>
                                 <div className="col-lg-12 col-md-12 form-group">
                                     <label className="text-xs font-weight-bold text-primary text-uppercase" htmlFor="description">Descripción:</label>
-                                    <input type="text" name="description" id="description" className="form-control"  value={this.state.categoryData.description} placeholder="Descripción de la categoría..." required/>
+                                    <input type="text" name="description" id="description" className="form-control"  onChange={this.onInputchange} defaultValue={this.state.categoryData.description} placeholder="Descripción de la categoría..." required/>
                                     <div className="valid-feedback">Ok válido!</div>
                                     <div className="invalid-feedback">Complete este campo</div>
                                 </div>

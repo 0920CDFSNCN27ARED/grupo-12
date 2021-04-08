@@ -5,7 +5,9 @@ import Products from './components/products/Products';
 import CategoriesTypes from './components/categories-types/CategoriesTypes';
 import CategoryEdit from "./components/categories-types/CategoryEdit";
 import Shops from './components/shops/Shops';
+import ShopEdit from "./components/shops/ShopEdit";
 import Users from './components/users/Users';
+import UserEdit from "./components/users/UserEdit";
 import Login from './components/auth/Login';
 import Header from './components/layout/header/Header';
 import SideMenu from './components/layout/side-menu/SideMenu';
@@ -29,9 +31,11 @@ class App extends Component {
                   <Route path="/productos/detalles/:id" component={ProductDetails} />
                   <Route path="/productos/editar/:id" component={ProductEdit} />
                   <Route exact path="/usuarios" component={Users} />
+                  <Route exact path="/usuarios/editar/:id" component={UserEdit} />
                   <Route exact path="/comercios" component={Shops} />
                   <Route exact path="/categorias-tipos" component={CategoriesTypes} />
                   <Route path="/categorias/editar/:id" component={CategoryEdit} />
+                  <Route path="/comercios/editar/:id" component={ShopEdit} />
                   <Route exact path="/login" component={Login} />
                 </Switch>
               </Router>

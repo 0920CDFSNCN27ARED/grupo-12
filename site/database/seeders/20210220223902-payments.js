@@ -11,7 +11,7 @@ module.exports = {
                 description:
                     "A través de Mercado Pago, tus clientes pueden pagar con tarjetas de crédito, con transferencia bancaria e incluso en efectivo.",
                 type: "mercadopago",
-                status: "activo",
+                status: "active",
                 shopId: 1,
                 createdAt: "2021-01-23 20:52:27",
                 updatedAt: "2021-01-23 20:52:27",

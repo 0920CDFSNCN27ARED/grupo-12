@@ -6,6 +6,8 @@ const Op = Sequelize.Op;
 // Services
 const shopService = require("../services/shopService");
 const userService = require("../services/userService");
+const paymentService = require("../services/paymentService");
+const shippingMethodService = require("../services/shippingMethodService");
 const categoryService = require("../services/categoryService");
 const typeService = require("../services/typeService");
 const { Shop, Product } = require("../database/models")
@@ -546,7 +548,7 @@ const shopsController = {
         if (errors.isEmpty()) {
             const loggedUserId = req.session.loggedUserId;
             try {
-                let avatar = req.file ? req.file.filename : "default.jpg";
+                let avatar = req.file ? req.file.filename : "default-shop.jpg";
 
                 // Crear tienda
                 let shop = await shopService.create({
@@ -565,6 +567,36 @@ const shopsController = {
                     publicKey: null,
                     marketplaceLink: null,
                     marketplaceApp: null,
+                });
+
+                // creamos metodo de pago base
+                await paymentService.create({
+                    name: "Mercado Pago",
+                    description:
+                        "A través de Mercado Pago, tus clientes pueden pagar con tarjetas de crédito, con transferencia bancaria e incluso en efectivo.",
+                    type: "mercadopago",
+                    status: "blocked",
+                    shopId: shop.id,
+                });
+
+                await paymentService.create({
+                    name: "Efectivo",
+                    description:
+                        "Consiste en pagar un bien o servicio con dinero físico, con un cheque bancario al portador o con algún otro medio físico similar.",
+                    type: "cash",
+                    status: "active",
+                    shopId: shop.id,
+                });
+
+                // Creamos metodo de envio base
+                await shippingMethodService.create({
+                    name: "Arreglo con el vendedor",
+                    amount: 0,
+                    description:
+                        "Consiste entre en un arreglo privado entre la tienda y el consumidor final.",
+                    location: "Domicilio del vendedor",
+                    status: "active",
+                    shopId: shop.id,
                 });
 
                 // Actualizar propietario

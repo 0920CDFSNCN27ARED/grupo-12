@@ -587,80 +587,12 @@
 												</table>
 												<div id="total-checkout-page" class="table-responsive">
 													<!-- read total checkout page from localStorage -->
+													<!-- read shipping methods from localStorage -->
+													<!-- read payments methods from localStorage -->
 												</div>
 											</div>
 										</div>
-										<div class="col-12">
-											<div class="table-responsive">
-												<table class="table cart">
-													<tbody>
-														<tr class="cart_item">
-															<td class="cart-product-name">
-																<strong>Envío</strong>
-															</td>
-															<td class="col-md-12">
-																<div class="accordion accordion-border mt-3">
-																<% shippingMethods.forEach((shippingMethod) => { %>
-																	<div class="accordion-header accordion-active">
-																	<div class="accordion-icon">
-																		<i class="accordion-closed icon-ok-circle"></i>
-																		<i class="accordion-open icon-remove-circle"></i>
-																	</div>
-																	<div class="accordion-title">
-																		<%= shippingMethod.name %>
-																	</div>
-																	</div>
-																	<div class="accordion-content" style="display: block;">
-																		<div class="form-check">
-																			<input type="radio" class="form-check-input" name="shippingMethod" id="shippingMethod" value="<%= shippingMethod.id %>" required>
-																			<label class="form-check-label" for="shippingMethod"><%= shippingMethod.description %></label><br>
-																			<span class="badge badge-pill badge-warning">
-																				$<%= shippingMethod.amount > 0 ? shippingMethod.amount : 0%>
-																			</span>
-																			<div class="valid-feedback">Bien hecho!</div>
-																			<div class="invalid-feedback">Debes seleccionar un método de envío</div>
-																		</div>	
-																	</div>
-																<% }) %> 
-																</div>
-															</td>
-														</tr>
-														<tr class="cart_item">
-															<td class="cart-product-name">
-																<strong>Total</strong>
-															</td>
-															<td class="cart-product-name">
-																<span class="amount color lead"><strong>$1.750,00</strong></span>
-															</td>
-														</tr>
-													</tbody>
-												</table>
-											</div>
-										</div>
-										<div class="col-12">
-											<!-- Payments Methods -->
-											<div class="accordion accordion-border">
-												<% paymentMethods.forEach((paymentMethod) => { %>
-													<div class="accordion-header accordion-active">
-													<div class="accordion-icon">
-														<i class="accordion-closed icon-ok-circle"></i>
-														<i class="accordion-open icon-remove-circle"></i>
-													</div>
-													<div class="accordion-title">
-														<%= paymentMethod.name %>
-													</div>
-													</div>
-													<div class="accordion-content" style="display: block;">
-														<div class="form-check">
-															<input type="radio" class="form-check-input" name="paymentMethod" id="paymentMethod" value="<%= paymentMethod.id %>" required>
-															<label class="form-check-label" for="shippingMethod"><%= paymentMethod.description %></label>
-															<div class="valid-feedback">Bien hecho!</div>
-															<div class="invalid-feedback">Debes seleccionar un método de pago</div>
-														</div>
-													</div>
-												<% }) %> 
-											</div>
-										</div>	
+
 										<!-- Terms and Conditions -->
 										<div class="col-12 mb-3">
 											<div class="form-check form-check-inline">

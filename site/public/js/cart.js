@@ -7,6 +7,23 @@ class Cart {
             const getProduct = await getOneProduct(productId);
             const actualQty = $(`#qty-${productId}`).val();
 
+            if (localStorage.length === 0) {
+                localStorage.setItem("current-shop", getProduct.shopId);
+                const shopId = localStorage.getItem("current-shop");
+                const data = await getOneShop(shopId);
+                const shop = data.shop;
+                const shopPayments = data.shopPayments;
+                localStorage.setItem(
+                    "shop-payments",
+                    JSON.stringify(shopPayments)
+                );
+                const shopShippingMethods = data.shopShippingMethods;
+                localStorage.setItem(
+                    "shop-shipping-methods",
+                    JSON.stringify(shopShippingMethods)
+                );
+            };
+            
             let product = {
                 id: getProduct.id,
                 name: getProduct.name,
@@ -17,7 +34,18 @@ class Cart {
                 abv: getProduct.abv,
                 ibu: getProduct.ibu,
                 og: getProduct.og,
+                shopId: getProduct.shopId
             };
+
+            if (getProduct.shopId != localStorage.getItem("current-shop")) {
+                // Notificamos
+                let message = `Este producto no pertenece a la misma TIENDA de los productos que ya agregaste.
+                                Si queres agregarlo borrar tu carrito o posteriormente realiza una nueva compra.`;
+                notificationNotAdd(product, message);
+                // Actualizar pagina en 10s
+                setInterval("location.reload()", 10000);
+                return;
+            }
 
             // Agregamos o actualizar cantidad en localStorage
             localStorage.setItem(
@@ -122,6 +150,11 @@ class Cart {
                 let product = JSON.parse(localStorage.getItem(key));
                 localStorage.removeItem(`${key}`);
 
+                // Si eliminamos el ultimo producto limpiamos el localStorage(total, discount, current-shop)
+                if(localStorage.length === 5 ){
+                    localStorage.clear();
+                }
+
                 // Limpiamos HTML del carrito
                 destroyAllProductCart();
                 destroytotalCart();
@@ -156,6 +189,13 @@ async function getOneProduct(id){
     const response = await fetch(`http://${window.env.DOMAIN}/api/products/${id}`);
     let product = await response.json();
     return product.data;
+};
+
+// Obtener una tienda
+async function getOneShop(id){
+    const response = await fetch(`http://${window.env.DOMAIN}/api/shops/${id}`);
+    let shop = await response.json();
+    return shop.data;
 };
 
 // Actualizar productos en carrito
@@ -201,7 +241,21 @@ function updateAllProducts() {
     //Mostrar total y descuento en pagina de checkout
     const totalCheckout = document.getElementById("total-checkout-page");
     if (totalCheckout != null) {
-        totalCheckoutPage(total, discount, productsQty);
+        // Mostramos productos y armamos estructura
+        const shopId = localStorage.getItem('current-shop')
+        totalCheckoutPage(total, discount, productsQty, shopId);
+
+        // Agregamos metodos de envio
+        let shopShippingMethods = JSON.parse(localStorage.getItem("shop-shipping-methods"));
+        shopShippingMethods.forEach((shippingMethod) => {
+            addOneShippingMethod(shippingMethod);
+        });
+
+        // Agregamos metodos de envio
+        let shopPayments = JSON.parse(localStorage.getItem("shop-payments"));
+        shopPayments.forEach((paymentMethod) => {
+            addOnePayment(paymentMethod);
+        }); 
     }
 }
 
@@ -273,11 +327,37 @@ function totalCartPage(total, discount) {
     }
 };
 
-// Mostrar total y descuento en pagina carrito 
-function totalCheckoutPage(total, discount, productsQty) {
+// Mostrar total y descuento en pagina del Checkout 
+function totalCheckoutPage(total, discount, productsQty, shopId) {
+    let shopShippingMethods = JSON.parse(localStorage.getItem("shop-shipping-methods"));
+    let shopPayments = JSON.parse(localStorage.getItem("shop-payments"));
     const totalPage = document.getElementById("total-checkout-page");
     // Agregamos total
-    if (total > 0) {
+    if (shopShippingMethods.length == 0) {
+        const emptyCart = document.createElement("div");
+        emptyCart.classList.add("text-center", "mb-5", "mt-2");
+        emptyCart.innerHTML = `
+            <a href="/shops/shop-details/${shopId}" class="button button-desc button-3d button-rounded button-yellow center">
+                No es posible comprar a esta tienda
+                <span>Aún no cuentan con métodos de envío publicados</span>
+                <span>Ponerse en contacto con ellos para detalles</span>
+            </a>
+        `;
+        totalPage.appendChild(emptyCart);
+
+    } else if (shopPayments.length == 0) {
+        const emptyCart = document.createElement("div");
+        emptyCart.classList.add("text-center", "mb-5", "mt-2");
+        emptyCart.innerHTML = `
+            <a href="/shops/shop-details/${shopId}" class="button button-desc button-3d button-rounded button-yellow center">
+                No es posible comprar a esta tienda
+                <span>Aún no cuentan con métodos de pago publicados</span>
+                <span>Ponerse en contacto con ellos para detalles</span>
+            </a>
+        `;
+        totalPage.appendChild(emptyCart);
+
+    } else if (total > 0) {
         const totalTable = document.createElement("table");
         totalTable.setAttribute("id", "checkout-page-table");
         totalTable.classList.add("table", "cart");
@@ -312,6 +392,33 @@ function totalCheckoutPage(total, discount, productsQty) {
                         </span>
                     </td>
                 </tr>
+                <tr class="cart_item">
+                    <td class="cart-product-name">
+                        <strong>Envío</strong>
+                    </td>
+                    <td class="col-md-12">
+                        <div id="add-shipping-methods" class="accordion accordion-border mt-3"></div>
+                    </td>
+                </tr>
+                <tr class="cart_item">
+                    <td class="cart-product-name" col="3">
+                        <strong>Total a Pagar</strong>
+                    </td>
+                    <td class="cart-product-name" col="3">
+                        <span class="amount color lead">
+                            <strong>Cacular</strong>
+                        </span>
+                    </td>
+                </tr>
+                <tr class="cart_item">
+                    <td class="cart-product-name">
+                        <strong>Método de Pago</strong>
+                    </td>
+                    <td class="col-md-12">
+                        <div id="add-payments" class="accordion accordion-border mt-3"></div>
+                    </td>
+                </tr>
+                <input type="hidden" name="currentShop" value="${shopId}" style="display: none;"/>
                 <input type="hidden" name="productsQty" value="${productsQty}" style="display: none;"/>
                 <input type="text" id="productsTotal" name="productsTotal" value="${total}" style="display: none;"/>
             </tbody>
@@ -327,8 +434,62 @@ function totalCheckoutPage(total, discount, productsQty) {
             </a>
         `;
         totalPage.appendChild(emptyCart);
+
     }
 };
+
+function addOneShippingMethod(shippingMethod) {
+    const shippingMethods = document.getElementById("add-shipping-methods");
+    const shipping = document.createElement("div");
+    shipping.innerHTML = `
+            <div class="accordion-header accordion-active">
+            <div class="accordion-icon">
+                <i class="accordion-closed icon-ok-circle"></i>
+                <i class="accordion-open icon-remove-circle"></i>
+            </div>
+            <div class="accordion-title">
+                ${shippingMethod.name}
+            </div>
+            </div>
+            <div class="accordion-content" style="display: block;">
+                <div class="form-check">
+                    <input type="radio" class="form-check-input" name="shippingMethod" id="shippingMethod" value="${shippingMethod.id}" required>
+                    <label class="form-check-label" for="shippingMethod">${shippingMethod.description}</label><br>
+                    <span class="badge badge-pill badge-warning">
+                        $${shippingMethod.amount > 0 ? shippingMethod.amount : 0}
+                    </span>
+                    <div class="valid-feedback">Bien hecho!</div>
+                    <div class="invalid-feedback">Debes seleccionar un método de envío</div>
+                </div>	
+            </div>
+        `;
+    shippingMethods.appendChild(shipping);
+}
+
+function addOnePayment(paymentMethod) {
+    const paymentMethods = document.getElementById("add-payments");
+    const payment = document.createElement("div");
+    payment.innerHTML = `
+            <div class="accordion-header accordion-active">
+            <div class="accordion-icon">
+                <i class="accordion-closed icon-ok-circle"></i>
+                <i class="accordion-open icon-remove-circle"></i>
+            </div>
+            <div class="accordion-title">
+            ${paymentMethod.name}
+            </div>
+            </div>
+            <div class="accordion-content" style="display: block;">
+                <div class="form-check">
+                    <input type="radio" class="form-check-input" name="paymentMethod" id="paymentMethod" value="${paymentMethod.id}" required>
+                    <label class="form-check-label" for="shippingMethod">${paymentMethod.description}</label>
+                    <div class="valid-feedback">Bien hecho!</div>
+                    <div class="invalid-feedback">Debes seleccionar un método de pago</div>
+                </div>
+            </div>
+        `;
+    paymentMethods.appendChild(payment);
+}
 
 // Borrar total de carrito
 function destroytotalCart() {
@@ -483,6 +644,23 @@ function notification(product, message) {
         data-notify-position="top-right"
         data-notify-type="success"
         data-notify-timeout="5000"
+        data-notify-msg="<i class=icon-ok-sign></i> ${message}"
+    ></div>
+    `;
+    productItem.appendChild(notification);
+    SEMICOLON.widget.notifications({ el: jQuery(`#message${product.id}`) });
+};
+
+// Notificar agregado o actualización de producto
+function notificationNotAdd(product, message) {
+    const productItem = document.getElementById(`product-item-${product.id}`);
+    const notification = document.createElement("div");
+    notification.innerHTML = `
+    <div 
+        id="message${product.id}"
+        data-notify-position="top-right"
+        data-notify-type="error"
+        data-notify-timeout="10000"
         data-notify-msg="<i class=icon-ok-sign></i> ${message}"
     ></div>
     `;

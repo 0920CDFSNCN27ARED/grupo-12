@@ -6,15 +6,12 @@ const Op = Sequelize.Op;
 
 // Configuración mercado pago
 const mercadopago = require ('mercadopago');
-const ACCESS_TOKEN = process.env.ACCESS_TOKEN;
-mercadopago.configure({
-    access_token: ACCESS_TOKEN
-  });
 
 // Services
 const orderService = require("../services/orderService");
 const productService = require("../services/productService");
 const userService = require("../services/userService");
+const shopService = require("../services/shopService");
 const addressService = require("../services/addressService");
 const categoryService = require("../services/categoryService");
 const typeService = require("../services/typeService");
@@ -393,7 +390,7 @@ const storeController = {
                     couponId = null;
                 } else {
                     coupon = await couponService.findCode(req.body.couponCode);
-                    if (coupon.length != 0 && coupon[0].status == "active") {
+                    if (coupon.length != 0 && coupon[0].status == "active" && coupon[0].shopId == req.body.currentShop) {
                         couponAmount = coupon[0].discount;
                         couponId = coupon[0].id;
                     } else {
@@ -484,7 +481,7 @@ const storeController = {
                         });
                         shippingAddressId = shippingAddress.id;
                     } else {
-                        shippingAddressId = null;
+                        shippingAddressId = billingAddress.id;
                     }
 
                     // creamos pedido general
@@ -497,7 +494,7 @@ const storeController = {
                         tax: 0,
                         total: null,
                         userId: user.id,
-                        shopId: 1,
+                        shopId: req.body.currentShop,
                         statusId: 1,
                         paymentId: req.body.paymentMethod,
                         couponId: couponId,
@@ -550,47 +547,72 @@ const storeController = {
                         totalProducts: orderTotalProducts,
                         total: orderTotal,
                     });
-                    if (req.body.paymentMethod == 1) {
-                        let items =[]
-                            for (let i = 1; i <= req.body.productsQty; i++) {
-                                let productId = eval(`req.body.product${i}`);
-                                let productQty = eval(`req.body.qty${i}`);
-                                let product = await productService.findOne(productId);
-                                subtotal =
-                                (product.price - product.discount) * productQty;
-                                item ={
-                                    title: product.name,
-                                    unit_price: Number(product.price),
-                                    quantity: Number(productQty)
-                                }
-                                items.push(item);
-                            }
-                            const preference = {
-                                items: items,
-                                back_urls: {
-                                    success: `${process.env.DOMAIN}/orders/${order.id}/orderSuccess/`,
-                                    pending: `${process.env.DOMAIN}/orders/${order.id}/orderPending/`,
-                                    failure: `${process.env.DOMAIN}/orders/${order.id}/orderFailure/`,
-                                },
-                                payment_methods: {
-                                    excluded_payment_types: [
-                                        {
-                                            id: "ticket",
-                                        },
-                                        {
-                                            id: "atm",
-                                        },
-                                        {
-                                            id: "prepaid_card",
-                                        },
-                                    ],
-                                },
+
+                    let paymentMethod = await paymentService.findOne(req.body.paymentMethod);
+                    if (paymentMethod.type == "mercadopago") {
+
+                        const currentShop = await shopService.findOne(req.body.currentShop);
+                        mercadopago.configure({
+                            access_token: currentShop.tokenKey,
+                        });
+
+                        let items = [];
+                        for (let i = 1; i <= req.body.productsQty; i++) {
+                            let productId = eval(`req.body.product${i}`);
+                            let productQty = eval(`req.body.qty${i}`);
+                            let product = await productService.findOne(productId);
+                            item = {
+                                title: product.name,
+                                unit_price: Number(product.price - product.discount),
+                                quantity: Number(productQty),
                             };
-                            let result = await mercadopago.preferences.create(preference);
-                            return res.redirect(result.body.init_point);
-                    }else{
-                        req.flash("message", "Tu pedido se realizo correctamente.");
-                        return res.redirect(`/orders/${order.id}/orderSuccess`);    
+                            items.push(item);
+                        };
+                        let shippingItem = {
+                            title: "Costo de envío",
+                            unit_price: Number(totalShipping),
+                            quantity: 1,
+                        };
+                        let couponItem = {
+                            title: "Descuento por Cupón",
+                            unit_price: Number(-couponAmount),
+                            quantity: 1,
+                        };
+                        items.push(shippingItem);
+                        items.push(couponItem);
+                        
+                        const preference = {
+                            items: items,
+                            back_urls: {
+                                success: `${process.env.DOMAIN}/orders/${order.id}/orderSuccess/`,
+                                pending: `${process.env.DOMAIN}/orders/${order.id}/orderPending/`,
+                                failure: `${process.env.DOMAIN}/orders/${order.id}/orderFailure/`,
+                            },
+                            auto_return: "approved",
+                            payment_methods: {
+                                excluded_payment_types: [
+                                    {
+                                        id: "ticket",
+                                    },
+                                    {
+                                        id: "atm",
+                                    },
+                                    {
+                                        id: "prepaid_card",
+                                    },
+                                ],
+                            },
+                        };
+                        let result = await mercadopago.preferences.create(
+                            preference
+                        );
+                        return res.redirect(result.body.init_point);
+                    } else {
+                        req.flash(
+                            "message",
+                            "Tu pedido se realizo correctamente."
+                        );
+                        return res.redirect(`/orders/${order.id}/orderSuccess`);
                     }
 
                 } else if (currentUser) {
@@ -642,7 +664,7 @@ const storeController = {
                         tax: 0,
                         total: null,
                         userId: currentUser.id,
-                        shopId: 1,
+                        shopId: req.body.currentShop,
                         statusId: 1,
                         paymentId: req.body.paymentMethod,
                         couponId: couponId,
@@ -696,48 +718,75 @@ const storeController = {
                         totalProducts: orderTotalProducts,
                         total: orderTotal,
                     });
-                    console.log(order);
-                    if (req.body.paymentMethod == 1) {
-                        let items =[]
-                            for (let i = 1; i <= req.body.productsQty; i++) {
-                                let productId = eval(`req.body.product${i}`);
-                                let productQty = eval(`req.body.qty${i}`);
-                                let product = await productService.findOne(productId);
-                                subtotal =
-                                (product.price - product.discount) * productQty;
-                                item ={
-                                    title: product.name,
-                                    unit_price: Number(product.price),
-                                    quantity: Number(productQty)
-                                }
-                                items.push(item);
-                            }
-                            const preference = {
-                                items: items,
-                                back_urls: {
-                                    success: `${process.env.DOMAIN}/orders/${order.id}/orderSuccess/`,
-                                    pending: `${process.env.DOMAIN}/orders/${order.id}/orderPending/`,
-                                    failure: `${process.env.DOMAIN}/orders/${order.id}/orderFailure/`,
-                                },
-                                payment_methods: {
-                                    excluded_payment_types: [
-                                        {
-                                            id: "ticket",
-                                        },
-                                        {
-                                            id: "atm",
-                                        },
-                                        {
-                                            id: "prepaid_card",
-                                        },
-                                    ],
-                                },
+                    let paymentMethod = await paymentService.findOne(req.body.paymentMethod);
+                    if (paymentMethod.type == 'mercadopago') {
+                        
+                        const currentShop = await shopService.findOne(req.body.currentShop);
+                        mercadopago.configure({
+                            access_token: currentShop.tokenKey,
+                        });
+
+                        let items = [];
+                        for (let i = 1; i <= req.body.productsQty; i++) {
+                            let productId = eval(`req.body.product${i}`);
+                            let productQty = eval(`req.body.qty${i}`);
+                            let product = await productService.findOne(
+                                productId
+                            );
+                            item = {
+                                title: product.name,
+                                unit_price: Number(
+                                    product.price - product.discount
+                                ),
+                                quantity: Number(productQty),
                             };
-                            let result = await mercadopago.preferences.create(preference);
-                            return res.redirect(result.body.init_point);
-                    }else{
-                        req.flash("message", "Tu pedido se realizo correctamente.");
-                        return res.redirect(`/orders/${order.id}/orderSuccess`);    
+                            items.push(item);
+                        }
+                        let shippingItem = {
+                            title: "Costo de envío",
+                            unit_price: Number(totalShipping),
+                            quantity: 1,
+                        };
+                        let couponItem = {
+                            title: "Descuento por Cupón",
+                            unit_price: Number(-couponAmount),
+                            quantity: 1,
+                        };
+                        items.push(shippingItem);
+                        items.push(couponItem);
+
+                        const preference = {
+                            items: items,
+                            back_urls: {
+                                success: `${process.env.DOMAIN}/orders/${order.id}/orderSuccess/`,
+                                pending: `${process.env.DOMAIN}/orders/${order.id}/orderPending/`,
+                                failure: `${process.env.DOMAIN}/orders/${order.id}/orderFailure/`,
+                            },
+                            auto_return: "approved",
+                            payment_methods: {
+                                excluded_payment_types: [
+                                    {
+                                        id: "ticket",
+                                    },
+                                    {
+                                        id: "atm",
+                                    },
+                                    {
+                                        id: "prepaid_card",
+                                    },
+                                ],
+                            },
+                        };
+                        let result = await mercadopago.preferences.create(
+                            preference
+                        );
+                        return res.redirect(result.body.init_point);
+                    } else {
+                        req.flash(
+                            "message",
+                            "Tu pedido se realizo correctamente."
+                        );
+                        return res.redirect(`/orders/${order.id}/orderSuccess`);
                     }
                 }
             } else {

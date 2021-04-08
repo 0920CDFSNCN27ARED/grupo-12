@@ -38,12 +38,30 @@ const shopsController = {
     findOne: async (req, res) => {
         try {
             let shop = await shopService.findOne(req.params.id);
+            
+            let activePayments = [];
+            shop.shopPayments.forEach(payment => {
+                if(payment.status == 'active'){
+                    activePayments.push(payment);
+                }
+            });
+
+            let activeShippingMethods = [];
+            shop.shopShippingMethods.forEach((shipping) => {
+                if (shipping.status == "active") {
+                    activeShippingMethods.push(shipping);
+                }
+            });
             res.json({
                 meta: {
                     status: 200,
                     url: req.originalUrl,
                 },
-                data: shop,
+                data: {
+                    shop: shop,
+                    shopPayments: activePayments,
+                    shopShippingMethods: activeShippingMethods,
+                },
             });
         } catch (error) {
             res.status(400).send(error.message);

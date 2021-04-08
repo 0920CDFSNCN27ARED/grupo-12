@@ -331,6 +331,12 @@
   border-radius: 0.5rem !important;
 }
 
+/* Responsive main logo */
+@media (max-width: 667px) {
+#logo img {
+    height: 60px!important;
+}
+
 /* Responsive product shop image */
 @media (max-width: 575px) {
   .portfolio-responsive-image {
